@@ -1714,131 +1714,173 @@ p {
     transition: transform var(--transition-base);
 }
 
+/* Custom Tech Scrollbar */
+.comparison-table-wrapper::-webkit-scrollbar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.comparison-table-wrapper::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
+    border-radius: 4px;
+}
+
+.comparison-table-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 .comparison-table-wrapper:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
 }
 
-/* Subtle gradient border effect */
-.comparison-table-wrapper::before {
+/* HUD Corner Markers */
+.comparison-table-wrapper::after {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: -1px;
+    border: 1px solid transparent;
     border-radius: var(--radius-lg);
-    padding: 1px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+    background:
+        linear-gradient(to right, var(--accent-blue) 2px, transparent 2px) 0 0,
+        linear-gradient(to bottom, var(--accent-blue) 2px, transparent 2px) 0 0,
+        linear-gradient(to left, var(--accent-blue) 2px, transparent 2px) 100% 0,
+        linear-gradient(to bottom, var(--accent-blue) 2px, transparent 2px) 100% 0,
+        linear-gradient(to right, var(--accent-blue) 2px, transparent 2px) 0 100%,
+        linear-gradient(to top, var(--accent-blue) 2px, transparent 2px) 0 100%,
+        linear-gradient(to left, var(--accent-blue) 2px, transparent 2px) 100% 100%,
+        linear-gradient(to top, var(--accent-blue) 2px, transparent 2px) 100% 100%;
+    background-repeat: no-repeat;
+    background-size: 10px 10px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* System Label */
+.comparison-table-wrapper::before {
+    content: 'SYSTEM COMPARISON // AUTH_REQ';
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 0.65rem;
+    font-family: monospace;
+    color: var(--accent-blue);
+    opacity: 0.7;
+    letter-spacing: 0.1em;
     pointer-events: none;
 }
 
 .comparison-table {
     width: 100%;
     border-collapse: separate;
-    /* Required for border-radius on rows/cols */
     border-spacing: 0;
     font-size: 0.95rem;
+    position: relative;
+    z-index: 5;
 }
 
 .comparison-table th,
 .comparison-table td {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.5rem;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    transition: background var(--transition-base);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background var(--transition-base), color var(--transition-base);
 }
 
-/* Interactive Row Hover */
-.comparison-table tbody tr {
-    transition: background var(--transition-base);
-}
-
-.comparison-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.02);
-}
-
-/* On hover, strike out the competitor price */
-.comparison-table tbody tr:hover .price-competitor {
-    color: #ef4444;
-    text-decoration: line-through;
-    opacity: 0.7;
-}
-
-/* On hover, pop the Eximia check */
-.comparison-table tbody tr:hover .check-eximia svg {
-    transform: scale(1.3);
-    filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.8));
+.comparison-table thead tr {
+    /* Scanline Header */
+    border-bottom: 1px solid var(--accent-blue);
+    box-shadow: 0 1px 10px rgba(168, 85, 247, 0.1);
 }
 
 .comparison-table th {
     text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
     color: var(--text-tertiary);
     padding-bottom: 1.5rem;
 }
 
-/* Competitor Column - The "Pain" */
+/* Interactive Row Hover - Laser Scan */
+.comparison-table tbody tr {
+    transition: all 0.2s ease;
+    border-left: 2px solid transparent;
+}
+
+.comparison-table tbody tr:hover {
+    background: rgba(168, 85, 247, 0.03);
+    border-left: 2px solid var(--accent-blue);
+}
+
+.comparison-table tbody tr:hover td {
+    color: white;
+}
+
+/* Competitor Column - Greyed out tech */
 .col-competitor,
 .price-competitor {
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     text-align: center !important;
-    background: rgba(239, 68, 68, 0.02);
-    /* Very subtle red tint */
-    transition: all var(--transition-base);
+    font-family: monospace;
 }
 
 .price-competitor {
-    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
 }
 
-/* Eximia Column - The "Gain" (Cabrona Style) */
+/* Eximia Column - High Tech Active */
 .col-eximia,
 .check-eximia {
-    background: rgba(34, 197, 94, 0.08);
-    /* Green tint */
-    text-align: center !important;
-    position: relative;
+    background: rgba(34, 197, 94, 0.03);
+    /* Very subtle tint */
     border-left: 1px solid rgba(34, 197, 94, 0.1);
+    border-right: 1px solid rgba(34, 197, 94, 0.1);
+    text-align: center !important;
 }
 
-/* Add a border to separate the winner column */
 .col-eximia {
     border-top: 2px solid var(--accent-green);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    padding-bottom: 1rem;
+    position: relative;
+}
+
+/* Eximia Header Glow */
+.col-eximia::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(34, 197, 94, 0.1) 0%, transparent 100%);
+    pointer-events: none;
 }
 
 .th-logo {
-    background: linear-gradient(135deg, #a855f7, #6366f1);
-    color: white;
     display: inline-block;
-    padding: 0.4rem 1rem;
-    border-radius: 4px;
-    font-weight: 800;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.5));
 }
 
 .th-logo-img {
-    max-height: 25px;
-    /* Adjust size based on logo aspect ratio */
+    max-height: 22px;
     width: auto;
-    filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
 }
 
 .check-eximia svg {
-    width: 28px;
-    height: 28px;
-    color: #22c55e;
-    filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.6));
-    transform: scale(1);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 24px;
+    height: 24px;
+    color: #4ade80;
+    /* Bright Green */
+    filter: drop-shadow(0 0 5px rgba(74, 222, 128, 0.5));
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Footer Totals - Massive Contrast */
+.comparison-table tbody tr:hover .check-eximia svg {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.8));
+}
+
+/* Footer Totals */
 .comparison-table tfoot td {
     border-bottom: none;
     padding-top: 2.5rem;
@@ -1846,29 +1888,29 @@ p {
 }
 
 .comparison-table tfoot td:first-child {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
 .total-competitor {
     color: #ef4444;
     text-decoration: line-through;
-    opacity: 0.6;
-    font-size: 1.25rem !important;
+    opacity: 0.5;
+    font-family: monospace;
+    font-size: 1.1rem;
     text-align: center !important;
 }
 
 .total-eximia {
-    color: #22c55e;
-    font-size: 2.5rem !important;
-    /* Huge */
+    color: #4ade80;
+    font-size: 1.75rem;
     text-align: center !important;
-    text-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
-    background: rgba(34, 197, 94, 0.1);
-    border-radius: 0 0 8px 8px;
-    /* Round bottom corners */
-    animation: eximiaPulse 2s infinite ease-in-out;
+    text-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+    background: rgba(34, 197, 94, 0.05);
+    border-bottom: 2px solid var(--accent-green);
+    position: relative;
 }
 
 @keyframes eximiaPulse {
@@ -1894,25 +1936,118 @@ p {
         padding: 4rem 1rem;
     }
 
-    .comparison-table th,
-    .comparison-table td {
-        padding: 1rem 0.75rem;
-        padding: 0.75rem 0.5rem;
-        font-size: 0.8rem;
-        white-space: nowrap;
+    .comparison-table-wrapper {
+        padding: 1.5rem;
+        background: rgba(10, 10, 10, 0.95);
+        /* Darker for stacking */
+        overflow-x: visible;
+        /* Disable scroll */
     }
 
-    /* Remove Sticky Complexity - It was reported as looking worse */
-    .comparison-table th:first-child,
+    /* Force Table to look like blocks */
+    .comparison-table,
+    .comparison-table tbody,
+    .comparison-table tr,
+    .comparison-table td {
+        display: block;
+        width: 100%;
+        white-space: normal;
+        /* Allow text wrap */
+        border: none !important;
+        /* Reset table borders */
+    }
+
+    .comparison-table thead {
+        display: none;
+        /* Hide headers */
+    }
+
+    /* Row -> Card Module */
+    .comparison-table tbody tr {
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 8px;
+        padding: 1rem;
+        position: relative;
+    }
+
+    /* Cells */
+    .comparison-table td {
+        padding: 0.5rem 0;
+        text-align: left !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Feature Name (First Cell) */
     .comparison-table td:first-child {
-        position: static;
+        font-weight: 700;
+        font-size: 1rem;
+        color: white;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1) !important;
+        margin-bottom: 0.5rem;
+        width: 100%;
+    }
+
+    /* Competitor Price */
+    .price-competitor {
         background: transparent;
-        border-right: none;
-        box-shadow: none;
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    .price-competitor::before {
+        content: 'OTRAS AGENCIAS:';
+        font-size: 0.7rem;
+        color: var(--text-tertiary);
+        letter-spacing: 0.05em;
+    }
+
+    /* Eximia Check */
+    .check-eximia {
+        background: transparent;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        border: none;
+        padding-top: 0;
+    }
+
+    .check-eximia::before {
+        content: 'EXIMIA:';
+        font-size: 0.7rem;
+        color: var(--accent-green);
+        letter-spacing: 0.05em;
+        font-weight: 700;
+    }
+
+    /* Footer / Totals */
+    .comparison-table tfoot {
+        display: block;
+        margin-top: 2rem;
+    }
+
+    .comparison-table tfoot tr {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background: transparent;
+        border: none !important;
+        padding: 0;
+    }
+
+    .comparison-table tfoot td {
+        width: 100%;
+        text-align: center !important;
+        justify-content: center;
+        padding: 0;
     }
 
     .total-eximia {
-        font-size: 1.5rem !important;
+        font-size: 2rem !important;
+        margin-top: 0.5rem;
     }
 }
 
