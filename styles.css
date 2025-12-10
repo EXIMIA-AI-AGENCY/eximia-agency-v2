@@ -1933,121 +1933,101 @@ p {
 /* Responsive */
 @media (max-width: 640px) {
     .value-comparison {
-        padding: 4rem 1rem;
+        padding: 4rem 0.5rem;
+        /* Maximize width */
     }
 
     .comparison-table-wrapper {
-        padding: 1.5rem;
+        padding: 1rem 0.5rem;
         background: rgba(10, 10, 10, 0.95);
-        /* Darker for stacking */
-        overflow-x: visible;
-        /* Disable scroll */
+        overflow-x: hidden;
+        /* Ensure no scroll */
     }
 
-    /* Force Table to look like blocks */
-    .comparison-table,
-    .comparison-table tbody,
-    .comparison-table tr,
-    .comparison-table td {
-        display: block;
+    /* Restore Table Structure (Mini Mode) */
+    .comparison-table {
+        display: table;
+        table-layout: fixed;
+        /* Force column widths */
         width: 100%;
-        white-space: normal;
-        /* Allow text wrap */
-        border: none !important;
-        /* Reset table borders */
+        border-collapse: collapse;
     }
 
     .comparison-table thead {
-        display: none;
-        /* Hide headers */
+        display: table-header-group;
     }
 
-    /* Row -> Card Module */
-    .comparison-table tbody tr {
-        margin-bottom: 1rem;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 8px;
-        padding: 1rem;
-        position: relative;
+    .comparison-table tbody {
+        display: table-row-group;
     }
 
-    /* Cells */
-    .comparison-table td {
-        padding: 0.5rem 0;
-        text-align: left !important;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    /* Feature Name (First Cell) */
-    .comparison-table td:first-child {
-        font-weight: 700;
-        font-size: 1rem;
-        color: white;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px dashed rgba(255, 255, 255, 0.1) !important;
-        margin-bottom: 0.5rem;
-        width: 100%;
-    }
-
-    /* Competitor Price */
-    .price-competitor {
-        background: transparent;
-        justify-content: flex-start;
-        gap: 0.5rem;
-    }
-
-    .price-competitor::before {
-        content: 'OTRAS AGENCIAS:';
-        font-size: 0.7rem;
-        color: var(--text-tertiary);
-        letter-spacing: 0.05em;
-    }
-
-    /* Eximia Check */
-    .check-eximia {
-        background: transparent;
-        justify-content: flex-start;
-        gap: 0.5rem;
-        border: none;
-        padding-top: 0;
-    }
-
-    .check-eximia::before {
-        content: 'EXIMIA:';
-        font-size: 0.7rem;
-        color: var(--accent-green);
-        letter-spacing: 0.05em;
-        font-weight: 700;
-    }
-
-    /* Footer / Totals */
-    .comparison-table tfoot {
-        display: block;
-        margin-top: 2rem;
-    }
-
-    .comparison-table tfoot tr {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        background: transparent;
+    .comparison-table tr {
+        display: table-row;
+        background: transparent !important;
         border: none !important;
-        padding: 0;
     }
 
-    .comparison-table tfoot td {
-        width: 100%;
-        text-align: center !important;
-        justify-content: center;
-        padding: 0;
+    .comparison-table th,
+    .comparison-table td {
+        display: table-cell;
+        padding: 0.75rem 0.25rem;
+        font-size: 0.7rem;
+        /* Tiny text */
+        white-space: normal;
+        /* Wrap text */
+        overflow-wrap: break-word;
+        height: auto;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Custom Column Widths for Mobile */
+    .comparison-table th:first-child,
+    .comparison-table td:first-child {
+        width: 38%;
+        /* Feature Name */
+        font-weight: 600;
+        color: white;
+    }
+
+    .comparison-table th:nth-child(2),
+    .comparison-table td:nth-child(2) {
+        width: 31%;
+        /* Competitor */
+    }
+
+    .comparison-table th:nth-child(3),
+    .comparison-table td:nth-child(3) {
+        width: 31%;
+        /* Eximia */
+    }
+
+    /* Hide Images/Logos if too big, or scale them */
+    .th-logo-img {
+        max-height: 16px;
+    }
+
+    .th-logo {
+        padding: 0.2rem 0.4rem;
+    }
+
+    /* Tiny Icons */
+    .check-eximia svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Hide "Costo individual" text if needed or make nice wrap */
+    .col-competitor {
+        line-height: 1.2;
     }
 
     .total-eximia {
-        font-size: 2rem !important;
-        margin-top: 0.5rem;
+        font-size: 1.25rem !important;
+    }
+
+    .total-competitor {
+        font-size: 0.9rem !important;
     }
 }
 
