@@ -1897,28 +1897,18 @@ p {
     .comparison-table th,
     .comparison-table td {
         padding: 1rem 0.75rem;
+        padding: 0.75rem 0.5rem;
         font-size: 0.8rem;
         white-space: nowrap;
-        /* Prevent wrapping for cleaner scroll */
     }
 
-    /* Sticky First Column */
+    /* Remove Sticky Complexity - It was reported as looking worse */
     .comparison-table th:first-child,
     .comparison-table td:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 20;
-        background: #0a0a0a;
-        /* Match wrapper bg */
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
-        /* Drop shadow to indicate scroll depth */
-    }
-
-    /* Ensure other cells are behind */
-    .comparison-table th:not(:first-child),
-    .comparison-table td:not(:first-child) {
-        z-index: 10;
+        position: static;
+        background: transparent;
+        border-right: none;
+        box-shadow: none;
     }
 
     .total-eximia {
