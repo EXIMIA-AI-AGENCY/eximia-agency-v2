@@ -501,6 +501,10 @@ class Typewriter {
             // If it's the last sentence and no loop, stop deletion
             if (!this.loop && this.currentTextIndex === this.texts.length - 1) {
                 this.isDeleting = false;
+                // Hide cursor for a clean static look
+                if (this.cursor) {
+                    this.cursor.style.display = 'none';
+                }
                 return; // Stop animation
             }
         } else if (this.isDeleting && this.currentCharIndex === 0) {
@@ -536,9 +540,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ],
             cursor: typeCursor,
             typingSpeed: 50,
-            deletingSpeed: 30, // Faster delete
-            pauseDuration: 3000, // Longer pause to read
-            loop: true
+            deletingSpeed: 30,
+            pauseDuration: 3000,
+            loop: false // Run only once
         });
     }
 });
