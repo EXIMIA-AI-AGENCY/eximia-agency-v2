@@ -2827,13 +2827,13 @@ p {
 .scroll-expand-bg-css {
     background-color: #030014;
     background-image:
-        /* Tech Grid Pattern */
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        /* Tech Grid Pattern - More Visible */
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
         /* Deep Glows */
-        radial-gradient(circle at 50% 50%, rgba(20, 0, 40, 0) 0%, rgba(0, 0, 0, 0.8) 100%),
-        radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+        radial-gradient(circle at 50% 50%, rgba(20, 0, 40, 0) 0%, rgba(0, 0, 0, 0.9) 100%),
+        radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
     background-size:
         50px 50px,
         50px 50px,
