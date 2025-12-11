@@ -3410,3 +3410,47 @@ p {
         transform: translate(-50%, -50%) scale(1);
     }
 }
+
+/* ================================
+   Mobile Plans Scroll (Snap to Side)
+   ================================ */
+@media (max-width: 768px) {
+    .plans-grid {
+        display: flex;
+        grid-template-columns: none;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+
+        /* Edge to edge trick for container with padding */
+        margin-left: -2rem;
+        margin-right: -2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        padding-bottom: 2rem;
+        /* Clean bottom space */
+
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    /* Hide scrollbar for cleaner look */
+    .plans-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .plans-grid {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .plan-card {
+        min-width: 85%;
+        max-width: 85%;
+        scroll-snap-align: center;
+        flex: 0 0 auto;
+        margin: 0;
+        height: auto;
+        /* Ensure height fits content */
+    }
+}
