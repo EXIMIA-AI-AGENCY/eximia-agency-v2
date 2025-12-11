@@ -12,9 +12,16 @@
 .liquid-button {
     position: relative;
     display: inline-flex;
+    flex-direction: row !important;
+    /* Force row */
+    flex-wrap: nowrap !important;
+    /* Force no wrap */
     align-items: center;
     gap: 10px;
     padding: 18px 52px;
+    min-width: 220px;
+    /* Ensure sufficient width */
+    width: auto;
     border-radius: 999px;
     border: none;
     cursor: pointer;
@@ -61,8 +68,10 @@
     text-shadow:
         0 1px 3px rgba(40, 24, 110, 0.85),
         0 0 4px rgba(0, 0, 0, 0.35);
-    white-space: nowrap;
-    /* Prevent "Ver" over "planes" */
+    white-space: nowrap !important;
+    /* Prevent "Ver" over "planes" aggressively */
+    display: inline-block;
+    /* Ensure whitespace property works */
 }
 
 /* BORDE DE VIDRIO */
