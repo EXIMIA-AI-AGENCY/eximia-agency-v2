@@ -533,6 +533,10 @@ p {
         height: 115% !important;
         /* compensate for the shift */
     }
+
+    .trust-row {
+        display: none !important;
+    }
 }
 
 /* ... */
