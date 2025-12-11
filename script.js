@@ -170,27 +170,39 @@ function initAnimatedCounters() {
 
 function initFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
+    if (faqItems.length === 0) return;
 
     faqItems.forEach(item => {
+        // We attach the listener to the header part, typically .faq-question
         const question = item.querySelector('.faq-question');
         const answer = item.querySelector('.faq-answer');
 
-        question.addEventListener('click', function () {
+        if (!question || !answer) return;
+
+        question.addEventListener('click', function (e) {
+            e.preventDefault(); // Safety
+
             const isOpen = item.classList.contains('active');
 
-            // Close all items
+            // Accordion Logic: Close others
             faqItems.forEach(otherItem => {
-                otherItem.classList.remove('active');
-                const otherAnswer = otherItem.querySelector('.faq-answer');
-                if (otherAnswer) {
-                    otherAnswer.style.maxHeight = null;
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    if (otherAnswer) otherAnswer.style.maxHeight = null;
                 }
             });
 
-            // If it wasn't open before, open it now
-            if (!isOpen) {
+            // Toggle Current
+            if (isOpen) {
+                // Close it
+                item.classList.remove('active');
+                answer.style.maxHeight = null;
+            } else {
+                // Open it
                 item.classList.add('active');
-                answer.style.maxHeight = answer.scrollHeight + "px";
+                // Force a recalculation if needed or add a buffer
+                answer.style.maxHeight = (answer.scrollHeight + 20) + "px";
             }
         });
     });
