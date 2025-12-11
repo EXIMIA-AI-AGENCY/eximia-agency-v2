@@ -337,12 +337,14 @@ class ScrollExpandMedia {
         const rect = this.container.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
-        // More sensitive activation for mobile - trigger earlier
-        // On mobile: activate when section is 60% visible from top
-        // On desktop: activate when top is near viewport top
-        const activationThreshold = this.isMobile ? windowHeight * 0.4 : 100;
-
-        this.isActive = rect.top <= activationThreshold && rect.bottom > windowHeight * 0.3;
+        // AGGRESSIVE activation for mobile - almost always active when visible
+        if (this.isMobile) {
+            // Mobile: Active when ANY part of section is in upper 70% of screen
+            this.isActive = rect.top < windowHeight * 0.7 && rect.bottom > windowHeight * 0.1;
+        } else {
+            // Desktop: Original behavior - top near viewport top
+            this.isActive = rect.top <= 100 && rect.bottom > windowHeight * 0.3;
+        }
 
         // Keep video playing when active
         if (this.isActive) {
