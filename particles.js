@@ -1,9 +1,9 @@
 // ================================
-// EXIMIA - AI Command Center Animation
-// Palantir-style sophisticated visualization
+// EXIMIA - n8n Style Workflow Animation
+// Visualizing Autonomous Agents
 // ================================
 
-class AICommandCenter {
+class WorkflowAnimation {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         if (!this.canvas) return;
@@ -16,38 +16,33 @@ class AICommandCenter {
         this.config = {
             colors: {
                 primary: 'rgba(168, 85, 247, 1)',      // Electric Purple
-                primaryDim: 'rgba(168, 85, 247, 0.3)',
-                secondary: 'rgba(139, 92, 246, 1)',    // Violet
-                accent: 'rgba(192, 132, 252, 1)',      // Light Purple
-                white: 'rgba(255, 255, 255, 0.8)',
-                grid: 'rgba(168, 85, 247, 0.05)'
+                success: 'rgba(34, 197, 94, 1)',       // Green for completions
+                processing: 'rgba(59, 130, 246, 1)',   // Blue for processing
+                line: 'rgba(100, 116, 139, 0.2)',      // Subtle grey for connector lines
+                bg: 'rgba(15, 23, 42, 0)'
             },
-            rings: [
-                { radius: 120, speed: 0.0005, nodes: 6, nodeSize: 3 },
-                { radius: 200, speed: -0.0003, nodes: 8, nodeSize: 2.5 },
-                { radius: 280, speed: 0.0002, nodes: 12, nodeSize: 2 }
-            ],
-            coreSize: 20,
-            corePulseSpeed: 0.02,
-            dataStreamCount: 15,
-            scanLineInterval: 3000  // ms between scan lines
+            nodeSize: { width: 140, height: 50 },
+            packetSpeed: 0.008, // Progress per frame (0-1)
         };
 
-        this.dataStreams = [];
-        this.scanLines = [];
-        this.lastScanTime = 0;
+        this.nodes = [];
+        this.connections = [];
+        this.packets = [];
 
         this.init();
     }
 
     init() {
         this.resize();
-        this.createDataStreams();
+        this.buildWorkflowGraph();
         this.animate();
 
-        window.addEventListener('resize', () => this.resize());
+        window.addEventListener('resize', () => {
+            this.resize();
+            this.buildWorkflowGraph();
+        });
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
+        this.canvas.addEventListener('mousedown', () => this.triggerPacket()); // Click to manual trigger
     }
 
     resize() {
@@ -55,23 +50,7 @@ class AICommandCenter {
         this.canvas.height = this.canvas.offsetHeight;
         this.centerX = this.canvas.width / 2;
         this.centerY = this.canvas.height / 2;
-
-        // Scale rings based on screen size
-        const scale = Math.min(this.canvas.width, this.canvas.height) / 700;
-        this.scale = Math.max(0.5, Math.min(scale, 1.2));
-    }
-
-    createDataStreams() {
-        this.dataStreams = [];
-        for (let i = 0; i < this.config.dataStreamCount; i++) {
-            this.dataStreams.push({
-                angle: Math.random() * Math.PI * 2,
-                speed: 0.001 + Math.random() * 0.002,
-                length: 50 + Math.random() * 100,
-                offset: Math.random() * 300,
-                opacity: 0.1 + Math.random() * 0.2
-            });
-        }
+        this.scale = Math.min(this.canvas.width / 1400, 1); // Scale down on mobile
     }
 
     handleMouseMove(e) {
@@ -80,228 +59,221 @@ class AICommandCenter {
         this.mouse.y = e.clientY - rect.top;
     }
 
-    handleMouseLeave() {
-        this.mouse.x = null;
-        this.mouse.y = null;
-    }
+    // Define the automation graph structure
+    buildWorkflowGraph() {
+        this.nodes = [];
+        this.connections = [];
 
-    drawGrid() {
-        const ctx = this.ctx;
-        const gridSize = 50;
+        // Grid layout calculation
+        const cx = this.centerX + (this.canvas.width > 768 ? 100 : 0); // Shift right on desktop for text
+        const cy = this.centerY;
+        const w = 250 * this.scale; // Horizontal spacing
+        const h = 150 * this.scale; // Vertical spacing
 
-        ctx.strokeStyle = this.config.colors.grid;
-        ctx.lineWidth = 1;
+        // Define Nodes (Positions relative to center)
+        const nodeDefinitions = [
+            { id: 'start', label: 'Lead Entry (Form)', type: 'trigger', x: cx - w * 1.5, y: cy },
+            { id: 'qualify', label: 'AI Qualifier', type: 'agent', x: cx - w * 0.5, y: cy },
 
-        // Vertical lines
-        for (let x = 0; x < this.canvas.width; x += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, this.canvas.height);
-            ctx.stroke();
-        }
+            // Branch 1: Success
+            { id: 'crm', label: 'Update CRM', type: 'action', x: cx + w * 0.5, y: cy - h * 0.8 },
+            { id: 'booking', label: 'Book Meeting', type: 'action', x: cx + w * 1.5, y: cy - h * 0.8 },
 
-        // Horizontal lines
-        for (let y = 0; y < this.canvas.height; y += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(this.canvas.width, y);
-            ctx.stroke();
-        }
-    }
+            // Branch 2: Follow-up
+            { id: 'wait', label: 'Wait 24h', type: 'time', x: cx + w * 0.5, y: cy + h * 0.8 },
+            { id: 'email', label: 'Send Follow-up', type: 'action', x: cx + w * 1.5, y: cy + h * 0.8 },
 
-    drawCore() {
-        const ctx = this.ctx;
-        const pulse = Math.sin(this.time * this.config.corePulseSpeed) * 0.3 + 0.7;
-        const size = this.config.coreSize * this.scale * pulse;
+            // Loop back (Logical representation)
+            { id: 'notify', label: 'Notify Sales', type: 'success', x: cx + w * 2.5, y: cy },
+        ];
 
-        // Outer glow
-        const gradient = ctx.createRadialGradient(
-            this.centerX, this.centerY, 0,
-            this.centerX, this.centerY, size * 3
-        );
-        gradient.addColorStop(0, 'rgba(168, 85, 247, 0.4)');
-        gradient.addColorStop(0.5, 'rgba(168, 85, 247, 0.1)');
-        gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+        this.nodes = nodeDefinitions.map(n => ({
+            ...n,
+            status: 'idle', // idle, active, success
+            pulse: 0
+        }));
 
-        ctx.beginPath();
-        ctx.fillStyle = gradient;
-        ctx.arc(this.centerX, this.centerY, size * 3, 0, Math.PI * 2);
-        ctx.fill();
+        // Define Connections (Source ID -> Target ID)
+        const connectionDefs = [
+            { from: 'start', to: 'qualify' },
+            { from: 'qualify', to: 'crm' },
+            { from: 'crm', to: 'booking' },
+            { from: 'booking', to: 'notify' },
+            { from: 'qualify', to: 'wait' },
+            { from: 'wait', to: 'email' },
+            { from: 'email', to: 'notify' }
+        ];
 
-        // Core ring
-        ctx.beginPath();
-        ctx.strokeStyle = this.config.colors.primary;
-        ctx.lineWidth = 2;
-        ctx.arc(this.centerX, this.centerY, size, 0, Math.PI * 2);
-        ctx.stroke();
-
-        // Inner core
-        ctx.beginPath();
-        ctx.fillStyle = this.config.colors.white;
-        ctx.arc(this.centerX, this.centerY, size * 0.3, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    drawRings() {
-        const ctx = this.ctx;
-
-        this.config.rings.forEach((ring, ringIndex) => {
-            const radius = ring.radius * this.scale;
-            const rotation = this.time * ring.speed;
-
-            // Draw the ring circle (very subtle)
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(168, 85, 247, 0.1)';
-            ctx.lineWidth = 1;
-            ctx.arc(this.centerX, this.centerY, radius, 0, Math.PI * 2);
-            ctx.stroke();
-
-            // Draw nodes on the ring
-            for (let i = 0; i < ring.nodes; i++) {
-                const angle = (i / ring.nodes) * Math.PI * 2 + rotation;
-                const x = this.centerX + Math.cos(angle) * radius;
-                const y = this.centerY + Math.sin(angle) * radius;
-
-                // Node glow
-                const nodeGradient = ctx.createRadialGradient(x, y, 0, x, y, ring.nodeSize * 4);
-                nodeGradient.addColorStop(0, 'rgba(168, 85, 247, 0.5)');
-                nodeGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
-
-                ctx.beginPath();
-                ctx.fillStyle = nodeGradient;
-                ctx.arc(x, y, ring.nodeSize * 4, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Node core
-                ctx.beginPath();
-                ctx.fillStyle = this.config.colors.primary;
-                ctx.arc(x, y, ring.nodeSize, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Connection line to center
-                ctx.beginPath();
-                ctx.strokeStyle = `rgba(168, 85, 247, ${0.05 + Math.sin(this.time * 0.01 + i) * 0.03})`;
-                ctx.lineWidth = 1;
-                ctx.moveTo(this.centerX, this.centerY);
-                ctx.lineTo(x, y);
-                ctx.stroke();
+        connectionDefs.forEach(c => {
+            const source = this.nodes.find(n => n.id === c.from);
+            const target = this.nodes.find(n => n.id === c.to);
+            if (source && target) {
+                this.connections.push({ source, target });
             }
         });
+
+        // Start automatic workflow loop
+        this.startAutoLoop();
     }
 
-    drawDataStreams() {
-        const ctx = this.ctx;
-
-        this.dataStreams.forEach(stream => {
-            stream.angle += stream.speed;
-
-            const startRadius = 50 * this.scale + stream.offset;
-            const endRadius = startRadius + stream.length * this.scale;
-
-            const startX = this.centerX + Math.cos(stream.angle) * startRadius;
-            const startY = this.centerY + Math.sin(stream.angle) * startRadius;
-            const endX = this.centerX + Math.cos(stream.angle) * endRadius;
-            const endY = this.centerY + Math.sin(stream.angle) * endRadius;
-
-            const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
-            gradient.addColorStop(0, 'rgba(168, 85, 247, 0)');
-            gradient.addColorStop(0.5, `rgba(168, 85, 247, ${stream.opacity})`);
-            gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
-
-            ctx.beginPath();
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1;
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(endX, endY);
-            ctx.stroke();
-        });
+    startAutoLoop() {
+        // Spawn a packet from start every few seconds
+        setInterval(() => {
+            this.triggerPacket();
+        }, 2000);
     }
 
-    drawScanLines() {
-        const ctx = this.ctx;
-        const now = Date.now();
+    triggerPacket() {
+        if (this.nodes.length === 0) return;
+        this.spawnPacket(this.nodes[0], null); // Start node
+    }
 
-        // Spawn new scan line
-        if (now - this.lastScanTime > this.config.scanLineInterval) {
-            this.scanLines.push({
-                radius: 0,
-                maxRadius: Math.max(this.canvas.width, this.canvas.height),
-                speed: 3
+    spawnPacket(sourceNode, targetNode) {
+        // If just starting, find next connection
+        if (!targetNode && sourceNode) {
+            this.activateNode(sourceNode);
+            // Find all outgoing connections
+            const outgoing = this.connections.filter(c => c.source.id === sourceNode.id);
+            outgoing.forEach(conn => {
+                this.packets.push({
+                    source: conn.source,
+                    target: conn.target,
+                    progress: 0,
+                    speed: this.config.packetSpeed * (1 + Math.random() * 0.5) // Slight speed var
+                });
             });
-            this.lastScanTime = now;
-        }
-
-        // Update and draw scan lines
-        for (let i = this.scanLines.length - 1; i >= 0; i--) {
-            const scan = this.scanLines[i];
-            scan.radius += scan.speed;
-
-            if (scan.radius > scan.maxRadius) {
-                this.scanLines.splice(i, 1);
-                continue;
-            }
-
-            const opacity = 1 - (scan.radius / scan.maxRadius);
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.15})`;
-            ctx.lineWidth = 2;
-            ctx.arc(this.centerX, this.centerY, scan.radius, 0, Math.PI * 2);
-            ctx.stroke();
+            return;
         }
     }
 
-    drawMouseInteraction() {
-        if (!this.mouse.x) return;
+    activateNode(node) {
+        node.status = 'active';
+        node.pulse = 1;
+        setTimeout(() => node.status = 'idle', 500);
+    }
 
+    update() {
+        this.packets.forEach((p, index) => {
+            p.progress += p.speed;
+
+            if (p.progress >= 1) {
+                // Packet reached target
+                this.activateNode(p.target);
+
+                // Spawn new packets from this target (Chain reaction)
+                const outgoing = this.connections.filter(c => c.source.id === p.target.id);
+                outgoing.forEach(conn => {
+                    this.packets.push({
+                        source: conn.source,
+                        target: conn.target,
+                        progress: 0,
+                        speed: this.config.packetSpeed
+                    });
+                });
+
+                // Remove finished packet
+                this.packets.splice(index, 1);
+            }
+        });
+
+        // Decay node pulses
+        this.nodes.forEach(n => {
+            if (n.pulse > 0) n.pulse -= 0.05;
+        });
+    }
+
+    drawCurve(p1, p2, color, width) {
         const ctx = this.ctx;
-        const dx = this.mouse.x - this.centerX;
-        const dy = this.mouse.y - this.centerY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        // Line from core to mouse
-        const gradient = ctx.createLinearGradient(
-            this.centerX, this.centerY,
-            this.mouse.x, this.mouse.y
-        );
-        gradient.addColorStop(0, 'rgba(168, 85, 247, 0.3)');
-        gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
-
         ctx.beginPath();
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 1;
-        ctx.moveTo(this.centerX, this.centerY);
-        ctx.lineTo(this.mouse.x, this.mouse.y);
+        const cp1x = p1.x + (p2.x - p1.x) * 0.5;
+        const cp1y = p1.y;
+        const cp2x = p1.x + (p2.x - p1.x) * 0.5;
+        const cp2y = p2.y;
+
+        ctx.moveTo(p1.x, p1.y);
+        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
         ctx.stroke();
+        return { cp1x, cp1y, cp2x, cp2y }; // Return control points for packet interpolation
+    }
 
-        // Mouse cursor glow
-        const cursorGradient = ctx.createRadialGradient(
-            this.mouse.x, this.mouse.y, 0,
-            this.mouse.x, this.mouse.y, 30
-        );
-        cursorGradient.addColorStop(0, 'rgba(168, 85, 247, 0.3)');
-        cursorGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+    // Cubic Bezier interpolation
+    getPointOnCurve(p1, p2, t) {
+        const cx1 = p1.x + (p2.x - p1.x) * 0.5;
+        const cy1 = p1.y;
+        const cx2 = p1.x + (p2.x - p1.x) * 0.5;
+        const cy2 = p2.y;
 
-        ctx.beginPath();
-        ctx.fillStyle = cursorGradient;
-        ctx.arc(this.mouse.x, this.mouse.y, 30, 0, Math.PI * 2);
-        ctx.fill();
+        const k = 1 - t;
+        const x = (k * k * k * p1.x) + (3 * k * k * t * cx1) + (3 * k * t * t * cx2) + (t * t * t * p2.x);
+        const y = (k * k * k * p1.y) + (3 * k * k * t * cy1) + (3 * k * t * t * cy2) + (t * t * t * p2.y);
+        return { x, y };
     }
 
     draw() {
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw layers in order (back to front)
-        this.drawGrid();
-        this.drawDataStreams();
-        this.drawScanLines();
-        this.drawRings();
-        this.drawCore();
-        this.drawMouseInteraction();
+        // Draw connections
+        this.connections.forEach(conn => {
+            this.drawCurve(conn.source, conn.target, this.config.colors.line, 2);
+        });
+
+        // Draw Packets
+        this.packets.forEach(p => {
+            const pos = this.getPointOnCurve(p.source, p.target, p.progress);
+
+            // Packet glow
+            ctx.beginPath();
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.config.colors.primary;
+            ctx.fillStyle = this.config.colors.primary;
+            ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        });
+
+        // Draw Nodes
+        this.nodes.forEach(node => {
+            const w = this.config.nodeSize.width * this.scale;
+            const h = this.config.nodeSize.height * this.scale;
+            const x = node.x - w / 2;
+            const y = node.y - h / 2;
+
+            // Box shadow / Glow on active
+            if (node.pulse > 0) {
+                ctx.shadowBlur = 20 * node.pulse;
+                ctx.shadowColor = this.config.colors.processing;
+            }
+
+            // Node Background
+            ctx.fillStyle = 'rgba(30, 41, 59, 0.8)'; // Dark slate
+            ctx.strokeStyle = node.pulse > 0 ? this.config.colors.primary : 'rgba(148, 163, 184, 0.2)';
+            ctx.lineWidth = node.pulse > 0 ? 2 : 1;
+
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, h, 8);
+            ctx.fill();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Status Indicator Dot
+            ctx.beginPath();
+            ctx.fillStyle = node.pulse > 0.5 ? this.config.colors.processing : 'rgba(148, 163, 184, 0.5)';
+            ctx.arc(x + 15, y + h / 2, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Text
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = `${12 * this.scale}px Inter, monospace`;
+            ctx.textAlign = 'left';
+            ctx.fillText(node.label, x + 30, y + h / 2 + 4);
+        });
     }
 
     animate() {
-        this.time++;
+        this.update();
         this.draw();
         requestAnimationFrame(() => this.animate());
     }
@@ -309,5 +281,5 @@ class AICommandCenter {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    new AICommandCenter('particleCanvas');
+    new WorkflowAnimation('workflowCanvas');
 });

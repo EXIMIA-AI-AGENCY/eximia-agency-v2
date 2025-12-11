@@ -451,22 +451,14 @@ p {
     padding-top: 4rem;
 }
 
-/* Spline 3D Background Container */
-.spline-container {
+/* Workflow Animation Canvas */
+#workflowCanvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
-    pointer-events: auto;
-    overflow: hidden;
-}
-
-.spline-container spline-viewer {
-    width: 100%;
-    height: 100%;
-    display: block;
 }
 
 /* Gradient overlay - left side for text readability */
@@ -476,7 +468,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 30%, transparent 60%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 30%, transparent 60%);
     z-index: 1;
     pointer-events: none;
 }
@@ -498,15 +490,10 @@ p {
     display: none;
 }
 
-/* Mobile optimization for Spline */
+/* Mobile optimization */
 @media (max-width: 768px) {
-    .spline-container {
-        pointer-events: none;
-        /* Disable 3D interaction on mobile for scroll */
-    }
-
     .hero-gradient-left {
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 30%, transparent 70%);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 30%, transparent 70%);
     }
 }
 
