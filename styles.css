@@ -643,6 +643,8 @@ p {
     width: 300px;
     margin: 0 auto 2rem;
     text-align: left;
+    z-index: 100;
+    /* Ensure it's above overlays */
 }
 
 .select-trigger {

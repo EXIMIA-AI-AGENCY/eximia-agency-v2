@@ -116,11 +116,20 @@ function initHeroDemo() {
 
     // Handle Option Selection
     options.forEach(option => {
-        option.addEventListener('click', () => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stop propagation to document click
             const value = option.getAttribute('data-value');
-            const text = option.textContent.trim(); // Get text without icon if needed, or with.
-            // Extract just the text part (icon is in span)
-            const label = option.childNodes[option.childNodes.length - 1].textContent.trim();
+
+            // Extract just the text content, ignoring the icon span
+            // We clone the node to not modify the DOM, or just iterate childNodes
+            let label = '';
+            option.childNodes.forEach(node => {
+                if (node.nodeType === 3 && node.textContent.trim().length > 0) {
+                    label = node.textContent.trim();
+                }
+            });
+            // Fallback if no text node found
+            if (!label) label = option.innerText.trim();
 
             // Update Trigger
             triggerText.textContent = label;
