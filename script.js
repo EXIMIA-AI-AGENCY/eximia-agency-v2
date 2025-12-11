@@ -461,7 +461,12 @@ class Typewriter {
             });
         }, { threshold: 0.1 });
 
-        if (this.element) observer.observe(this.element);
+        // Observe parent because the text span might be empty/heightless initially
+        if (this.element.parentElement) {
+            observer.observe(this.element.parentElement);
+        } else if (this.element) {
+            observer.observe(this.element);
+        }
     }
 
     start() {
