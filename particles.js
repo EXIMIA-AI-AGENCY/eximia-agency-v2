@@ -1,40 +1,50 @@
 // ================================
-// EXIMIA - Advanced AI Neural Network
+// EXIMIA - AI Command Center Animation
+// Palantir-style sophisticated visualization
 // ================================
 
-class AgentNetwork {
+class AICommandCenter {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         if (!this.canvas) return;
 
         this.ctx = this.canvas.getContext('2d');
-        this.nodes = [];
-        this.packets = [];
-        this.mouse = { x: null, y: null, radius: 250 };
+        this.mouse = { x: null, y: null };
+        this.time = 0;
 
         // Configuration
         this.config = {
-            nodeCount: 60, // Number of static/drifting nodes
-            connectionDistance: 180, // Max distance to connect
-            nodeSpeed: 0.4, // Drifting speed
-            packetSpawnRate: 0.05, // Chance to spawn a data packet per frame
-            packetSpeed: 2.5, // Speed of data packets
             colors: {
-                primary: '168, 85, 247', // Electric Purple
-                secondary: '139, 92, 246', // Violet
-                background: '0, 0, 0' // Pure Black
-            }
+                primary: 'rgba(168, 85, 247, 1)',      // Electric Purple
+                primaryDim: 'rgba(168, 85, 247, 0.3)',
+                secondary: 'rgba(139, 92, 246, 1)',    // Violet
+                accent: 'rgba(192, 132, 252, 1)',      // Light Purple
+                white: 'rgba(255, 255, 255, 0.8)',
+                grid: 'rgba(168, 85, 247, 0.05)'
+            },
+            rings: [
+                { radius: 120, speed: 0.0005, nodes: 6, nodeSize: 3 },
+                { radius: 200, speed: -0.0003, nodes: 8, nodeSize: 2.5 },
+                { radius: 280, speed: 0.0002, nodes: 12, nodeSize: 2 }
+            ],
+            coreSize: 20,
+            corePulseSpeed: 0.02,
+            dataStreamCount: 15,
+            scanLineInterval: 3000  // ms between scan lines
         };
+
+        this.dataStreams = [];
+        this.scanLines = [];
+        this.lastScanTime = 0;
 
         this.init();
     }
 
     init() {
         this.resize();
-        this.createNodes();
+        this.createDataStreams();
         this.animate();
 
-        // Event Listeners
         window.addEventListener('resize', () => this.resize());
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
@@ -43,28 +53,23 @@ class AgentNetwork {
     resize() {
         this.canvas.width = this.canvas.offsetWidth;
         this.canvas.height = this.canvas.offsetHeight;
-        // Re-create nodes on resize to distribute them well
-        this.createNodes();
+        this.centerX = this.canvas.width / 2;
+        this.centerY = this.canvas.height / 2;
+
+        // Scale rings based on screen size
+        const scale = Math.min(this.canvas.width, this.canvas.height) / 700;
+        this.scale = Math.max(0.5, Math.min(scale, 1.2));
     }
 
-    createNodes() {
-        this.nodes = [];
-        const { width, height } = this.canvas;
-
-        // Calculate dynamic node count based on screen area
-        const area = width * height;
-        const count = Math.min(Math.floor(area / 15000), 100);
-
-        for (let i = 0; i < count; i++) {
-            this.nodes.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * this.config.nodeSpeed,
-                vy: (Math.random() - 0.5) * this.config.nodeSpeed,
-                radius: Math.random() * 1.5 + 1.5,
-                color: Math.random() > 0.5 ? this.config.colors.primary : this.config.colors.secondary,
-                pulse: Math.random() * Math.PI * 2,
-                connections: [] // To track active connections for this node
+    createDataStreams() {
+        this.dataStreams = [];
+        for (let i = 0; i < this.config.dataStreamCount; i++) {
+            this.dataStreams.push({
+                angle: Math.random() * Math.PI * 2,
+                speed: 0.001 + Math.random() * 0.002,
+                length: 50 + Math.random() * 100,
+                offset: Math.random() * 300,
+                opacity: 0.1 + Math.random() * 0.2
             });
         }
     }
@@ -80,147 +85,223 @@ class AgentNetwork {
         this.mouse.y = null;
     }
 
-    spawnPacket(p1, p2) {
-        // Only spawn if not too many packets
-        if (this.packets.length > 20) return;
+    drawGrid() {
+        const ctx = this.ctx;
+        const gridSize = 50;
 
-        this.packets.push({
-            x: p1.x,
-            y: p1.y,
-            target: p2,
-            startX: p1.x,
-            startY: p1.y,
-            progress: 0,
-            speed: this.config.packetSpeed / Math.hypot(p2.x - p1.x, p2.y - p1.y), // Normalized speed
-            color: p1.color // Inherit color from source
-        });
+        ctx.strokeStyle = this.config.colors.grid;
+        ctx.lineWidth = 1;
+
+        // Vertical lines
+        for (let x = 0; x < this.canvas.width; x += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, this.canvas.height);
+            ctx.stroke();
+        }
+
+        // Horizontal lines
+        for (let y = 0; y < this.canvas.height; y += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(this.canvas.width, y);
+            ctx.stroke();
+        }
     }
 
-    updateNodes() {
-        this.nodes.forEach(node => {
-            // Move
-            node.x += node.vx;
-            node.y += node.vy;
+    drawCore() {
+        const ctx = this.ctx;
+        const pulse = Math.sin(this.time * this.config.corePulseSpeed) * 0.3 + 0.7;
+        const size = this.config.coreSize * this.scale * pulse;
 
-            // Wall bounce
-            if (node.x < 0 || node.x > this.canvas.width) node.vx *= -1;
-            if (node.y < 0 || node.y > this.canvas.height) node.vy *= -1;
+        // Outer glow
+        const gradient = ctx.createRadialGradient(
+            this.centerX, this.centerY, 0,
+            this.centerX, this.centerY, size * 3
+        );
+        gradient.addColorStop(0, 'rgba(168, 85, 247, 0.4)');
+        gradient.addColorStop(0.5, 'rgba(168, 85, 247, 0.1)');
+        gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
 
-            // Pulse effect
-            node.pulse += 0.05;
+        ctx.beginPath();
+        ctx.fillStyle = gradient;
+        ctx.arc(this.centerX, this.centerY, size * 3, 0, Math.PI * 2);
+        ctx.fill();
 
-            // Mouse interaction (Repel/Attract)
-            if (this.mouse.x) {
-                const dx = this.mouse.x - node.x;
-                const dy = this.mouse.y - node.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
+        // Core ring
+        ctx.beginPath();
+        ctx.strokeStyle = this.config.colors.primary;
+        ctx.lineWidth = 2;
+        ctx.arc(this.centerX, this.centerY, size, 0, Math.PI * 2);
+        ctx.stroke();
 
-                if (dist < this.mouse.radius) {
-                    const force = (this.mouse.radius - dist) / this.mouse.radius;
-                    // Gentle attraction to look like "investigating"
-                    const angle = Math.atan2(dy, dx);
-                    node.x += Math.cos(angle) * force * 0.5;
-                    node.y += Math.sin(angle) * force * 0.5;
-                }
+        // Inner core
+        ctx.beginPath();
+        ctx.fillStyle = this.config.colors.white;
+        ctx.arc(this.centerX, this.centerY, size * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    drawRings() {
+        const ctx = this.ctx;
+
+        this.config.rings.forEach((ring, ringIndex) => {
+            const radius = ring.radius * this.scale;
+            const rotation = this.time * ring.speed;
+
+            // Draw the ring circle (very subtle)
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(168, 85, 247, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.arc(this.centerX, this.centerY, radius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Draw nodes on the ring
+            for (let i = 0; i < ring.nodes; i++) {
+                const angle = (i / ring.nodes) * Math.PI * 2 + rotation;
+                const x = this.centerX + Math.cos(angle) * radius;
+                const y = this.centerY + Math.sin(angle) * radius;
+
+                // Node glow
+                const nodeGradient = ctx.createRadialGradient(x, y, 0, x, y, ring.nodeSize * 4);
+                nodeGradient.addColorStop(0, 'rgba(168, 85, 247, 0.5)');
+                nodeGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+                ctx.beginPath();
+                ctx.fillStyle = nodeGradient;
+                ctx.arc(x, y, ring.nodeSize * 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Node core
+                ctx.beginPath();
+                ctx.fillStyle = this.config.colors.primary;
+                ctx.arc(x, y, ring.nodeSize, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Connection line to center
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(168, 85, 247, ${0.05 + Math.sin(this.time * 0.01 + i) * 0.03})`;
+                ctx.lineWidth = 1;
+                ctx.moveTo(this.centerX, this.centerY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
             }
         });
     }
 
-    updatePackets() {
-        for (let i = this.packets.length - 1; i >= 0; i--) {
-            const p = this.packets[i];
-            p.progress += p.speed;
+    drawDataStreams() {
+        const ctx = this.ctx;
 
-            if (p.progress >= 1) {
-                // Packet reached destination
-                this.packets.splice(i, 1);
+        this.dataStreams.forEach(stream => {
+            stream.angle += stream.speed;
+
+            const startRadius = 50 * this.scale + stream.offset;
+            const endRadius = startRadius + stream.length * this.scale;
+
+            const startX = this.centerX + Math.cos(stream.angle) * startRadius;
+            const startY = this.centerY + Math.sin(stream.angle) * startRadius;
+            const endX = this.centerX + Math.cos(stream.angle) * endRadius;
+            const endY = this.centerY + Math.sin(stream.angle) * endRadius;
+
+            const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
+            gradient.addColorStop(0, 'rgba(168, 85, 247, 0)');
+            gradient.addColorStop(0.5, `rgba(168, 85, 247, ${stream.opacity})`);
+            gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+            ctx.beginPath();
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 1;
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+        });
+    }
+
+    drawScanLines() {
+        const ctx = this.ctx;
+        const now = Date.now();
+
+        // Spawn new scan line
+        if (now - this.lastScanTime > this.config.scanLineInterval) {
+            this.scanLines.push({
+                radius: 0,
+                maxRadius: Math.max(this.canvas.width, this.canvas.height),
+                speed: 3
+            });
+            this.lastScanTime = now;
+        }
+
+        // Update and draw scan lines
+        for (let i = this.scanLines.length - 1; i >= 0; i--) {
+            const scan = this.scanLines[i];
+            scan.radius += scan.speed;
+
+            if (scan.radius > scan.maxRadius) {
+                this.scanLines.splice(i, 1);
                 continue;
             }
 
-            // Interpolate position
-            p.x = p.startX + (p.target.x - p.startX) * p.progress;
-            p.y = p.startY + (p.target.y - p.startY) * p.progress;
+            const opacity = 1 - (scan.radius / scan.maxRadius);
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.15})`;
+            ctx.lineWidth = 2;
+            ctx.arc(this.centerX, this.centerY, scan.radius, 0, Math.PI * 2);
+            ctx.stroke();
         }
+    }
+
+    drawMouseInteraction() {
+        if (!this.mouse.x) return;
+
+        const ctx = this.ctx;
+        const dx = this.mouse.x - this.centerX;
+        const dy = this.mouse.y - this.centerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Line from core to mouse
+        const gradient = ctx.createLinearGradient(
+            this.centerX, this.centerY,
+            this.mouse.x, this.mouse.y
+        );
+        gradient.addColorStop(0, 'rgba(168, 85, 247, 0.3)');
+        gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+        ctx.beginPath();
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 1;
+        ctx.moveTo(this.centerX, this.centerY);
+        ctx.lineTo(this.mouse.x, this.mouse.y);
+        ctx.stroke();
+
+        // Mouse cursor glow
+        const cursorGradient = ctx.createRadialGradient(
+            this.mouse.x, this.mouse.y, 0,
+            this.mouse.x, this.mouse.y, 30
+        );
+        cursorGradient.addColorStop(0, 'rgba(168, 85, 247, 0.3)');
+        cursorGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+        ctx.beginPath();
+        ctx.fillStyle = cursorGradient;
+        ctx.arc(this.mouse.x, this.mouse.y, 30, 0, Math.PI * 2);
+        ctx.fill();
     }
 
     draw() {
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Reset connections for this frame
-        this.nodes.forEach(n => n.connections = []);
-
-        // 1. Draw Connections & Spawn Packets
-        for (let i = 0; i < this.nodes.length; i++) {
-            for (let j = i + 1; j < this.nodes.length; j++) {
-                const p1 = this.nodes[i];
-                const p2 = this.nodes[j];
-
-                const dx = p1.x - p2.x;
-                const dy = p1.y - p2.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < this.config.connectionDistance) {
-                    const opacity = 1 - (dist / this.config.connectionDistance);
-
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(${p1.color}, ${opacity * 0.2})`; // Very subtle lines
-                    ctx.lineWidth = 1;
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.stroke();
-
-                    // Chance to spawn a data packet
-                    if (Math.random() < this.config.packetSpawnRate * opacity) {
-                        this.spawnPacket(p1, p2);
-                        // Also spawn reserve packet sometimes
-                        if (Math.random() < 0.5) this.spawnPacket(p2, p1);
-                    }
-                }
-            }
-        }
-
-        // 2. Draw Packets (Data flow)
-        this.packets.forEach(p => {
-            ctx.beginPath();
-            ctx.fillStyle = `rgb(${p.color})`;
-            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Glow trail
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = `rgb(${p.color})`;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-        });
-
-        // 3. Draw Nodes (Agents)
-        this.nodes.forEach(node => {
-            ctx.beginPath();
-            const pulseSize = Math.sin(node.pulse) * 0.5 + 0.5; // 0 to 1
-            const r = node.radius + pulseSize;
-
-            ctx.fillStyle = `rgb(${node.color})`;
-            ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Glow
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = `rgb(${node.color})`;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-
-            // Inner core (white)
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, r * 0.4, 0, Math.PI * 2);
-            ctx.fill();
-        });
+        // Draw layers in order (back to front)
+        this.drawGrid();
+        this.drawDataStreams();
+        this.drawScanLines();
+        this.drawRings();
+        this.drawCore();
+        this.drawMouseInteraction();
     }
 
     animate() {
-        this.updateNodes();
-        this.updatePackets();
+        this.time++;
         this.draw();
         requestAnimationFrame(() => this.animate());
     }
@@ -228,5 +309,5 @@ class AgentNetwork {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    new AgentNetwork('particleCanvas');
+    new AICommandCenter('particleCanvas');
 });
