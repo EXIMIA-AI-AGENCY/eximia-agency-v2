@@ -677,6 +677,8 @@ p {
     text-align: left;
     z-index: 100;
     /* Ensure it's above overlays */
+    pointer-events: auto;
+    /* Force clickable */
 }
 
 .select-trigger {
@@ -695,30 +697,10 @@ p {
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    pointer-events: auto;
 }
 
-.select-trigger:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
-}
-
-.select-trigger[aria-expanded="true"] {
-    border-color: var(--accent-blue);
-    background: rgba(15, 23, 42, 0.95);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.select-icon {
-    transition: transform 0.3s ease;
-    color: var(--text-secondary);
-}
-
-.select-trigger[aria-expanded="true"] .select-icon {
-    transform: rotate(180deg);
-    color: var(--accent-blue);
-}
+/* ... middle content ... */
 
 .select-dropdown {
     position: absolute;
@@ -736,6 +718,7 @@ p {
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    /* Initially none */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
@@ -743,7 +726,10 @@ p {
     max-height: 300px;
     opacity: 1;
     pointer-events: auto;
+    /* Enable when active */
     border-color: var(--accent-blue);
+    display: block;
+    /* Force display just in case */
 }
 
 .select-options {

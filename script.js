@@ -108,47 +108,54 @@ function initHeroDemo() {
 
     // Toggle Dropdown
     trigger.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
-        const expanded = trigger.getAttribute('aria-expanded') === 'true';
-        trigger.setAttribute('aria-expanded', !expanded);
-        wrapper.classList.toggle('active');
-    });
+        const isActive = wrapper.classList.contains('active');
 
-    // Handle Option Selection
-    options.forEach(option => {
-        option.addEventListener('click', (e) => {
-            e.stopPropagation(); // Stop propagation to document click
-            const value = option.getAttribute('data-value');
-
-            // Extract just the text content, ignoring the icon span
-            // We clone the node to not modify the DOM, or just iterate childNodes
-            let label = '';
-            option.childNodes.forEach(node => {
-                if (node.nodeType === 3 && node.textContent.trim().length > 0) {
-                    label = node.textContent.trim();
-                }
-            });
-            // Fallback if no text node found
-            if (!label) label = option.innerText.trim();
-
-            // Update Trigger
-            triggerText.textContent = label;
-
-            // Update Active State
-            options.forEach(opt => {
-                opt.classList.remove('selected');
-                opt.setAttribute('aria-selected', 'false');
-            });
-            option.classList.add('selected');
-            option.setAttribute('aria-selected', 'true');
-
-            // Close Dropdown
+        if (isActive) {
             wrapper.classList.remove('active');
             trigger.setAttribute('aria-expanded', 'false');
+        } else {
+            wrapper.classList.add('active');
+            trigger.setAttribute('aria-expanded', 'true');
+        }
+    });
 
-            // Update Automation List Content
-            updateAutomationList(value);
+    // Handle Option Selection using Event Delegation
+    // This is more performant and reliable if DOM changes
+    optionsList.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const option = e.target.closest('.select-option');
+        if (!option) return;
+
+        const value = option.getAttribute('data-value');
+
+        // Extract text safely
+        let label = '';
+        option.childNodes.forEach(node => {
+            if (node.nodeType === 3 && node.textContent.trim().length > 0) {
+                label = node.textContent.trim();
+            }
         });
+        if (!label) label = option.innerText.trim();
+
+        // Update UI
+        triggerText.textContent = label;
+
+        // Update selection state
+        wrapper.querySelectorAll('.select-option').forEach(opt => {
+            opt.classList.remove('selected');
+            opt.setAttribute('aria-selected', 'false');
+        });
+        option.classList.add('selected');
+        option.setAttribute('aria-selected', 'true');
+
+        // Close Dropdown
+        wrapper.classList.remove('active');
+        trigger.setAttribute('aria-expanded', 'false');
+
+        // Trigger Content Update
+        updateAutomationList(value);
     });
 
     // Update Content Function
@@ -170,6 +177,7 @@ function initHeroDemo() {
     }
 
     // Close on Outside Click
+    // Use capture to ensure we catch it before others if needed, but standard bubble is usually fine
     document.addEventListener('click', (e) => {
         if (!wrapper.contains(e.target)) {
             wrapper.classList.remove('active');
