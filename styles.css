@@ -596,6 +596,32 @@ p {
     opacity: 0.8;
 }
 
+/* Typewriter Effect */
+.typewriter-cursor {
+    display: inline-block;
+    font-weight: 400;
+    color: var(--accent-blue);
+    margin-left: 2px;
+    opacity: 1;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.typewriter-cursor.hidden {
+    display: none;
+}
+
 .trust-item {
     display: flex;
     align-items: center;

@@ -426,11 +426,116 @@ function initTestimonialMarquee() {
     slider.appendChild(fragment);
 }
 
+// ================================
+// Typewriter Effect
+// ================================
+
+class Typewriter {
+    constructor(element, options) {
+        this.element = element;
+        this.cursor = options.cursor;
+        this.texts = options.texts || [];
+        this.typingSpeed = options.typingSpeed || 50;
+        this.deletingSpeed = options.deletingSpeed || 30;
+        this.pauseDuration = options.pauseDuration || 2000;
+        this.loop = options.loop !== undefined ? options.loop : true;
+
+        this.currentTextIndex = 0;
+        this.currentCharIndex = 0;
+        this.isDeleting = false;
+        this.displayedText = '';
+        this.isVisible = false;
+
+        this.init();
+    }
+
+    init() {
+        // Observer to start when visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.isVisible = true;
+                    this.start();
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.1 });
+
+        if (this.element) observer.observe(this.element);
+    }
+
+    start() {
+        if (!this.isVisible) return;
+        this.tick();
+    }
+
+    tick() {
+        const currentFullText = this.texts[this.currentTextIndex];
+
+        if (this.isDeleting) {
+            this.displayedText = currentFullText.substring(0, this.currentCharIndex - 1);
+            this.currentCharIndex--;
+        } else {
+            this.displayedText = currentFullText.substring(0, this.currentCharIndex + 1);
+            this.currentCharIndex++;
+        }
+
+        // Render HTML safely (allowing nested spans usually requires innerHTML)
+        this.element.innerHTML = this.displayedText;
+
+        // Handling Cursor Speed
+        let typeSpeed = this.typingSpeed;
+        if (this.isDeleting) typeSpeed = this.deletingSpeed;
+
+        // Determine State Changes
+        if (!this.isDeleting && this.currentCharIndex === currentFullText.length) {
+            // Finished typing sentence
+            typeSpeed = this.pauseDuration;
+            this.isDeleting = true;
+
+            // If it's the last sentence and no loop, stop deletion
+            if (!this.loop && this.currentTextIndex === this.texts.length - 1) {
+                this.isDeleting = false;
+                return; // Stop animation
+            }
+        } else if (this.isDeleting && this.currentCharIndex === 0) {
+            // Finished deleting
+            this.isDeleting = false;
+            this.currentTextIndex++;
+            if (this.currentTextIndex >= this.texts.length) {
+                this.currentTextIndex = 0;
+            }
+            typeSpeed = 500; // Small pause before next word
+        }
+
+        setTimeout(() => this.tick(), typeSpeed);
+    }
+}
+
 // Initialize everything on load
 document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initPlanToggle();
     initSpotlightEffect();
-    initTestimonialMarquee(); // Start Marquee
-    initFAQ(); // Start FAQ
+    initTestimonialMarquee();
+    initFAQ();
+    initHeroDemo();
+
+    // Init Typewriter
+    const typeText = document.getElementById('typewriterText');
+    const typeCursor = document.querySelector('.typewriter-cursor');
+    if (typeText) {
+        new Typewriter(typeText, {
+            texts: [
+                'IA que responde, agenda y cierra ventas mientras tú duermes',
+                'IA que califica leads automáticamente 24/7',
+                'IA que optimiza tu flujo de trabajo sin descanso'
+            ],
+            cursor: typeCursor,
+            typingSpeed: 50,
+            deletingSpeed: 30,
+            pauseDuration: 2000,
+            loop: true
+        });
+    }
 });
