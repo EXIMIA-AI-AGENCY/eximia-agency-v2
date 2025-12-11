@@ -121,36 +121,30 @@ function initFAQ() {
     if (faqItems.length === 0) return;
 
     faqItems.forEach(item => {
-        // We attach the listener to the header part, typically .faq-question
         const question = item.querySelector('.faq-question');
         const answer = item.querySelector('.faq-answer');
 
         if (!question || !answer) return;
 
-        question.addEventListener('click', function (e) {
-            e.preventDefault(); // Safety
-
+        question.addEventListener('click', () => {
             const isOpen = item.classList.contains('active');
 
-            // Accordion Logic: Close others
+            // Accordion: Close all others
             faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
                     otherItem.classList.remove('active');
                     const otherAnswer = otherItem.querySelector('.faq-answer');
                     if (otherAnswer) otherAnswer.style.maxHeight = null;
                 }
             });
 
-            // Toggle Current
+            // Toggle current
             if (isOpen) {
-                // Close it
                 item.classList.remove('active');
                 answer.style.maxHeight = null;
             } else {
-                // Open it
                 item.classList.add('active');
-                // Force a recalculation if needed or add a buffer
-                answer.style.maxHeight = (answer.scrollHeight + 20) + "px";
+                answer.style.maxHeight = answer.scrollHeight + "px";
             }
         });
     });
@@ -479,8 +473,6 @@ function initLiquidButton() {
 
 // Initialize everything on load
 document.addEventListener('DOMContentLoaded', () => {
-    initScrollAnimations();
-    initPlanToggle();
     initScrollAnimations();
     initPlanToggle();
     initSpotlightEffect();
