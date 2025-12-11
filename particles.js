@@ -1,285 +1,233 @@
-// ================================
-// EXIMIA - n8n Style Workflow Animation
-// Visualizing Autonomous Agents
-// ================================
+// EXIMIA - AI Super-Entity 3D Animation
+// Uses Three.js for a high-performance particle system
 
-class WorkflowAnimation {
-    constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        if (!this.canvas) return;
+class AISuperEntity {
+    constructor(containerId) {
+        this.container = document.getElementById(containerId);
+        if (!this.container) return;
 
-        this.ctx = this.canvas.getContext('2d');
-        this.mouse = { x: null, y: null };
-        this.time = 0;
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.particles = null;
+        this.count = 4000; // Number of particles
+        this.positions = null;
+        this.colors = null;
+        this.sizes = null;
+        this.initialPositions = null; // Store base for morphing
+        this.clock = new THREE.Clock();
 
-        // Configuration
-        this.config = {
-            colors: {
-                primary: 'rgba(168, 85, 247, 1)',      // Electric Purple
-                success: 'rgba(34, 197, 94, 1)',       // Green for completions
-                processing: 'rgba(59, 130, 246, 1)',   // Blue for processing
-                line: 'rgba(100, 116, 139, 0.2)',      // Subtle grey for connector lines
-                bg: 'rgba(15, 23, 42, 0)'
-            },
-            nodeSize: { width: 140, height: 50 },
-            packetSpeed: 0.008, // Progress per frame (0-1)
-        };
-
-        this.nodes = [];
-        this.connections = [];
-        this.packets = [];
+        // State for "self-organizing" behavior
+        this.mode = 'swarm'; // swarm, sphere, ring, DNA
+        this.modeTimer = 0;
+        this.targetPositions = new Float32Array(this.count * 3);
 
         this.init();
     }
 
     init() {
-        this.resize();
-        this.buildWorkflowGraph();
+        // Scene Setup
+        this.scene = new THREE.Scene();
+        // Fog to blend into background (matches CSS #000000)
+        this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+
+        // Camera
+        this.camera = new THREE.PerspectiveCamera(75, this.container.offsetWidth / this.container.offsetHeight, 1, 2000);
+        this.camera.position.z = 800;
+        this.camera.position.y = 100;
+
+        // Renderer
+        this.renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+            powerPreference: "high-performance"
+        });
+        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.container.appendChild(this.renderer.domElement);
+
+        // Particles
+        this.createParticles();
+
+        // Listeners
+        window.addEventListener('resize', this.onResize.bind(this));
+
+        // Start Loop
         this.animate();
+    }
 
-        window.addEventListener('resize', () => {
-            this.resize();
-            this.buildWorkflowGraph();
+    createParticles() {
+        const geometry = new THREE.BufferGeometry();
+        this.positions = new Float32Array(this.count * 3);
+        this.colors = new Float32Array(this.count * 3);
+        this.sizes = new Float32Array(this.count);
+        this.initialPositions = new Float32Array(this.count * 3);
+
+        const color1 = new THREE.Color('#a855f7'); // Electric Violet
+        const color2 = new THREE.Color('#c084fc'); // Soft Cyan/Purple
+
+        for (let i = 0; i < this.count; i++) {
+            // Random initial swirl distribution
+            const r = Math.random() * 800 - 400;
+            const theta = Math.random() * 2 * Math.PI;
+            const phi = Math.acos(2 * Math.random() - 1);
+
+            const x = 1000 * Math.random() - 500;
+            const y = 600 * Math.random() - 300;
+            const z = 1000 * Math.random() - 500;
+
+            this.positions[i * 3] = x;
+            this.positions[i * 3 + 1] = y;
+            this.positions[i * 3 + 2] = z;
+
+            this.initialPositions[i * 3] = x;
+            this.initialPositions[i * 3 + 1] = y;
+            this.initialPositions[i * 3 + 2] = z;
+
+            // Mix Colors
+            const mixedColor = color1.clone().lerp(color2, Math.random());
+            this.colors[i * 3] = mixedColor.r;
+            this.colors[i * 3 + 1] = mixedColor.g;
+            this.colors[i * 3 + 2] = mixedColor.b;
+
+            this.sizes[i] = Math.random() * 2;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(this.colors, 3));
+        geometry.setAttribute('size', new THREE.BufferAttribute(this.sizes, 1));
+
+        // Material (using standard helper for dots)
+        // Creating a texture on the fly for soft particles would be nice, but simple squares are faster.
+        // Let's use a simple shader or texture loader? 
+        // We'll use a simple circle texture created on Canvas to avoid loading external assets if possible, 
+        // or just standard points. Standard Points are cleaner.
+
+        const material = new THREE.PointsMaterial({
+            size: 3,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            opacity: 0.8,
+            sizeAttenuation: true
         });
-        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        this.canvas.addEventListener('mousedown', () => this.triggerPacket()); // Click to manual trigger
+
+        this.particles = new THREE.Points(geometry, material);
+        this.scene.add(this.particles);
+
+        this.updateTargets(); // Initialize targets
     }
 
-    resize() {
-        this.canvas.width = this.canvas.offsetWidth;
-        this.canvas.height = this.canvas.offsetHeight;
-        this.centerX = this.canvas.width / 2;
-        this.centerY = this.canvas.height / 2;
-        this.scale = Math.min(this.canvas.width / 1400, 1); // Scale down on mobile
-    }
+    updateTargets() {
+        // Switch modes occasionally to simulate "Intelligence" / "Self-Organizing"
+        const modes = ['swarm', 'sphere', 'cube', 'doubleHelix'];
+        this.mode = modes[Math.floor(Math.random() * modes.length)];
 
-    handleMouseMove(e) {
-        const rect = this.canvas.getBoundingClientRect();
-        this.mouse.x = e.clientX - rect.left;
-        this.mouse.y = e.clientY - rect.top;
-    }
+        const time = Date.now() * 0.001;
 
-    // Define the automation graph structure
-    buildWorkflowGraph() {
-        this.nodes = [];
-        this.connections = [];
+        for (let i = 0; i < this.count; i++) {
+            const i3 = i * 3;
 
-        // Grid layout calculation
-        const cx = this.centerX + (this.canvas.width > 768 ? 100 : 0); // Shift right on desktop for text
-        const cy = this.centerY;
-        const w = 250 * this.scale; // Horizontal spacing
-        const h = 150 * this.scale; // Vertical spacing
+            if (this.mode === 'sphere') {
+                const phi = Math.acos(-1 + (2 * i) / this.count);
+                const theta = Math.sqrt(this.count * Math.PI) * phi;
+                const radius = 350;
 
-        // Define Nodes (Positions relative to center)
-        const nodeDefinitions = [
-            { id: 'start', label: 'Lead Entry (Form)', type: 'trigger', x: cx - w * 1.5, y: cy },
-            { id: 'qualify', label: 'AI Qualifier', type: 'agent', x: cx - w * 0.5, y: cy },
+                this.targetPositions[i3] = radius * Math.cos(theta) * Math.sin(phi);
+                this.targetPositions[i3 + 1] = radius * Math.sin(theta) * Math.sin(phi);
+                this.targetPositions[i3 + 2] = radius * Math.cos(phi);
 
-            // Branch 1: Success
-            { id: 'crm', label: 'Update CRM', type: 'action', x: cx + w * 0.5, y: cy - h * 0.8 },
-            { id: 'booking', label: 'Book Meeting', type: 'action', x: cx + w * 1.5, y: cy - h * 0.8 },
+            } else if (this.mode === 'cube') {
+                const size = 600;
+                this.targetPositions[i3] = Math.random() * size - size / 2;
+                this.targetPositions[i3 + 1] = Math.random() * size - size / 2;
+                this.targetPositions[i3 + 2] = Math.random() * size - size / 2;
 
-            // Branch 2: Follow-up
-            { id: 'wait', label: 'Wait 24h', type: 'time', x: cx + w * 0.5, y: cy + h * 0.8 },
-            { id: 'email', label: 'Send Follow-up', type: 'action', x: cx + w * 1.5, y: cy + h * 0.8 },
+            } else if (this.mode === 'doubleHelix') {
+                const t = i * 0.1;
+                const radius = 200;
+                const height = 4 * (i - this.count / 2); // spread vertical
 
-            // Loop back (Logical representation)
-            { id: 'notify', label: 'Notify Sales', type: 'success', x: cx + w * 2.5, y: cy },
-        ];
+                // Helix 1
+                if (i % 2 === 0) {
+                    this.targetPositions[i3] = radius * Math.cos(t);
+                    this.targetPositions[i3 + 1] = i * 0.2 - 300; // y spread
+                    this.targetPositions[i3 + 2] = radius * Math.sin(t);
+                } else {
+                    // Helix 2 (offset)
+                    this.targetPositions[i3] = radius * Math.cos(t + Math.PI);
+                    this.targetPositions[i3 + 1] = i * 0.2 - 300;
+                    this.targetPositions[i3 + 2] = radius * Math.sin(t + Math.PI);
+                }
 
-        this.nodes = nodeDefinitions.map(n => ({
-            ...n,
-            status: 'idle', // idle, active, success
-            pulse: 0
-        }));
-
-        // Define Connections (Source ID -> Target ID)
-        const connectionDefs = [
-            { from: 'start', to: 'qualify' },
-            { from: 'qualify', to: 'crm' },
-            { from: 'crm', to: 'booking' },
-            { from: 'booking', to: 'notify' },
-            { from: 'qualify', to: 'wait' },
-            { from: 'wait', to: 'email' },
-            { from: 'email', to: 'notify' }
-        ];
-
-        connectionDefs.forEach(c => {
-            const source = this.nodes.find(n => n.id === c.from);
-            const target = this.nodes.find(n => n.id === c.to);
-            if (source && target) {
-                this.connections.push({ source, target });
+            } else { // Swarm / Chaos
+                const scale = 800;
+                // Perlin-ish logic simplified: just big sin waves based on position
+                this.targetPositions[i3] = Math.sin(i * 0.01 + time) * scale * 0.5 + (Math.random() - 0.5) * 200;
+                this.targetPositions[i3 + 1] = Math.cos(i * 0.02 + time) * scale * 0.3 + (Math.random() - 0.5) * 200;
+                this.targetPositions[i3 + 2] = Math.sin(i * 0.03 + time) * scale * 0.5 + (Math.random() - 0.5) * 200;
             }
-        });
-
-        // Start automatic workflow loop
-        this.startAutoLoop();
-    }
-
-    startAutoLoop() {
-        // Spawn a packet from start every few seconds
-        setInterval(() => {
-            this.triggerPacket();
-        }, 2000);
-    }
-
-    triggerPacket() {
-        if (this.nodes.length === 0) return;
-        this.spawnPacket(this.nodes[0], null); // Start node
-    }
-
-    spawnPacket(sourceNode, targetNode) {
-        // If just starting, find next connection
-        if (!targetNode && sourceNode) {
-            this.activateNode(sourceNode);
-            // Find all outgoing connections
-            const outgoing = this.connections.filter(c => c.source.id === sourceNode.id);
-            outgoing.forEach(conn => {
-                this.packets.push({
-                    source: conn.source,
-                    target: conn.target,
-                    progress: 0,
-                    speed: this.config.packetSpeed * (1 + Math.random() * 0.5) // Slight speed var
-                });
-            });
-            return;
         }
     }
 
-    activateNode(node) {
-        node.status = 'active';
-        node.pulse = 1;
-        setTimeout(() => node.status = 'idle', 500);
-    }
-
-    update() {
-        this.packets.forEach((p, index) => {
-            p.progress += p.speed;
-
-            if (p.progress >= 1) {
-                // Packet reached target
-                this.activateNode(p.target);
-
-                // Spawn new packets from this target (Chain reaction)
-                const outgoing = this.connections.filter(c => c.source.id === p.target.id);
-                outgoing.forEach(conn => {
-                    this.packets.push({
-                        source: conn.source,
-                        target: conn.target,
-                        progress: 0,
-                        speed: this.config.packetSpeed
-                    });
-                });
-
-                // Remove finished packet
-                this.packets.splice(index, 1);
-            }
-        });
-
-        // Decay node pulses
-        this.nodes.forEach(n => {
-            if (n.pulse > 0) n.pulse -= 0.05;
-        });
-    }
-
-    drawCurve(p1, p2, color, width) {
-        const ctx = this.ctx;
-        ctx.beginPath();
-        const cp1x = p1.x + (p2.x - p1.x) * 0.5;
-        const cp1y = p1.y;
-        const cp2x = p1.x + (p2.x - p1.x) * 0.5;
-        const cp2y = p2.y;
-
-        ctx.moveTo(p1.x, p1.y);
-        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-        ctx.stroke();
-        return { cp1x, cp1y, cp2x, cp2y }; // Return control points for packet interpolation
-    }
-
-    // Cubic Bezier interpolation
-    getPointOnCurve(p1, p2, t) {
-        const cx1 = p1.x + (p2.x - p1.x) * 0.5;
-        const cy1 = p1.y;
-        const cx2 = p1.x + (p2.x - p1.x) * 0.5;
-        const cy2 = p2.y;
-
-        const k = 1 - t;
-        const x = (k * k * k * p1.x) + (3 * k * k * t * cx1) + (3 * k * t * t * cx2) + (t * t * t * p2.x);
-        const y = (k * k * k * p1.y) + (3 * k * k * t * cy1) + (3 * k * t * t * cy2) + (t * t * t * p2.y);
-        return { x, y };
-    }
-
-    draw() {
-        const ctx = this.ctx;
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw connections
-        this.connections.forEach(conn => {
-            this.drawCurve(conn.source, conn.target, this.config.colors.line, 2);
-        });
-
-        // Draw Packets
-        this.packets.forEach(p => {
-            const pos = this.getPointOnCurve(p.source, p.target, p.progress);
-
-            // Packet glow
-            ctx.beginPath();
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = this.config.colors.primary;
-            ctx.fillStyle = this.config.colors.primary;
-            ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-        });
-
-        // Draw Nodes
-        this.nodes.forEach(node => {
-            const w = this.config.nodeSize.width * this.scale;
-            const h = this.config.nodeSize.height * this.scale;
-            const x = node.x - w / 2;
-            const y = node.y - h / 2;
-
-            // Box shadow / Glow on active
-            if (node.pulse > 0) {
-                ctx.shadowBlur = 20 * node.pulse;
-                ctx.shadowColor = this.config.colors.processing;
-            }
-
-            // Node Background
-            ctx.fillStyle = 'rgba(30, 41, 59, 0.8)'; // Dark slate
-            ctx.strokeStyle = node.pulse > 0 ? this.config.colors.primary : 'rgba(148, 163, 184, 0.2)';
-            ctx.lineWidth = node.pulse > 0 ? 2 : 1;
-
-            ctx.beginPath();
-            ctx.roundRect(x, y, w, h, 8);
-            ctx.fill();
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-
-            // Status Indicator Dot
-            ctx.beginPath();
-            ctx.fillStyle = node.pulse > 0.5 ? this.config.colors.processing : 'rgba(148, 163, 184, 0.5)';
-            ctx.arc(x + 15, y + h / 2, 4, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Text
-            ctx.fillStyle = '#e2e8f0';
-            ctx.font = `${12 * this.scale}px Inter, monospace`;
-            ctx.textAlign = 'left';
-            ctx.fillText(node.label, x + 30, y + h / 2 + 4);
-        });
+    onResize() {
+        if (!this.camera || !this.renderer) return;
+        this.camera.aspect = this.container.offsetWidth / this.container.offsetHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
     }
 
     animate() {
-        this.update();
-        this.draw();
-        requestAnimationFrame(() => this.animate());
+        requestAnimationFrame(this.animate.bind(this));
+
+        const delta = this.clock.getDelta();
+        const elapsedTime = this.clock.getElapsedTime();
+
+        // Rotate entire system slowly
+        if (this.particles) {
+            this.particles.rotation.y += 0.001;
+            this.particles.rotation.z += 0.0005;
+        }
+
+        // Morphing Logic
+        this.modeTimer += delta;
+        if (this.modeTimer > 6.0) { // Change shape every 6 seconds
+            this.updateTargets();
+            this.modeTimer = 0;
+        }
+
+        // Smoothly move particles towards targets
+        const positions = this.particles.geometry.attributes.position.array;
+        const speed = 2.5 * delta; // Movement speed
+
+        for (let i = 0; i < this.count; i++) {
+            const i3 = i * 3;
+
+            // Basic lerp towards target
+            positions[i3] += (this.targetPositions[i3] - positions[i3]) * speed;
+            positions[i3 + 1] += (this.targetPositions[i3 + 1] - positions[i3 + 1]) * speed;
+            positions[i3 + 2] += (this.targetPositions[i3 + 2] - positions[i3 + 2]) * speed;
+
+            // Add some "nervous" energy / AI-thinking wobble
+            positions[i3] += (Math.random() - 0.5) * 0.5;
+            positions[i3 + 1] += (Math.random() - 0.5) * 0.5;
+            positions[i3 + 2] += (Math.random() - 0.5) * 0.5;
+        }
+
+        this.particles.geometry.attributes.position.needsUpdate = true;
+        this.renderer.render(this.scene, this.camera);
     }
 }
 
-// Initialize
+// Init when DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    new WorkflowAnimation('workflowCanvas');
+    // Slight delay to ensure Three.js is loaded if it's from CDN
+    setTimeout(() => {
+        if (typeof THREE !== 'undefined') {
+            new AISuperEntity('hero-animation-container');
+        } else {
+            console.error("Three.js not loaded");
+        }
+    }, 100);
 });
