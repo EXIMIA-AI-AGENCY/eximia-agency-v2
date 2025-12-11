@@ -310,7 +310,11 @@ class ScrollExpandMedia {
     handleTouchStart(e) {
         this.checkIfInView();
         if (!this.isActive) return;
+
         this.touchStartY = e.touches[0].clientY;
+        this.lastTouchY = this.touchStartY;
+        this.touchVelocity = 0;
+        this.lastTouchTime = Date.now();
 
         // Register as user interaction
         this.userHasInteracted = true;
@@ -320,15 +324,27 @@ class ScrollExpandMedia {
         if (!this.touchStartY || !this.isActive) return;
 
         const touchY = e.touches[0].clientY;
-        const deltaY = this.touchStartY - touchY;
+        const deltaY = this.lastTouchY - touchY;
+        const now = Date.now();
+        const timeDelta = now - this.lastTouchTime;
 
-        if (this.mediaFullyExpanded && deltaY < -20 && window.scrollY <= this.container.offsetTop + 5) {
+        // Calculate velocity for momentum
+        if (timeDelta > 0) {
+            this.touchVelocity = deltaY / timeDelta;
+        }
+
+        this.lastTouchY = touchY;
+        this.lastTouchTime = now;
+
+        if (this.mediaFullyExpanded && deltaY < -30 && window.scrollY <= this.container.offsetTop + 5) {
             this.mediaFullyExpanded = false;
             this.showContent = false;
             e.preventDefault();
         } else if (!this.mediaFullyExpanded) {
             e.preventDefault();
-            const scrollFactor = deltaY < 0 ? 0.012 : 0.008;
+
+            // More responsive scroll factor for mobile
+            const scrollFactor = 0.006; // Unified factor for smoother feel
             const scrollDelta = deltaY * scrollFactor;
             const newProgress = Math.min(Math.max(this.targetScrollProgress + scrollDelta, 0), 1);
             this.targetScrollProgress = newProgress;
@@ -339,13 +355,30 @@ class ScrollExpandMedia {
             } else if (newProgress < 0.75) {
                 this.showContent = false;
             }
-
-            this.touchStartY = touchY;
         }
     }
 
     handleTouchEnd() {
+        // Apply momentum with snap behavior
+        if (this.touchVelocity && !this.mediaFullyExpanded) {
+            const momentum = this.touchVelocity * 50; // Momentum multiplier
+            let newProgress = this.targetScrollProgress + momentum;
+
+            // Snap to nearest state if close
+            if (newProgress > 0.85) {
+                newProgress = 1;
+                this.mediaFullyExpanded = true;
+                this.showContent = true;
+            } else if (newProgress < 0.15) {
+                newProgress = 0;
+            }
+
+            this.targetScrollProgress = Math.min(Math.max(newProgress, 0), 1);
+        }
+
         this.touchStartY = 0;
+        this.lastTouchY = 0;
+        this.touchVelocity = 0;
     }
 
     handleScroll() {
