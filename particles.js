@@ -106,13 +106,14 @@ class AISuperEntity {
         // We'll use a simple circle texture created on Canvas to avoid loading external assets if possible, 
         // or just standard points. Standard Points are cleaner.
 
+        const isMobile = window.innerWidth < 768;
         const material = new THREE.PointsMaterial({
-            size: 3,
+            size: isMobile ? 5 : 3, // Larger on mobile
             vertexColors: true,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             transparent: true,
-            opacity: 0.8,
+            opacity: isMobile ? 1.0 : 0.8, // Brighter on mobile
             sizeAttenuation: true
         });
 

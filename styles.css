@@ -522,9 +522,16 @@ p {
     }
 
     .hero-content {
-        margin-top: -30%;
-        /* Pull content up significantly */
+        margin-top: -45%;
+        /* Pull content up even more */
         transform: translateY(-20px);
+    }
+
+    #hero-animation-container {
+        top: -15% !important;
+        /* Move animation up */
+        height: 115% !important;
+        /* compensate for the shift */
     }
 }
 
