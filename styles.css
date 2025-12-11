@@ -1055,6 +1055,24 @@ p {
    Testimonials (Infinite Marquee)
    ================================ */
 
+.testimonials {
+    position: relative;
+    overflow: visible;
+}
+
+.testimonials .container {
+    position: relative;
+}
+
+.testimonials .section-title {
+    position: sticky;
+    top: 100px;
+    z-index: 10;
+    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-primary) 80%, transparent 100%);
+    padding-bottom: 2rem;
+    margin-bottom: 0;
+}
+
 .marquee-mask {
     overflow: hidden;
     width: 100%;
