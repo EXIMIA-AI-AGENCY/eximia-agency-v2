@@ -24,6 +24,14 @@
         }
     }
     </script>
+
+    <!-- Force scroll to top on page load/refresh -->
+    <script>
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
 </head>
 
 <body>
