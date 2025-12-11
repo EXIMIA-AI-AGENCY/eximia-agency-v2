@@ -2787,3 +2787,326 @@ p {
     color: #34d399;
     text-align: right;
 }
+
+/* ================================
+   Scroll Expansion Section
+   ================================ */
+
+.scroll-expand-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    background-color: var(--bg-primary);
+}
+
+.scroll-expand-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Background Image */
+.scroll-expand-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: opacity 0.1s ease;
+}
+
+.scroll-expand-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    transition: opacity 0.1s ease;
+}
+
+/* Main Content Area */
+.scroll-expand-main {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 var(--container-padding);
+}
+
+/* Media Wrapper (Video/Image) */
+.scroll-expand-media-wrapper {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(0);
+    width: 300px;
+    height: 400px;
+    max-width: 95vw;
+    max-height: 85vh;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+    transition: none;
+    /* GPU acceleration for smooth resizing */
+    will-change: width, height;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.scroll-expand-media-wrapper video,
+.scroll-expand-media-wrapper img,
+.scroll-expand-media-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    border: none;
+    /* GPU acceleration to prevent freezing during scroll */
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Responsive Video Display - Desktop vs Mobile */
+.video-desktop {
+    display: block;
+}
+
+.video-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .video-desktop {
+        display: none;
+    }
+
+    .video-mobile {
+        display: block;
+    }
+
+    /* Adjust wrapper for vertical video on mobile */
+    .scroll-expand-media-wrapper {
+        width: 260px;
+        height: 460px;
+        max-width: 85vw;
+        max-height: 75vh;
+    }
+}
+
+.scroll-expand-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Sound Toggle Button */
+.sound-toggle-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.sound-toggle-btn.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.sound-toggle-btn:hover {
+    background: rgba(168, 85, 247, 0.5);
+    border-color: rgba(168, 85, 247, 0.6);
+    transform: scale(1.1);
+}
+
+.sound-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+.sound-icon {
+    width: 24px;
+    height: 24px;
+    stroke: white;
+    transition: opacity 0.2s ease;
+}
+
+.sound-icon.sound-off {
+    display: block;
+}
+
+.sound-icon.sound-on {
+    display: none;
+}
+
+.sound-toggle-btn.unmuted .sound-icon.sound-off {
+    display: none;
+}
+
+.sound-toggle-btn.unmuted .sound-icon.sound-on {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .sound-toggle-btn {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .sound-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Text Elements */
+.scroll-expand-text-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+    mix-blend-mode: difference;
+}
+
+.scroll-expand-title-first,
+.scroll-expand-title-rest {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    color: rgba(168, 85, 247, 0.9);
+    text-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+    transition: none;
+}
+
+.scroll-expand-meta {
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.scroll-expand-date {
+    font-size: 1.25rem;
+    color: rgba(168, 85, 247, 0.8);
+    transition: none;
+}
+
+.scroll-expand-hint {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(168, 85, 247, 0.7);
+    transition: none;
+    animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Content Section (After Expansion) */
+.scroll-expand-content {
+    width: 100%;
+    padding: 3rem var(--container-padding) 5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.7s ease;
+}
+
+.scroll-expand-content-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.scroll-expand-content h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.scroll-expand-content p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+
+    .scroll-expand-title-first,
+    .scroll-expand-title-rest {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .scroll-expand-date {
+        font-size: 1rem;
+    }
+
+    .scroll-expand-hint {
+        font-size: 0.75rem;
+    }
+
+    .scroll-expand-content {
+        padding: 2rem 1rem 3rem;
+    }
+
+    .scroll-expand-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .scroll-expand-content p {
+        font-size: 1rem;
+    }
+}

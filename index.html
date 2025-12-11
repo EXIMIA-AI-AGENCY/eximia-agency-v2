@@ -128,6 +128,82 @@
         </div>
     </section>
 
+    <!-- Scroll Expansion - Nosotros Section -->
+    <section class="scroll-expand-section" id="scroll-expand-section">
+        <div class="scroll-expand-container">
+            <!-- Background Image -->
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&auto=format&fit=crop"
+                alt="Equipo EXIMIA" class="scroll-expand-bg">
+            <div class="scroll-expand-bg-overlay"></div>
+
+            <!-- Main Content Area -->
+            <div class="scroll-expand-main">
+                <!-- Media Wrapper (Video/Image) -->
+                <div class="scroll-expand-media-wrapper">
+                    <!-- Video Horizontal para Desktop -->
+                    <video id="eximia-video" class="video-desktop" autoplay muted loop playsinline preload="auto">
+                        <source src="eximia version 3.MP4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                    <!-- Video Vertical para Mobile -->
+                    <video id="eximia-video-mobile" class="video-mobile" autoplay muted loop playsinline preload="auto">
+                        <source src="Eximia vertical v1.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                    <!-- Overlay for video -->
+                    <div class="scroll-expand-video-overlay"></div>
+                    <!-- Sound Toggle Button -->
+                    <button class="sound-toggle-btn" id="sound-toggle" aria-label="Toggle sound">
+                        <svg class="sound-icon sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                            <line x1="23" y1="9" x2="17" y2="15" />
+                            <line x1="17" y1="9" x2="23" y2="15" />
+                        </svg>
+                        <svg class="sound-icon sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Text Elements -->
+                <div class="scroll-expand-text-container">
+                    <h2 class="scroll-expand-title-first">Conoce</h2>
+                    <h2 class="scroll-expand-title-rest">EXIMIA</h2>
+                </div>
+
+                <!-- Meta Info -->
+                <div class="scroll-expand-meta">
+                    <p class="scroll-expand-date">Nuestro Equipo</p>
+                    <p class="scroll-expand-hint">Desliza para expandir</p>
+                </div>
+            </div>
+
+            <!-- Content After Expansion -->
+            <div class="scroll-expand-content">
+                <div class="scroll-expand-content-inner">
+                    <h2>Sobre <span class="gradient-text">Nosotros</span></h2>
+                    <p>
+                        En EXIMIA, transformamos la manera en que las empresas gestionan sus clientes y ventas.
+                        Combinamos inteligencia artificial de última generación con automatización inteligente
+                        para crear experiencias que convierten.
+                    </p>
+                    <p>
+                        Nuestro equipo está compuesto por expertos en IA, desarrollo de software y estrategia
+                        de negocios. Juntos, hemos ayudado a cientos de empresas a escalar sus operaciones
+                        mientras reducen costos y mejoran la satisfacción del cliente.
+                    </p>
+                    <p>
+                        Con sede en Puerto Rico, servimos a clientes en toda Latinoamérica y Estados Unidos,
+                        ofreciendo soluciones personalizadas que se adaptan a las necesidades únicas de cada negocio.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Problem → Solution -->
     <!-- Problem → Solution (Industrial Upgrade) -->
     <section class="problem-solution" id="solucion">
@@ -1059,6 +1135,7 @@
 
             <script src="particles.js"></script>
             <script src="script.js"></script>
+            <script src="scroll-expansion.js"></script>
 </body>
 
 </html>

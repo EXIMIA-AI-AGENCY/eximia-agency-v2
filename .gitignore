@@ -1,0 +1,18 @@
+# Video files (too large for GitHub)
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.avi
+*.mkv
+
+# macOS system files
+.DS_Store
+._*
+
+# Node modules (if any)
+node_modules/
+
+# IDE
+.vscode/
+.idea/
