@@ -2539,3 +2539,81 @@ p {
         text-align: center;
     }
 }
+
+/* ================================
+   16. Comprehensive Mobile Optimization
+   ================================ */
+@media (max-width: 768px) {
+
+    /* Global Spacing Reduction */
+    :root {
+        --section-padding: 4rem 0;
+        --container-padding: 1.5rem;
+    }
+
+    /* Hero & Typography */
+    h1 {
+        font-size: 2.75rem;
+        /* Force readable size */
+        line-height: 1.1;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .hero-demo {
+        padding: 1.5rem;
+        /* Less padding to save space */
+    }
+
+    .hero-content {
+        padding-top: 6rem;
+        /* Adjust for fixed nav */
+    }
+
+    /* Grid Layouts - Force Stack */
+    .cases-grid,
+    .features-grid,
+    .integrations-text-grid {
+        /* integrations usually flex-wrap, but if grid, 1fr */
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* Integrations Pills - Ensure proper wrapping if flex */
+    .integrations-text-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .integration-pill {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    /* Process/Pipeline Stacking */
+    .process-pipeline {
+        gap: 3rem;
+        /* More space between vertical steps */
+    }
+
+    .process-connector {
+        display: none !important;
+        /* Hide connectors on mobile */
+    }
+
+    /* Navigation - Ensure Hamburger is clickable */
+    .hamburger {
+        pointer-events: auto;
+    }
+
+    /* Comparison Table - Mini Mode Refinements */
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.5rem 0.25rem;
+        /* Tighter cells */
+    }
+}
