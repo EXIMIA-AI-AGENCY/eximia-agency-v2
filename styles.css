@@ -3424,8 +3424,8 @@ p {
         padding-right: 2rem;
         padding-bottom: 2rem;
         /* Clean bottom space */
-        padding-top: 3.5rem;
-        /* GENEROUS Space for the badge overlap */
+        padding-top: 1rem;
+        /* Minimal breathing room */
         clip-path: none;
         /* Ensure no clipping occurs */
 
@@ -3454,6 +3454,24 @@ p {
         /* Compact Mobile Styling */
         padding: 1.5rem;
         /* Reduced padding */
+        /* Make space for internal badge if featured */
+        padding-top: 3.5rem;
+    }
+
+    /* Pull badge INSIDE the card */
+    .plan-card:not(.featured) {
+        padding-top: 1.5rem;
+        /* Reset for non-featured */
+    }
+
+    .plan-badge {
+        top: 1rem;
+        /* Inside the card */
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.65rem;
+        /* Smaller font */
+        padding: 0.2rem 0.75rem;
     }
 
     /* Reduce vertical space inside card elements */
