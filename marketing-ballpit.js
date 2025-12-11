@@ -755,10 +755,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Init
         createBallpit(canvas, {
-            count: 100,
-            friction: 0.9,
-            gravity: 0.5,
-            colors: ['#2563EB', '#0EA5E9', '#000000'] // Custom colors
+            count: 200, // Matches "a lot of balls"
+            gravity: 0.7, // Falls nicely
+            friction: 0.8, // Bouncy
+            wallBounce: 0.95,
+            minSize: 0.6,
+            maxSize: 1.1,
+            colors: ['#ffffff', '#818cf8', '#000000'] // React Bits Scheme: White, Purple, Black
         });
     }
 });
