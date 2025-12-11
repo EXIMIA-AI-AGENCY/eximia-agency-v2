@@ -70,11 +70,21 @@ class ScrollExpandMedia {
         // Initialize video playback
         this.initVideoPlayback();
 
-        // Add event listeners with passive where possible
-        window.addEventListener('wheel', this.handleWheel, { passive: false });
-        window.addEventListener('touchstart', this.handleTouchStart, { passive: false });
-        window.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+        // DESKTOP: Use wheel event to intercept scroll
+        if (!this.isMobile) {
+            window.addEventListener('wheel', this.handleWheel, { passive: false });
+        }
+
+        // MOBILE: Use native scroll and calculate progress from scroll position
+        // This is much more reliable on Safari iOS
+        if (this.isMobile) {
+            window.addEventListener('scroll', this.handleMobileScroll.bind(this), { passive: true });
+        }
+
+        // Touch events for user interaction detection (needed for audio)
+        window.addEventListener('touchstart', this.handleTouchStart, { passive: true });
         window.addEventListener('touchend', this.handleTouchEnd, { passive: true });
+
         window.addEventListener('scroll', this.handleScroll, { passive: true });
         window.addEventListener('resize', this.debounce(this.handleResize, 100));
 
@@ -88,23 +98,56 @@ class ScrollExpandMedia {
             this.soundToggleBtn.addEventListener('click', this.toggleSound);
         }
 
-        // Check initial view state immediately and after a delay (for slow loads)
+        // Check initial view state
         this.checkIfInView();
-        setTimeout(() => this.checkIfInView(), 100);
-        setTimeout(() => this.checkIfInView(), 500);
-
-        // Use Intersection Observer for more reliable activation
-        this.setupIntersectionObserver();
 
         // Start animation loop
         requestAnimationFrame(this.animate);
 
-        // Keep checking view state frequently for reliability
+        // Keep checking view state
         setInterval(() => {
-            this.isMobile = window.innerWidth < 768; // Re-check mobile on every interval
+            this.isMobile = window.innerWidth < 768;
             this.checkIfInView();
             this.keepVideoPlaying();
-        }, 250);
+        }, 500);
+
+        console.log('ScrollExpandMedia initialized - Mobile:', this.isMobile);
+    }
+
+    // MOBILE: Calculate progress from native scroll position
+    handleMobileScroll() {
+        if (!this.container) return;
+
+        const rect = this.container.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        // Calculate how far into the section we've scrolled
+        // When top of section reaches middle of screen, start expanding
+        // When top of section reaches top of screen, fully expanded
+        const startPoint = windowHeight * 0.5; // Start when section is 50% down
+        const endPoint = windowHeight * 0.1;   // End when section is 10% from top
+
+        if (rect.top <= startPoint && rect.top >= endPoint) {
+            // Calculate progress: 0 at startPoint, 1 at endPoint
+            const range = startPoint - endPoint;
+            const progress = (startPoint - rect.top) / range;
+            this.targetScrollProgress = Math.min(Math.max(progress, 0), 1);
+
+            if (progress >= 0.95) {
+                this.mediaFullyExpanded = true;
+                this.showContent = true;
+            }
+        } else if (rect.top > startPoint) {
+            // Above the section - reset
+            this.targetScrollProgress = 0;
+            this.mediaFullyExpanded = false;
+            this.showContent = false;
+        } else if (rect.top < endPoint) {
+            // Past the section - fully expanded
+            this.targetScrollProgress = 1;
+            this.mediaFullyExpanded = true;
+            this.showContent = true;
+        }
     }
 
     // More reliable section detection with Intersection Observer
@@ -389,21 +432,16 @@ class ScrollExpandMedia {
     }
 
     handleTouchStart(e) {
-        // Always capture touch position
-        this.touchStartY = e.touches[0].clientY;
-        this.lastTouchY = this.touchStartY;
-        this.touchVelocity = 0;
-        this.lastTouchTime = Date.now();
+        // Register user interaction for audio enable
         this.userHasInteracted = true;
-
-        // Force check view state
         this.isMobile = window.innerWidth < 768;
-        this.checkIfInView();
 
-        // Safari iOS fix: force touch-action when in active section
-        if (this.isActive && this.isMobile) {
-            this.container.style.touchAction = 'none';
-            document.body.style.overflow = 'hidden';
+        // Only capture touch data for desktop (where we intercept)
+        if (!this.isMobile) {
+            this.touchStartY = e.touches[0].clientY;
+            this.lastTouchY = this.touchStartY;
+            this.touchVelocity = 0;
+            this.lastTouchTime = Date.now();
         }
     }
 
