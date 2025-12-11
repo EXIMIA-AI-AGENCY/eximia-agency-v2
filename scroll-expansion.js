@@ -120,55 +120,46 @@ class ScrollExpandMedia {
 
     // Initialize video playback with retry logic
     initVideoPlayback() {
-        const videos = [this.videoDesktop, this.videoMobile].filter(v => v);
+        // Pause the inactive video and only play the active one
+        this.manageActiveVideo();
 
-        videos.forEach(video => {
-            // Ensure video is muted (required for autoplay)
-            video.muted = true;
-
-            // Prevent video from pausing during scroll
-            video.setAttribute('data-scroll-active', 'true');
-
-            // Handle when video is ready to play
-            video.addEventListener('canplay', () => {
-                this.tryPlayVideo(video);
-            });
-
-            // Handle if video was already loaded
-            if (video.readyState >= 3) {
-                this.tryPlayVideo(video);
-            }
-
-            // Handle play errors
-            video.addEventListener('stalled', () => {
-                console.log('Video stalled, attempting to reload...');
-                video.load();
-            });
-
-            // Handle if video pauses unexpectedly - force replay
-            video.addEventListener('pause', () => {
-                if (!video.ended) {
-                    setTimeout(() => {
-                        video.play().catch(() => { });
-                    }, 50);
-                }
-            });
-
-            // Handle waiting/buffering
-            video.addEventListener('waiting', () => {
-                console.log('Video buffering...');
-            });
-
-            // Log when video plays
-            video.addEventListener('playing', () => {
-                console.log('Video is playing');
-            });
+        // Listen for resize to switch videos
+        window.addEventListener('resize', () => {
+            this.manageActiveVideo();
         });
+    }
+
+    // Manage which video is playing based on screen size
+    manageActiveVideo() {
+        const activeVideo = this.getActiveVideo();
+        const inactiveVideo = this.isMobile ? this.videoDesktop : this.videoMobile;
+
+        // Pause and mute the inactive video
+        if (inactiveVideo) {
+            inactiveVideo.pause();
+            inactiveVideo.muted = true;
+        }
+
+        // Setup and play the active video
+        if (activeVideo) {
+            activeVideo.muted = this.isMuted;
+
+            // Only play if not already playing
+            if (activeVideo.paused) {
+                activeVideo.play().catch(() => { });
+            }
+        }
     }
 
     // Try to play video with error handling
     tryPlayVideo(video) {
         if (!video) return;
+
+        // Only play if this is the active video
+        if (video !== this.getActiveVideo()) {
+            video.pause();
+            return;
+        }
 
         const playPromise = video.play();
 
@@ -177,10 +168,6 @@ class ScrollExpandMedia {
                 console.log('Video playback started successfully');
             }).catch(error => {
                 console.log('Autoplay prevented, will retry...', error);
-                // Retry after a short delay
-                setTimeout(() => {
-                    video.play().catch(() => { });
-                }, 100);
             });
         }
     }
@@ -190,10 +177,20 @@ class ScrollExpandMedia {
         return this.isMobile ? this.videoMobile : this.videoDesktop;
     }
 
-    // Sync mute state for both videos
+    // Sync mute state - only for active video
     syncMuteState() {
-        if (this.videoDesktop) this.videoDesktop.muted = this.isMuted;
-        if (this.videoMobile) this.videoMobile.muted = this.isMuted;
+        const activeVideo = this.getActiveVideo();
+        const inactiveVideo = this.isMobile ? this.videoDesktop : this.videoMobile;
+
+        // Always mute inactive video
+        if (inactiveVideo) {
+            inactiveVideo.muted = true;
+        }
+
+        // Apply mute state to active video only
+        if (activeVideo) {
+            activeVideo.muted = this.isMuted;
+        }
     }
 
     toggleSound() {
