@@ -128,37 +128,73 @@
     </section>
 
     <!-- Problem → Solution -->
+    <!-- Problem → Solution (Industrial Upgrade) -->
     <section class="problem-solution" id="solucion">
         <div class="container">
-            <div class="grid-2">
-                <div class="problem">
-                    <h2>El problema</h2>
-                    <ul class="problem-list">
-                        <li>Leads fríos sin respuesta rápida</li>
-                        <li>Respuestas tardías que pierden ventas</li>
-                        <li>Citas perdidas por falta de seguimiento</li>
-                        <li>Equipo saturado con tareas repetitivas</li>
-                    </ul>
+            <h2 class="section-title">Diagnóstico de <span class="gradient-text">Eficiencia</span></h2>
+
+            <div class="comparison-grid">
+                <!-- Problem Side (Critical State) -->
+                <div class="state-card state-critical">
+                    <div class="state-header">
+                        <span class="status-indicator red-blink"></span>
+                        <h3>ESTADO ACTUAL</h3>
+                    </div>
+                    <div class="problem-items">
+                        <div class="problem-item">
+                            <span class="icon-warning">⚠</span>
+                            <div class="text">
+                                <strong>Fuga de Leads</strong>
+                                <p>Prospectos enfríados por falta de respuesta inmediata.</p>
+                            </div>
+                        </div>
+                        <div class="problem-item">
+                            <span class="icon-warning">⚠</span>
+                            <div class="text">
+                                <strong>Seguimiento Manual</strong>
+                                <p>Equipo de ventas saturado con tareas robóticas.</p>
+                            </div>
+                        </div>
+                        <div class="problem-item">
+                            <span class="icon-warning">⚠</span>
+                            <div class="text">
+                                <strong>Citas Perdidas</strong>
+                                <p>Agendamiento manual propenso a errores y olvidos.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="system-alert">
+                        DETECTANDO PÉRDIDA DE INGRESOS...
+                    </div>
                 </div>
 
-                <div class="solution">
-                    <h2>La solución</h2>
-                    <p>Eximia conecta IA + CRM + automatización para responder en segundos, calificar leads y agendar
-                        citas.</p>
+                <!-- Solution Side (Optimal State) -->
+                <div class="state-card state-optimal">
+                    <div class="state-bg-glow"></div>
+                    <div class="state-header">
+                        <span class="status-indicator green-pulse"></span>
+                        <h3>MOTOR EXIMIA</h3>
+                    </div>
+                    <p class="solution-desc">Infraestructura autónoma que responde, califica y vente 24/7 sin
+                        intervención humana.</p>
 
-                    <div class="metrics">
-                        <div class="metric">
-                            <div class="metric-value" data-target="85">0</div>
-                            <div class="metric-label">↓ Tiempo de respuesta</div>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">-85%</div>
+                            <div class="metric-label">Tiempo Respuesta</div>
                         </div>
-                        <div class="metric">
-                            <div class="metric-value" data-target="3">0</div>
-                            <div class="metric-label">↑ Conversión (x)</div>
+                        <div class="metric-card">
+                            <div class="metric-value">3x</div>
+                            <div class="metric-label">Tasa Conversión</div>
                         </div>
-                        <div class="metric">
-                            <div class="metric-value" data-target="60">0</div>
-                            <div class="metric-label">↑ Citas agendadas (%)</div>
+                        <div class="metric-card">
+                            <div class="metric-value">+60%</div>
+                            <div class="metric-label">Citas Agendadas</div>
                         </div>
+                    </div>
+
+                    <div class="system-status-bar">
+                        <span class="txt-green">● SISTEMA OPERATIVO</span>
                     </div>
                 </div>
             </div>
