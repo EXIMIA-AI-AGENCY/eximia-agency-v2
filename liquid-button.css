@@ -135,7 +135,10 @@
 
 /* Estado “presionado” para tap/rap (touch + mouse) */
 .liquid-button.is-pressed {
-    transform: translateZ(30px) translateY(2px) scale(0.97);
+    /* Removed transform to prevent text movement/scaling */
+    /* transform: translateZ(30px) translateY(2px) scale(0.97); */
+
+    /* Optional: maintain shadow/filter change for some feedback, or remove if unwanted */
     box-shadow:
         0 12px 20px rgba(46, 32, 112, 0.75),
         inset 0 2px 9px rgba(92, 68, 210, 1);
