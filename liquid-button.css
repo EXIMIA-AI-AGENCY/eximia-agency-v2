@@ -251,7 +251,8 @@
     width: 220%;
     height: 220%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0, transparent 60%);
+    /* Reduced opacity to preserve contrast with text/icon */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0, transparent 60%);
     opacity: 0;
     transform: translate(-50%, -50%) scale(0);
     pointer-events: none;
@@ -284,8 +285,7 @@
 
 @keyframes ripple {
     0% {
-        opacity: 0.35;
-        /* Reduced from 0.65 to prevent washout */
+        opacity: 0.4;
         transform: translate(-50%, -50%) scale(0);
     }
 
