@@ -2801,6 +2801,9 @@ p {
     justify-content: flex-start;
     overflow-x: hidden;
     background-color: var(--bg-primary);
+    /* Safari iOS fix - allow custom touch handling */
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: auto;
 }
 
 .scroll-expand-container {

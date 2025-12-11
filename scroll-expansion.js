@@ -399,6 +399,12 @@ class ScrollExpandMedia {
         // Force check view state
         this.isMobile = window.innerWidth < 768;
         this.checkIfInView();
+
+        // Safari iOS fix: force touch-action when in active section
+        if (this.isActive && this.isMobile) {
+            this.container.style.touchAction = 'none';
+            document.body.style.overflow = 'hidden';
+        }
     }
 
     handleTouchMove(e) {
@@ -476,6 +482,12 @@ class ScrollExpandMedia {
         this.touchStartY = 0;
         this.lastTouchY = 0;
         this.touchVelocity = 0;
+
+        // Restore normal scroll when effect completes or returns to start
+        if (this.mediaFullyExpanded || this.targetScrollProgress <= 0.01) {
+            this.container.style.touchAction = '';
+            document.body.style.overflow = '';
+        }
     }
 
     handleScroll() {
