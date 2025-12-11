@@ -33,7 +33,10 @@ class AISuperEntity {
 
         // Camera
         this.camera = new THREE.PerspectiveCamera(75, this.container.offsetWidth / this.container.offsetHeight, 1, 2000);
-        this.camera.position.z = 800;
+
+        // Mobile adjustment: Zoom out (increase Z) to fit the shapes in narrow viewports
+        const isMobile = this.container.offsetWidth < 768;
+        this.camera.position.z = isMobile ? 1200 : 800;
         this.camera.position.y = 100;
 
         // Renderer
@@ -176,6 +179,10 @@ class AISuperEntity {
         this.camera.aspect = this.container.offsetWidth / this.container.offsetHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+
+        // Re-evaluate zoom on resize
+        const isMobile = this.container.offsetWidth < 768;
+        this.camera.position.z = isMobile ? 1200 : 800;
     }
 
     animate() {
