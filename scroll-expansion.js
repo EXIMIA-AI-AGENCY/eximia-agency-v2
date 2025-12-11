@@ -88,14 +88,41 @@ class ScrollExpandMedia {
             this.soundToggleBtn.addEventListener('click', this.toggleSound);
         }
 
-        // Check initial view state
+        // Check initial view state immediately and after a delay (for slow loads)
         this.checkIfInView();
+        setTimeout(() => this.checkIfInView(), 100);
+        setTimeout(() => this.checkIfInView(), 500);
+
+        // Use Intersection Observer for more reliable activation
+        this.setupIntersectionObserver();
 
         // Start animation loop
         requestAnimationFrame(this.animate);
 
-        // Keep video playing check every 1000ms (less frequent for performance)
-        setInterval(this.keepVideoPlaying, 1000);
+        // Keep checking view state frequently for reliability
+        setInterval(() => {
+            this.isMobile = window.innerWidth < 768; // Re-check mobile on every interval
+            this.checkIfInView();
+            this.keepVideoPlaying();
+        }, 250);
+    }
+
+    // More reliable section detection with Intersection Observer
+    setupIntersectionObserver() {
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                        this.isActive = true;
+                    }
+                });
+            }, {
+                threshold: [0.1, 0.3, 0.5, 0.7],
+                rootMargin: '0px'
+            });
+
+            observer.observe(this.container);
+        }
     }
 
     // Enable GPU acceleration on all animated elements
@@ -345,8 +372,8 @@ class ScrollExpandMedia {
         } else if (!this.mediaFullyExpanded && this.isActive) {
             e.preventDefault();
 
-            // Use target progress for smooth animation
-            const scrollDelta = e.deltaY * 0.0015;
+            // Use target progress for smooth animation - faster expansion
+            const scrollDelta = e.deltaY * 0.004; // 2.5x faster than before
             const newProgress = Math.min(Math.max(this.targetScrollProgress + scrollDelta, 0), 1);
             this.targetScrollProgress = newProgress;
 
@@ -401,8 +428,8 @@ class ScrollExpandMedia {
         } else if (!this.mediaFullyExpanded) {
             e.preventDefault();
 
-            // SUPER responsive scroll factor for mobile - much more sensitive
-            const scrollFactor = 0.02; // 3x more sensitive for mobile touch
+            // ULTRA responsive scroll factor for mobile - needs very little swipe
+            const scrollFactor = 0.04; // Very sensitive - small swipe = big progress
             const scrollDelta = deltaY * scrollFactor;
             const newProgress = Math.min(Math.max(this.targetScrollProgress + scrollDelta, 0), 1);
             this.targetScrollProgress = newProgress;
