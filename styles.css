@@ -451,20 +451,63 @@ p {
     padding-top: 4rem;
 }
 
-#particleCanvas {
+/* Spline 3D Background Container */
+.spline-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
-    opacity: 0.6;
-    /* Subtler particles */
+    pointer-events: auto;
+    overflow: hidden;
 }
 
-/* Vignette for Hero focus - REMOVED for Sharpness */
+.spline-container spline-viewer {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Gradient overlay - left side for text readability */
+.hero-gradient-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 30%, transparent 60%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Gradient overlay - bottom for fade effect */
+.hero-gradient-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.7) 40%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Legacy gradient - hidden */
 .hero-gradient {
     display: none;
+}
+
+/* Mobile optimization for Spline */
+@media (max-width: 768px) {
+    .spline-container {
+        pointer-events: none;
+        /* Disable 3D interaction on mobile for scroll */
+    }
+
+    .hero-gradient-left {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 30%, transparent 70%);
+    }
 }
 
 /* ... */

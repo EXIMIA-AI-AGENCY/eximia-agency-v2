@@ -15,6 +15,9 @@
 
     <link rel="stylesheet" href="styles.css">
 
+    <!-- Spline 3D Viewer Runtime -->
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js"></script>
+
     <!-- Force scroll to top on page load/refresh -->
     <script>
         if (history.scrollRestoration) {
@@ -58,7 +61,14 @@
 
     <!-- Hero Section -->
     <section class="hero" id="inicio">
-        <canvas id="particleCanvas"></canvas>
+        <!-- Spline 3D Galaxy Background -->
+        <div class="spline-container">
+            <spline-viewer url="https://prod.spline.design/us3ALejTXl6usHZ7/scene.splinecode"
+                loading-anim-type="spinner-small-dark"></spline-viewer>
+        </div>
+        <!-- Gradient Overlays for text readability -->
+        <div class="hero-gradient-left"></div>
+        <div class="hero-gradient-bottom"></div>
         <div class="hero-gradient"></div>
 
         <div class="container">
