@@ -481,8 +481,10 @@ function initLiquidButton() {
 document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initPlanToggle();
+    initScrollAnimations();
+    initPlanToggle();
     initSpotlightEffect();
-    initTestimonialMarquee();
+    // initTestimonialMarquee(); // Disabled for static layout
     initFAQ();
     initHeroDemo();
     initLiquidButton();

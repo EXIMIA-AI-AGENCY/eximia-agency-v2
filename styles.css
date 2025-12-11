@@ -1127,44 +1127,31 @@ p {
     margin-bottom: 0;
 }
 
+/* Static Grid Layout for Testimonials */
 .marquee-mask {
-    overflow: hidden;
     width: 100%;
     position: relative;
     padding: 2rem 0;
-    /* Gradient Mask for smooth edges */
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    mask: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    /* Removed mask for static display */
 }
 
 .testimonials-slider {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    width: max-content;
-    /* Important for marquee */
-    margin: 0;
+    width: 100%;
+    margin: 0 auto;
     padding: 0 1rem;
-    animation: scrollMarquee 40s linear infinite;
+    max-width: 1200px;
+    /* Removed animation */
 }
 
-.testimonials-slider:hover {
-    animation-play-state: paused;
-}
-
-@keyframes scrollMarquee {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-50%);
-        /* Seamless loop: Moves exactly half the total width */
-    }
-}
+/* Removed scrollMarquee keyframes */
 
 .testimonial-card {
-    flex: 0 0 350px;
+    /* flex: 0 0 350px; - Removed for grid */
+    height: 100%;
+    /* Equal height */
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
