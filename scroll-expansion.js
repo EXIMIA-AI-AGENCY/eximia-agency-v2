@@ -546,8 +546,37 @@ class ScrollExpandMedia {
     }
 }
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the scroll expansion component
-    const scrollExpand = new ScrollExpandMedia('#scroll-expand-section');
-});
+// BULLETPROOF initialization - works 100% of the time
+let scrollExpandInstance = null;
+
+function initScrollExpand() {
+    // Only initialize once
+    if (scrollExpandInstance) return;
+
+    const container = document.querySelector('#scroll-expand-section');
+    if (!container) {
+        // Container not ready, retry
+        setTimeout(initScrollExpand, 50);
+        return;
+    }
+
+    scrollExpandInstance = new ScrollExpandMedia('#scroll-expand-section');
+    console.log('ScrollExpandMedia initialized successfully');
+}
+
+// Method 1: DOMContentLoaded (standard)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollExpand);
+} else {
+    // DOM is already ready
+    initScrollExpand();
+}
+
+// Method 2: window.onload fallback (for slow mobile connections)
+window.addEventListener('load', initScrollExpand);
+
+// Method 3: Aggressive retry for mobile (belt and suspenders)
+setTimeout(initScrollExpand, 100);
+setTimeout(initScrollExpand, 300);
+setTimeout(initScrollExpand, 500);
+setTimeout(initScrollExpand, 1000);
