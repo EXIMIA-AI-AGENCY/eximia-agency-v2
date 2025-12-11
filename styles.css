@@ -944,31 +944,32 @@ p {
     transform: translateY(-5px);
 }
 
+.plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-sm);
+}
+
 .plan-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.25rem 1rem;
-    background: var(--accent-blue);
-    color: #000;
-    /* High contrast black text on cyan */
-    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent-blue);
+    font-size: 0.7rem;
     font-weight: 700;
-    border-radius: var(--radius-full);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-    z-index: 2;
-    /* Ensure it's above card bg */
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(56, 189, 248, 0.3);
     white-space: nowrap;
 }
 
 .plan-icon {
     width: 40px;
     height: 40px;
-    margin-bottom: var(--spacing-sm);
-    /* Reduced from md */
+    margin-bottom: 0;
     color: var(--accent-blue);
 }
 
@@ -3424,7 +3425,7 @@ p {
         padding-right: 2rem;
         padding-bottom: 2rem;
         /* Clean bottom space */
-        padding-top: 1rem;
+        padding-top: 2rem;
         /* Minimal breathing room */
         clip-path: none;
         /* Ensure no clipping occurs */
@@ -3454,29 +3455,20 @@ p {
         /* Compact Mobile Styling */
         padding: 1.5rem;
         /* Reduced padding */
-        /* Make space for internal badge if featured */
-        padding-top: 3.5rem;
     }
 
-    /* Pull badge INSIDE the card */
-    .plan-card:not(.featured) {
-        padding-top: 1.5rem;
-        /* Reset for non-featured */
-    }
-
-    .plan-badge {
-        top: 1rem;
-        /* Inside the card */
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.65rem;
-        /* Smaller font */
-        padding: 0.2rem 0.75rem;
-    }
+    /* Remove previous padding hacks */
+    /* .plan-card:not(.featured) { ... } removed */
+    /* .plan-badge { ... } removed/reset */
 
     /* Reduce vertical space inside card elements */
-    .plan-card .plan-icon {
+    .plan-card .plan-header {
         margin-bottom: 0.75rem;
+    }
+
+    .plan-card .plan-icon {
+        /* Already reset globally, but ensure spacing here */
+        margin-bottom: 0;
     }
 
     .plan-card .plan-icon svg {
