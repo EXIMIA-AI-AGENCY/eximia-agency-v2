@@ -387,20 +387,22 @@ class ScrollExpandMedia {
     }
 
     handleTouchStart(e) {
-        this.checkIfInView();
-        if (!this.isActive) return;
-
+        // ALWAYS capture touch data - check isActive during move
         this.touchStartY = e.touches[0].clientY;
         this.lastTouchY = this.touchStartY;
         this.touchVelocity = 0;
         this.lastTouchTime = Date.now();
 
-        // Register as user interaction
+        // Check if in view and register interaction
+        this.checkIfInView();
         this.userHasInteracted = true;
     }
 
     handleTouchMove(e) {
-        if (!this.touchStartY || !this.isActive) return;
+        // Check isActive EVERY move, not just at start
+        this.checkIfInView();
+
+        if (!this.touchStartY) return;
 
         const touchY = e.touches[0].clientY;
         const deltaY = this.lastTouchY - touchY;
@@ -419,6 +421,11 @@ class ScrollExpandMedia {
         if (deltaY < 0 && this.targetScrollProgress <= 0 && !this.mediaFullyExpanded) {
             // Don't prevent default - let user scroll up to hero section
             return;
+        }
+
+        // If NOT in the active section, allow normal scroll
+        if (!this.isActive) {
+            return; // Let normal page scroll happen
         }
 
         if (this.mediaFullyExpanded && deltaY < -30 && window.scrollY <= this.container.offsetTop + 5) {
