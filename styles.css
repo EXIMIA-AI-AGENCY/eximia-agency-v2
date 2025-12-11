@@ -2754,8 +2754,45 @@ p {
     }
 
     .hero-content {
-        padding-top: 6rem;
-        /* Adjust for fixed nav */
+        padding-top: 5rem;
+        /* Move content up */
+        padding-bottom: 2rem;
+    }
+
+    .badge {
+        margin-top: 1rem;
+        /* Reduce gap above badge */
+        margin-bottom: 1rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Fix Custom Select on Mobile */
+    .custom-select {
+        width: 100%;
+        /* Full width on mobile */
+        max-width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .select-dropdown {
+        position: relative;
+        /* Avoid z-index wars on mobile, flow naturally */
+        top: 0;
+        margin-top: 0.5rem;
+    }
+
+    .custom-select.active .select-dropdown {
+        max-height: 250px;
+        overflow-y: auto;
     }
 
     /* Grid Layouts - Force Stack */
