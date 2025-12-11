@@ -60,8 +60,7 @@
 
     <!-- Hero Section -->
     <section class="hero" id="inicio">
-        <!-- Workflow Animation Canvas -->
-        <canvas id="workflowCanvas"></canvas>
+        <!-- Animation Removed per user request -->
 
         <!-- Gradient Overlays -->
         <div class="hero-gradient-left"></div>
@@ -113,15 +112,41 @@
 
                 <!-- Interactive Demo -->
                 <div class="hero-demo">
-                    <label for="businessType" class="demo-label">¿Qué tipo de negocio tienes?</label>
-                    <select id="businessType" class="demo-select">
-                        <option value="clinic">Clínica</option>
-                        <option value="realestate">Real Estate</option>
-                        <option value="restaurant">Restaurante</option>
-                        <option value="services">Servicios</option>
-                        <option value="ecommerce">E-commerce</option>
-                        <option value="other">Otro</option>
-                    </select>
+                    <label class="demo-label">¿Qué tipo de negocio tienes?</label>
+
+                    <!-- Custom Interactive Dropdown -->
+                    <div class="custom-select" id="businessTypeSelect">
+                        <button class="select-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="selected-text">Clínica</span>
+                            <svg class="select-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="select-dropdown">
+                            <ul class="select-options" role="listbox">
+                                <li class="select-option selected" data-value="clinic" role="option"
+                                    aria-selected="true">
+                                    <span class="option-icon">🏥</span> Clínica
+                                </li>
+                                <li class="select-option" data-value="realestate" role="option">
+                                    <span class="option-icon">🏢</span> Real Estate
+                                </li>
+                                <li class="select-option" data-value="restaurant" role="option">
+                                    <span class="option-icon">🍽️</span> Restaurante
+                                </li>
+                                <li class="select-option" data-value="services" role="option">
+                                    <span class="option-icon">💼</span> Servicios
+                                </li>
+                                <li class="select-option" data-value="ecommerce" role="option">
+                                    <span class="option-icon">🛍️</span> E-commerce
+                                </li>
+                                <li class="select-option" data-value="other" role="option">
+                                    <span class="option-icon">✨</span> Otro
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
                     <div class="demo-output">
                         <h3>Lo que la IA automatiza para ti:</h3>

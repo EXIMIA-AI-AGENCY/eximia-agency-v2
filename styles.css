@@ -451,15 +451,8 @@ p {
     padding-top: 4rem;
 }
 
-/* Workflow Animation Canvas */
-#workflowCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
+/* Workflow Animation Canvas - Removed
+#workflowCanvas { ... } */
 
 /* Gradient overlay - left side for text readability */
 .hero-gradient-left {
@@ -644,27 +637,132 @@ p {
     color: var(--text-tertiary);
 }
 
-.demo-select {
+/* Custom Select Styles */
+.custom-select {
+    position: relative;
+    width: 300px;
+    margin: 0 auto 2rem;
+    text-align: left;
+}
+
+.select-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    padding: 1rem 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 500;
     color: var(--text-primary);
-    font-size: 1rem;
-    margin-bottom: var(--spacing-lg);
-    transition: all var(--transition-base);
-    appearance: none;
-    /* Custom arrow ideally */
+    background: rgba(255, 255, 255, 0.05);
+    /* Glass */
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
-.demo-select:focus {
-    outline: none;
+.select-trigger:hover {
+    background: rgba(255, 255, 255, 0.08);
     border-color: var(--accent-blue);
-    background: rgba(56, 189, 248, 0.05);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
 }
 
+.select-trigger[aria-expanded="true"] {
+    border-color: var(--accent-blue);
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.select-icon {
+    transition: transform 0.3s ease;
+    color: var(--text-secondary);
+}
+
+.select-trigger[aria-expanded="true"] .select-icon {
+    transform: rotate(180deg);
+    color: var(--accent-blue);
+}
+
+.select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(15, 23, 42, 0.98);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    z-index: 50;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.custom-select.active .select-dropdown {
+    max-height: 300px;
+    opacity: 1;
+    pointer-events: auto;
+    border-color: var(--accent-blue);
+}
+
+.select-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.select-option {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.select-option:last-child {
+    border-bottom: none;
+}
+
+.select-option:hover {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--text-primary);
+    padding-left: 2rem;
+    /* Slide effect */
+}
+
+.select-option.selected {
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.option-icon {
+    font-size: 1.2rem;
+}
+
+/* Updated Demo Output Box for match */
 .demo-output {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    /* Remove old shadow for cleaner look */
     margin-top: var(--spacing-lg);
     padding-top: var(--spacing-lg);
     border-top: 1px solid var(--border-color);

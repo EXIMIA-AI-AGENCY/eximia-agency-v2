@@ -59,8 +59,18 @@ function initNavigation() {
 // Hero Interactive Demo
 // ================================
 
+// ================================
+// Hero Interactive Demo
+// ================================
+
 function initHeroDemo() {
-    const businessTypeSelect = document.getElementById('businessType');
+    const wrapper = document.getElementById('businessTypeSelect');
+    if (!wrapper) return;
+
+    const trigger = wrapper.querySelector('.select-trigger');
+    const triggerText = wrapper.querySelector('.selected-text');
+    const optionsList = wrapper.querySelector('.select-options');
+    const options = wrapper.querySelectorAll('.select-option');
     const automationList = document.getElementById('automationList');
 
     const automations = {
@@ -96,9 +106,45 @@ function initHeroDemo() {
         ]
     };
 
-    businessTypeSelect.addEventListener('change', function () {
-        const selectedType = this.value;
-        const items = automations[selectedType];
+    // Toggle Dropdown
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const expanded = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', !expanded);
+        wrapper.classList.toggle('active');
+    });
+
+    // Handle Option Selection
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.getAttribute('data-value');
+            const text = option.textContent.trim(); // Get text without icon if needed, or with.
+            // Extract just the text part (icon is in span)
+            const label = option.childNodes[option.childNodes.length - 1].textContent.trim();
+
+            // Update Trigger
+            triggerText.textContent = label;
+
+            // Update Active State
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.setAttribute('aria-selected', 'false');
+            });
+            option.classList.add('selected');
+            option.setAttribute('aria-selected', 'true');
+
+            // Close Dropdown
+            wrapper.classList.remove('active');
+            trigger.setAttribute('aria-expanded', 'false');
+
+            // Update Automation List Content
+            updateAutomationList(value);
+        });
+    });
+
+    // Update Content Function
+    function updateAutomationList(type) {
+        const items = automations[type];
 
         // Fade out
         automationList.style.opacity = '0';
@@ -112,6 +158,14 @@ function initHeroDemo() {
             automationList.style.opacity = '1';
             automationList.style.transform = 'translateY(0)';
         }, 200);
+    }
+
+    // Close on Outside Click
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) {
+            wrapper.classList.remove('active');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
     });
 
     // Set initial transition
