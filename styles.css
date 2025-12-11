@@ -2012,6 +2012,8 @@ p {
         background: rgba(10, 10, 10, 0.95);
         overflow-x: hidden;
         /* Ensure no scroll */
+        touch-action: pan-y;
+        /* Crucial: Allow vertical page scroll, ignore horizontal gestures */
     }
 
     /* Restore Table Structure (Mini Mode) */
