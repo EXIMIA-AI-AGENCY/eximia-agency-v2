@@ -2056,7 +2056,7 @@ p {
 }
 
 /* Responsive */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .value-comparison {
         padding: 4rem 0.5rem;
         /* Maximize width */
@@ -2065,10 +2065,10 @@ p {
     .comparison-table-wrapper {
         padding: 1rem 0.5rem;
         background: rgba(10, 10, 10, 0.95);
-        overflow-x: hidden;
+        overflow: hidden !important;
         /* Ensure no scroll */
-        touch-action: pan-y;
-        /* Crucial: Allow vertical page scroll, ignore horizontal gestures */
+        touch-action: auto !important;
+        /* Crucial: Allow vertical page scroll */
     }
 
     /* Restore Table Structure (Mini Mode) */
