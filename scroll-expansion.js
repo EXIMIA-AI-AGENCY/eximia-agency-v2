@@ -389,29 +389,31 @@ class ScrollExpandMedia {
     }
 
     handleTouchStart(e) {
-        // ALWAYS capture touch data - check isActive during move
+        // Always capture touch position
         this.touchStartY = e.touches[0].clientY;
         this.lastTouchY = this.touchStartY;
         this.touchVelocity = 0;
         this.lastTouchTime = Date.now();
-
-        // Check if in view and register interaction
-        this.checkIfInView();
         this.userHasInteracted = true;
+
+        // Force check view state
+        this.isMobile = window.innerWidth < 768;
+        this.checkIfInView();
     }
 
     handleTouchMove(e) {
-        // Check isActive EVERY move, not just at start
-        this.checkIfInView();
-
         if (!this.touchStartY) return;
 
+        // Force check mobile and view state on every move
+        this.isMobile = window.innerWidth < 768;
+        this.checkIfInView();
+
         const touchY = e.touches[0].clientY;
-        const deltaY = this.lastTouchY - touchY;
+        const deltaY = this.lastTouchY - touchY; // positive = swipe up (scroll down)
         const now = Date.now();
         const timeDelta = now - this.lastTouchTime;
 
-        // Calculate velocity for momentum
+        // Calculate velocity
         if (timeDelta > 0) {
             this.touchVelocity = deltaY / timeDelta;
         }
@@ -419,31 +421,32 @@ class ScrollExpandMedia {
         this.lastTouchY = touchY;
         this.lastTouchTime = now;
 
-        // If swiping up and progress is 0, allow normal scroll to go back to hero
-        if (deltaY < 0 && this.targetScrollProgress <= 0 && !this.mediaFullyExpanded) {
-            // Don't prevent default - let user scroll up to hero section
+        // Allow scroll up to hero when video is collapsed (progress = 0)
+        if (deltaY < 0 && this.targetScrollProgress <= 0.01 && !this.mediaFullyExpanded) {
+            return; // Let normal scroll happen
+        }
+
+        // If section not active, let normal scroll happen
+        if (!this.isActive) {
             return;
         }
 
-        // If NOT in the active section, allow normal scroll
-        if (!this.isActive) {
-            return; // Let normal page scroll happen
-        }
-
-        if (this.mediaFullyExpanded && deltaY < -30 && window.scrollY <= this.container.offsetTop + 5) {
+        // We're in the active section - handle the expansion effect
+        if (this.mediaFullyExpanded && deltaY < -30) {
+            // Swipe up when expanded - collapse
             this.mediaFullyExpanded = false;
             this.showContent = false;
             e.preventDefault();
         } else if (!this.mediaFullyExpanded) {
+            // Prevent default scroll and expand video
             e.preventDefault();
 
-            // ULTRA responsive scroll factor for mobile - needs very little swipe
-            const scrollFactor = 0.04; // Very sensitive - small swipe = big progress
+            const scrollFactor = 0.05; // Very sensitive
             const scrollDelta = deltaY * scrollFactor;
             const newProgress = Math.min(Math.max(this.targetScrollProgress + scrollDelta, 0), 1);
             this.targetScrollProgress = newProgress;
 
-            if (newProgress >= 1) {
+            if (newProgress >= 0.95) {
                 this.mediaFullyExpanded = true;
                 this.showContent = true;
             } else if (newProgress < 0.75) {
