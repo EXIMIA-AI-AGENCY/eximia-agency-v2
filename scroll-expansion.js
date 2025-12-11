@@ -310,8 +310,12 @@ class ScrollExpandMedia {
         const rect = this.container.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
-        // Check if section is in view (top of section is within viewport)
-        this.isActive = rect.top <= 100 && rect.bottom > windowHeight * 0.5;
+        // More sensitive activation for mobile - trigger earlier
+        // On mobile: activate when section is 60% visible from top
+        // On desktop: activate when top is near viewport top
+        const activationThreshold = this.isMobile ? windowHeight * 0.4 : 100;
+
+        this.isActive = rect.top <= activationThreshold && rect.bottom > windowHeight * 0.3;
 
         // Keep video playing when active
         if (this.isActive) {
@@ -397,8 +401,8 @@ class ScrollExpandMedia {
         } else if (!this.mediaFullyExpanded) {
             e.preventDefault();
 
-            // More responsive scroll factor for mobile
-            const scrollFactor = 0.006; // Unified factor for smoother feel
+            // SUPER responsive scroll factor for mobile - much more sensitive
+            const scrollFactor = 0.02; // 3x more sensitive for mobile touch
             const scrollDelta = deltaY * scrollFactor;
             const newProgress = Math.min(Math.max(this.targetScrollProgress + scrollDelta, 0), 1);
             this.targetScrollProgress = newProgress;
@@ -413,17 +417,17 @@ class ScrollExpandMedia {
     }
 
     handleTouchEnd() {
-        // Apply momentum with snap behavior
+        // Apply momentum with snap behavior - more aggressive for mobile
         if (this.touchVelocity && !this.mediaFullyExpanded) {
-            const momentum = this.touchVelocity * 50; // Momentum multiplier
+            const momentum = this.touchVelocity * 120; // Much higher momentum multiplier
             let newProgress = this.targetScrollProgress + momentum;
 
-            // Snap to nearest state if close
-            if (newProgress > 0.85) {
+            // More aggressive snap - easier to complete the effect
+            if (newProgress > 0.6) {
                 newProgress = 1;
                 this.mediaFullyExpanded = true;
                 this.showContent = true;
-            } else if (newProgress < 0.15) {
+            } else if (newProgress < 0.2) {
                 newProgress = 0;
             }
 
