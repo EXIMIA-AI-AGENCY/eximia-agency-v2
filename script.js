@@ -527,14 +527,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeText) {
         new Typewriter(typeText, {
             texts: [
-                'IA que responde, agenda y cierra ventas mientras tú duermes',
-                'IA que califica leads automáticamente 24/7',
-                'IA que optimiza tu flujo de trabajo sin descanso'
+                'IA que responde, agenda y cierra ventas mientras tú duermes'
             ],
             cursor: typeCursor,
             typingSpeed: 50,
-            deletingSpeed: 30,
-            pauseDuration: 2000,
+            deletingSpeed: 30, // Faster delete
+            pauseDuration: 3000, // Longer pause to read
             loop: true
         });
     }
