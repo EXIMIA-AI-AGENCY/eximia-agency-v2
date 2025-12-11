@@ -655,12 +655,17 @@ p {
 
 .demo-label {
     display: block;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: var(--spacing-xs);
-    color: var(--text-tertiary);
+    font-size: 1.1rem;
+    /* Larger */
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    /* Remove uppercase for cleaner look */
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+    /* Brighter than tertiary */
+    text-align: center;
+    /* Center alignment */
 }
 
 /* Custom Select Styles */
@@ -668,6 +673,7 @@ p {
     position: relative;
     width: 300px;
     margin: 0 auto 2rem;
+    /* Center margins */
     text-align: left;
     z-index: 100;
     /* Ensure it's above overlays */
