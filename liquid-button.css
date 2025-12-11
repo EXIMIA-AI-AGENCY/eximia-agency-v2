@@ -1,16 +1,11 @@
-/* LIQUID MERCURY BUTTON STYLES */
-
-/* SCENE CONTAINER - Wrap the button in this class for the 3D effect */
-.button-scene {
+.scene {
     display: flex;
     justify-content: center;
     align-items: center;
     perspective: 1200px;
-    z-index: 9999;
-    /* Ensure it floats above everything */
     position: relative;
-    padding: 1rem;
-    /* Give space for the 3D float */
+    z-index: 100;
+    /* Ensure it's above other hero elements */
 }
 
 /* BOTÓN LIQUID MERCURY */
@@ -23,14 +18,12 @@
     border-radius: 999px;
     border: none;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 24px;
     font-weight: 700;
     color: #ffffff !important;
-    /* Force white text */
     letter-spacing: 0.03em;
     transform-style: preserve-3d;
-    transform: translateZ(10px);
-    /* Reduced slightly for context */
+    transform: translateZ(40px);
     overflow: hidden;
     /* para esconder el ripple si se sale */
     text-decoration: none;
@@ -39,9 +32,6 @@
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
-
-    /* Fallback solid color */
-    background-color: #8e70ff;
 
     /* gradiente un poco más oscuro + movimiento de “mercurio” */
     background:
