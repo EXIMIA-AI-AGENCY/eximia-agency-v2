@@ -3424,8 +3424,10 @@ p {
         padding-right: 2rem;
         padding-bottom: 2rem;
         /* Clean bottom space */
-        padding-top: 1.5rem;
-        /* Space for the badge */
+        padding-top: 3.5rem;
+        /* GENEROUS Space for the badge overlap */
+        clip-path: none;
+        /* Ensure no clipping occurs */
 
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
