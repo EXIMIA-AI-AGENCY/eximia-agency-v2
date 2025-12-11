@@ -3010,11 +3010,15 @@ p {
 
 .scroll-expand-title-first,
 .scroll-expand-title-rest {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700;
-    color: rgba(168, 85, 247, 0.9);
-    text-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    font-weight: 800;
+    color: rgba(168, 85, 247, 1);
+    text-shadow:
+        0 0 40px rgba(168, 85, 247, 0.6),
+        0 0 80px rgba(168, 85, 247, 0.4),
+        0 4px 20px rgba(0, 0, 0, 0.5);
     transition: none;
+    letter-spacing: -0.02em;
 }
 
 .scroll-expand-meta {
@@ -3087,7 +3091,7 @@ p {
 
     .scroll-expand-title-first,
     .scroll-expand-title-rest {
-        font-size: clamp(2rem, 8vw, 3rem);
+        font-size: clamp(2.5rem, 12vw, 4rem);
     }
 
     .scroll-expand-date {
