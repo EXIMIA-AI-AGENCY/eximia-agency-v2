@@ -1,7 +1,7 @@
 /**
  * Scroll Expansion Media Component
  * Vanilla JS implementation of the scroll-based media expansion effect
- * Fixed version with smooth scrolling, video freeze prevention, and audio control
+ * SUPER OPTIMIZED for mobile with GPU acceleration and 60fps
  */
 
 class ScrollExpandMedia {
@@ -17,11 +17,16 @@ class ScrollExpandMedia {
         this.isMobile = window.innerWidth < 768;
         this.isActive = false;
         this.animationFrame = null;
+        this.lastFrameTime = 0;
 
         // Sound control state
         this.hasUnmutedOnce = false;
         this.isMuted = true;
         this.userHasInteracted = false;
+
+        // Throttle flags for performance
+        this.isThrottled = false;
+        this.throttleDelay = 16; // ~60fps
 
         // Cache DOM elements
         this.mediaWrapper = this.container.querySelector('.scroll-expand-media-wrapper');
@@ -56,23 +61,26 @@ class ScrollExpandMedia {
     }
 
     init() {
+        // Enable GPU acceleration hints on animated elements
+        this.enableGPUAcceleration();
+
         // Set initial state
         this.updateUI();
 
         // Initialize video playback
         this.initVideoPlayback();
 
-        // Add event listeners
+        // Add event listeners with passive where possible
         window.addEventListener('wheel', this.handleWheel, { passive: false });
         window.addEventListener('touchstart', this.handleTouchStart, { passive: false });
         window.addEventListener('touchmove', this.handleTouchMove, { passive: false });
-        window.addEventListener('touchend', this.handleTouchEnd);
-        window.addEventListener('scroll', this.handleScroll);
-        window.addEventListener('resize', this.handleResize);
+        window.addEventListener('touchend', this.handleTouchEnd, { passive: true });
+        window.addEventListener('scroll', this.handleScroll, { passive: true });
+        window.addEventListener('resize', this.debounce(this.handleResize, 100));
 
         // Track user interaction to enable audio
         document.addEventListener('click', this.handleUserInteraction, { once: true });
-        document.addEventListener('touchstart', this.handleUserInteraction, { once: true });
+        document.addEventListener('touchstart', this.handleUserInteraction, { once: true, passive: true });
         document.addEventListener('keydown', this.handleUserInteraction, { once: true });
 
         // Sound toggle button
@@ -84,16 +92,44 @@ class ScrollExpandMedia {
         this.checkIfInView();
 
         // Start animation loop
-        this.animate();
+        requestAnimationFrame(this.animate);
 
-        // Keep video playing check every 500ms
-        setInterval(this.keepVideoPlaying, 500);
+        // Keep video playing check every 1000ms (less frequent for performance)
+        setInterval(this.keepVideoPlaying, 1000);
+    }
+
+    // Enable GPU acceleration on all animated elements
+    enableGPUAcceleration() {
+        const elements = [
+            this.mediaWrapper,
+            this.bgImage,
+            this.bgOverlay,
+            this.titleFirst,
+            this.titleRest,
+            this.dateText,
+            this.scrollHint,
+            this.videoOverlay
+        ].filter(el => el);
+
+        elements.forEach(el => {
+            el.style.willChange = 'transform, opacity';
+            el.style.backfaceVisibility = 'hidden';
+            el.style.perspective = '1000px';
+        });
+    }
+
+    // Debounce utility for resize
+    debounce(func, wait) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
     }
 
     // Handle user interaction to allow audio
     handleUserInteraction() {
         this.userHasInteracted = true;
-        console.log('User interaction detected, audio can now be enabled');
     }
 
     // Keep videos playing - prevent freeze
@@ -104,13 +140,19 @@ class ScrollExpandMedia {
         }
     }
 
-    // Animation loop for smooth updates
-    animate() {
-        // Smooth interpolation for scroll progress
-        const ease = 0.12;
+    // Animation loop for smooth updates - optimized with delta time
+    animate(timestamp) {
+        if (!this.lastFrameTime) this.lastFrameTime = timestamp;
+        const deltaTime = timestamp - this.lastFrameTime;
+        this.lastFrameTime = timestamp;
+
+        // Adaptive easing - faster on mobile for snappier feel
+        const baseEase = this.isMobile ? 0.15 : 0.12;
+        const ease = Math.min(baseEase * (deltaTime / 16.67), 0.3); // Cap easing
+
         const diff = this.targetScrollProgress - this.scrollProgress;
 
-        if (Math.abs(diff) > 0.001) {
+        if (Math.abs(diff) > 0.0005) {
             this.scrollProgress += diff * ease;
             this.updateUI();
         }
