@@ -285,6 +285,12 @@ class ScrollExpandMedia {
         // Register as user interaction
         this.userHasInteracted = true;
 
+        // If scrolling up and progress is 0, allow normal page scroll to go back to hero
+        if (e.deltaY < 0 && this.targetScrollProgress <= 0 && !this.mediaFullyExpanded) {
+            // Don't prevent default - let user scroll up to hero section
+            return;
+        }
+
         if (this.mediaFullyExpanded && e.deltaY < 0 && window.scrollY <= this.container.offsetTop + 5) {
             // Scrolling up when fully expanded - collapse
             this.mediaFullyExpanded = false;
@@ -335,6 +341,12 @@ class ScrollExpandMedia {
 
         this.lastTouchY = touchY;
         this.lastTouchTime = now;
+
+        // If swiping up and progress is 0, allow normal scroll to go back to hero
+        if (deltaY < 0 && this.targetScrollProgress <= 0 && !this.mediaFullyExpanded) {
+            // Don't prevent default - let user scroll up to hero section
+            return;
+        }
 
         if (this.mediaFullyExpanded && deltaY < -30 && window.scrollY <= this.container.offsetTop + 5) {
             this.mediaFullyExpanded = false;
