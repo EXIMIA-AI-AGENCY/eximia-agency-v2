@@ -2823,14 +2823,24 @@ p {
     transition: opacity 0.1s ease;
 }
 
-/* New CSS Gradient Background */
+/* New CSS Gradient Background with Pattern */
 .scroll-expand-bg-css {
-    background:
-        radial-gradient(circle at 50% 50%, rgba(20, 0, 40, 1) 0%, rgba(0, 0, 0, 1) 100%),
+    background-color: #030014;
+    background-image:
+        /* Tech Grid Pattern */
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        /* Deep Glows */
+        radial-gradient(circle at 50% 50%, rgba(20, 0, 40, 0) 0%, rgba(0, 0, 0, 0.8) 100%),
         radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 40%),
         radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
-    background-size: cover;
-    background-color: #000;
+    background-size:
+        50px 50px,
+        50px 50px,
+        cover,
+        cover,
+        cover;
+    background-position: center;
 }
 
 .scroll-expand-bg-overlay {
