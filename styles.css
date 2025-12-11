@@ -3424,6 +3424,8 @@ p {
         padding-right: 2rem;
         padding-bottom: 2rem;
         /* Clean bottom space */
+        padding-top: 1.5rem;
+        /* Space for the badge */
 
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
