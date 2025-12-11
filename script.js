@@ -320,55 +320,35 @@ function initTestimonialMarquee() {
     const slider = document.querySelector('.testimonials-slider');
     if (!slider) return;
 
-    const cards = document.querySelectorAll('.testimonial-card');
+    // Prevent double initialization
+    if (slider.getAttribute('data-init') === 'true') return;
+    slider.setAttribute('data-init', 'true');
 
-    // Safety check
-    if (cards.length === 0) return;
+    // Get original cards ONLY (before we add clones)
+    const originalCards = Array.from(document.querySelectorAll('.testimonial-card'));
 
-    // Robust Seamless Loop:
-    // 1. Create multiple sets of clones to ensure the track is very long.
-    // 2. This prevents "running out" of cards on wide screens before the reset.
-    // 3. CSS still moves -50% (half the total width).
-    // Note: If we clone 3 times (Original + 3 clones = 4 sets),
-    // we should animate to -25% or adjusted logic.
-    // simpler: Let's stick to the double-set logic but make sure we have enough content.
-    // If not enough cards, duplicate them more times until they fill screen at least twice.
+    if (originalCards.length === 0) return;
 
-    const sliderWidth = slider.scrollWidth;
-    const windowWidth = window.innerWidth;
+    // Clone strategy:
+    // We needed an EVEN number of total sets for -50% translation to match perfectly.
+    // [Set][Set] -> Moves -50% (1 Set) -> Reset to 0 (First Set). Correct.
+    // [Set][Set][Set][Set] -> Moves -50% (2 Sets) -> Reset to 0 (First 2 Sets). Correct.
 
-    // If we simply clone once (Current), we have 2x content.
-    // If 2x content < Window Width, we see empty space.
-    // We need 2x content > Window Width * 2 for safety.
+    // We will create 7 clones of the entire set, resulting in 8 Total Sets.
+    // This guarantees massive width.
 
-    // Quick Fix: Clone the entire set 3 more times (Total 4 sets).
-    // Animate 0 -> -25%? No, standard marquee track usually does:
-    // [Set A][Set A] -> animate -50% -> reset to 0.
-    // This works IF [Set A] is wider than the screen.
-    // So let's ensure [Set A] is wider than screen.
+    // Create fragment for performance
+    const fragment = document.createDocumentFragment();
 
-    // 1. Clone original cards until they fill at least 150% of screen.
-    // Then duplicate THAT entire set.
-
-    // Brute force safety: Just make 4 copies total (Original + 3 clones).
-    // But CSS animation is hardcoded to -50%. 
-    // If we have 4 sets: [A][B][C][D] (where all are identical)
-    // And we move -50%, we move past [A][B]. 
-    // Reset to 0 puts us back at [A][B]. 
-    // Since [C][D] are identical to [A][B], this is a perfect loop.
-
-    // Create 3 sets of clones (Total 4 sets of data)
-    for (let i = 0; i < 3; i++) {
-        cards.forEach(card => {
+    for (let i = 0; i < 7; i++) { // 7 iterations = 7 clone sets
+        originalCards.forEach(card => {
             const clone = card.cloneNode(true);
-            slider.appendChild(clone);
+            clone.setAttribute('aria-hidden', 'true'); // Accessibility
+            fragment.appendChild(clone);
         });
     }
 
-    // Update: CSS @keyframes 'scrollMarquee' goes to -50%.
-    // With 4 sets, -50% means we scroll past Set 1 and Set 2.
-    // We are left showing Set 3 and Set 4.
-    // Since Set 3 is identical to Set 1, the reset to 0 is seamless.
+    slider.appendChild(fragment);
 }
 
 // Initialize everything on load
