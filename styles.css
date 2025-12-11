@@ -932,7 +932,37 @@ p {
     flex-direction: column;
 }
 
-/* ... */
+/* Featured Card Distinction */
+.plan-card.featured {
+    border-color: rgba(56, 189, 248, 0.4);
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%);
+    box-shadow: 0 0 50px rgba(56, 189, 248, 0.05);
+}
+
+.plan-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-5px);
+}
+
+.plan-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.25rem 1rem;
+    background: var(--accent-blue);
+    color: #000;
+    /* High contrast black text on cyan */
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    z-index: 2;
+    /* Ensure it's above card bg */
+    white-space: nowrap;
+}
 
 .plan-icon {
     width: 40px;
