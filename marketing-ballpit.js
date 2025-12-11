@@ -1,182 +1,536 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
-// ==========================================
-// UTILS
-// ==========================================
-const { randFloat, randFloatSpread } = THREE.MathUtils;
+// ===============================================
+// PORT OF KEVIN LEVRON BALLPIT (Vanilla JS Adapt)
+// ===============================================
 
-// ==========================================
-// PHYSICS ENGINE
-// ==========================================
+// Short aliases to match original code structure where possible for fidelity
+const {
+    Clock,
+    PerspectiveCamera,
+    Scene,
+    WebGLRenderer,
+    SRGBColorSpace,
+    MathUtils,
+    Vector2,
+    Vector3,
+    MeshPhysicalMaterial,
+    ShaderChunk,
+    Color,
+    Object3D,
+    InstancedMesh,
+    PMREMGenerator,
+    SphereGeometry,
+    AmbientLight,
+    PointLight,
+    ACESFilmicToneMapping,
+    Raycaster,
+    Plane
+} = THREE;
+
+// ===============================================
+// CORE RENDERER MANAGER (Class x)
+// ===============================================
+class RenderManager {
+    #e;
+    canvas;
+    camera;
+    cameraMinAspect;
+    cameraMaxAspect;
+    cameraFov;
+    maxPixelRatio;
+    minPixelRatio;
+    scene;
+    renderer;
+    #t;
+    size = { width: 0, height: 0, wWidth: 0, wHeight: 0, ratio: 0, pixelRatio: 0 };
+    render = this.#i;
+    onBeforeRender = () => { };
+    onAfterRender = () => { };
+    onAfterResize = () => { };
+    #s = false; // intersecting
+    #n = false; // animating
+    isDisposed = false;
+    #o; // observer
+    #r; // resize observer
+    #a; // resize timeout
+    #c = new Clock();
+    #h = { elapsed: 0, delta: 0 };
+    #l; // raf id
+
+    constructor(e) {
+        this.#e = { ...e };
+        this.#m();
+        this.#d();
+        this.#p();
+        this.resize();
+        this.#g();
+    }
+    #m() {
+        this.camera = new PerspectiveCamera();
+        this.cameraFov = this.camera.fov;
+    }
+    #d() {
+        this.scene = new Scene();
+    }
+    #p() {
+        if (this.#e.canvas) {
+            this.canvas = this.#e.canvas;
+        } else if (this.#e.id) {
+            this.canvas = document.getElementById(this.#e.id);
+        } else {
+            console.error('Three: Missing canvas or id parameter');
+        }
+        this.canvas.style.display = 'block';
+        const e = {
+            canvas: this.canvas,
+            powerPreference: 'high-performance',
+            ...(this.#e.rendererOptions ?? {})
+        };
+        this.renderer = new WebGLRenderer(e);
+        this.renderer.outputColorSpace = SRGBColorSpace;
+    }
+    #g() {
+        if (!(this.#e.size instanceof Object)) {
+            window.addEventListener('resize', this.#f.bind(this));
+            if (this.#e.size === 'parent' && this.canvas.parentNode) {
+                this.#r = new ResizeObserver(this.#f.bind(this));
+                this.#r.observe(this.canvas.parentNode);
+            }
+        }
+        // Intersection Observer for performance
+        this.#o = new IntersectionObserver(this.#u.bind(this), {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0
+        });
+        this.#o.observe(this.canvas);
+        document.addEventListener('visibilitychange', this.#v.bind(this));
+    }
+    #y() {
+        window.removeEventListener('resize', this.#f.bind(this));
+        this.#r?.disconnect();
+        this.#o?.disconnect();
+        document.removeEventListener('visibilitychange', this.#v.bind(this));
+    }
+    #u(e) {
+        this.#s = e[0].isIntersecting;
+        this.#s ? this.#w() : this.#z();
+    }
+    #v() {
+        if (this.#s) {
+            document.hidden ? this.#z() : this.#w();
+        }
+    }
+    #f() {
+        if (this.#a) clearTimeout(this.#a);
+        this.#a = setTimeout(this.resize.bind(this), 100);
+    }
+    resize() {
+        let e, t;
+        if (this.#e.size instanceof Object) {
+            e = this.#e.size.width;
+            t = this.#e.size.height;
+        } else if (this.#e.size === 'parent' && this.canvas.parentNode) {
+            e = this.canvas.parentNode.offsetWidth;
+            t = this.canvas.parentNode.offsetHeight;
+        } else {
+            e = window.innerWidth;
+            t = window.innerHeight;
+        }
+        this.size.width = e;
+        this.size.height = t;
+        this.size.ratio = e / t;
+        this.#x();
+        this.#b();
+        this.onAfterResize(this.size);
+    }
+    #x() {
+        this.camera.aspect = this.size.width / this.size.height;
+        if (this.camera.isPerspectiveCamera && this.cameraFov) {
+            if (this.cameraMinAspect && this.camera.aspect < this.cameraMinAspect) {
+                this.#A(this.cameraMinAspect);
+            } else if (this.cameraMaxAspect && this.camera.aspect > this.cameraMaxAspect) {
+                this.#A(this.cameraMaxAspect);
+            } else {
+                this.camera.fov = this.cameraFov;
+            }
+        }
+        this.camera.updateProjectionMatrix();
+        this.updateWorldSize();
+    }
+    #A(e) {
+        const t = Math.tan(MathUtils.degToRad(this.cameraFov / 2)) / (this.camera.aspect / e);
+        this.camera.fov = 2 * MathUtils.radToDeg(Math.atan(t));
+    }
+    updateWorldSize() {
+        if (this.camera.isPerspectiveCamera) {
+            const e = (this.camera.fov * Math.PI) / 180;
+            this.size.wHeight = 2 * Math.tan(e / 2) * this.camera.position.length();
+            this.size.wWidth = this.size.wHeight * this.camera.aspect;
+        } else if (this.camera.isOrthographicCamera) {
+            this.size.wHeight = this.camera.top - this.camera.bottom;
+            this.size.wWidth = this.camera.right - this.camera.left;
+        }
+    }
+    #b() {
+        this.renderer.setSize(this.size.width, this.size.height);
+        this.#t?.setSize(this.size.width, this.size.height);
+        let e = window.devicePixelRatio;
+        if (this.maxPixelRatio && e > this.maxPixelRatio) {
+            e = this.maxPixelRatio;
+        } else if (this.minPixelRatio && e < this.minPixelRatio) {
+            e = this.minPixelRatio;
+        }
+        this.renderer.setPixelRatio(e);
+        this.size.pixelRatio = e;
+    }
+    get postprocessing() {
+        return this.#t;
+    }
+    set postprocessing(e) {
+        this.#t = e;
+        this.render = e.render.bind(e);
+    }
+    #w() {
+        if (this.#n) return;
+        const animate = () => {
+            this.#l = requestAnimationFrame(animate);
+            this.#h.delta = this.#c.getDelta();
+            this.#h.elapsed += this.#h.delta;
+            this.onBeforeRender(this.#h);
+            this.render();
+            this.onAfterRender(this.#h);
+        };
+        this.#n = true;
+        // this.#c.start(); // Bug fix: Three.js Clock auto-starts
+        animate();
+    }
+    #z() {
+        if (this.#n) {
+            cancelAnimationFrame(this.#l);
+            this.#n = false;
+            this.#c.stop();
+        }
+    }
+    #i() {
+        this.renderer.render(this.scene, this.camera);
+    }
+    clear() {
+        this.scene.traverse(e => {
+            if (e.isMesh && typeof e.material === 'object' && e.material !== null) {
+                Object.keys(e.material).forEach(t => {
+                    const i = e.material[t];
+                    if (i !== null && typeof i === 'object' && typeof i.dispose === 'function') {
+                        i.dispose();
+                    }
+                });
+                e.material.dispose();
+                e.geometry.dispose();
+            }
+        });
+        this.scene.clear();
+    }
+    dispose() {
+        this.#y();
+        this.#z();
+        this.clear();
+        this.#t?.dispose();
+        this.renderer.dispose();
+        this.isDisposed = true;
+    }
+}
+
+// ===============================================
+// INPUT HANDLER (S)
+// ===============================================
+const b = new Map(),
+    A = new Vector2();
+let R = false; // Is Global Listener Active?
+
+function InputHandler(e) {
+    const t = {
+        position: new Vector2(),
+        nPosition: new Vector2(),
+        hover: false,
+        touching: false,
+        onEnter() { },
+        onMove() { },
+        onClick() { },
+        onLeave() { },
+        ...e
+    };
+    (function (e, t) {
+        if (!b.has(e)) {
+            b.set(e, t);
+            if (!R) {
+                document.body.addEventListener('pointermove', M);
+                document.body.addEventListener('pointerleave', L);
+                document.body.addEventListener('click', C);
+                // Note: 'passive: false' allows preventDefault
+                document.body.addEventListener('touchstart', TouchStart, { passive: false });
+                document.body.addEventListener('touchmove', TouchMove, { passive: false });
+                document.body.addEventListener('touchend', TouchEnd, { passive: false });
+                document.body.addEventListener('touchcancel', TouchEnd, { passive: false });
+                R = true;
+            }
+        }
+    })(e.domElement, t);
+
+    t.dispose = () => {
+        const el = e.domElement;
+        b.delete(el);
+        if (b.size === 0) {
+            document.body.removeEventListener('pointermove', M);
+            document.body.removeEventListener('pointerleave', L);
+            document.body.removeEventListener('click', C);
+            document.body.removeEventListener('touchstart', TouchStart);
+            document.body.removeEventListener('touchmove', TouchMove);
+            document.body.removeEventListener('touchend', TouchEnd);
+            document.body.removeEventListener('touchcancel', TouchEnd);
+            R = false;
+        }
+    };
+    return t;
+}
+
+function M(e) {
+    A.x = e.clientX;
+    A.y = e.clientY;
+    processInteraction();
+}
+function processInteraction() {
+    for (const [elem, t] of b) {
+        const i = elem.getBoundingClientRect();
+        if (D(i)) {
+            P(t, i);
+            if (!t.hover) {
+                t.hover = true;
+                t.onEnter(t);
+            }
+            t.onMove(t);
+        } else if (t.hover && !t.touching) {
+            t.hover = false;
+            t.onLeave(t);
+        }
+    }
+}
+function C(e) {
+    A.x = e.clientX;
+    A.y = e.clientY;
+    for (const [elem, t] of b) {
+        const i = elem.getBoundingClientRect();
+        P(t, i);
+        if (D(i)) t.onClick(t);
+    }
+}
+function L() {
+    for (const t of b.values()) {
+        if (t.hover) {
+            t.hover = false;
+            t.onLeave(t);
+        }
+    }
+}
+function TouchStart(e) {
+    if (e.touches.length > 0) {
+        // e.preventDefault(); // Sometimes blocking scrolling is bad, but code had it
+        A.x = e.touches[0].clientX;
+        A.y = e.touches[0].clientY;
+        for (const [elem, t] of b) {
+            const rect = elem.getBoundingClientRect();
+            if (D(rect)) {
+                t.touching = true;
+                P(t, rect);
+                if (!t.hover) {
+                    t.hover = true;
+                    t.onEnter(t);
+                }
+                t.onMove(t);
+            }
+        }
+    }
+}
+function TouchMove(e) {
+    if (e.touches.length > 0) {
+        // e.preventDefault();
+        A.x = e.touches[0].clientX;
+        A.y = e.touches[0].clientY;
+        for (const [elem, t] of b) {
+            const rect = elem.getBoundingClientRect();
+            P(t, rect);
+            if (D(rect)) {
+                if (!t.hover) {
+                    t.hover = true;
+                    t.touching = true;
+                    t.onEnter(t);
+                }
+                t.onMove(t);
+            } else if (t.hover && t.touching) {
+                t.onMove(t);
+            }
+        }
+    }
+}
+function TouchEnd() {
+    for (const [, t] of b) {
+        if (t.touching) {
+            t.touching = false;
+            if (t.hover) {
+                t.hover = false;
+                t.onLeave(t);
+            }
+        }
+    }
+}
+function P(e, t) {
+    const { position: i, nPosition: s } = e;
+    i.x = A.x - t.left;
+    i.y = A.y - t.top;
+    s.x = (i.x / t.width) * 2 - 1;
+    s.y = (-i.y / t.height) * 2 + 1;
+}
+function D(e) {
+    const { x: t, y: i } = A;
+    const { left: s, top: n, width: o, height: r } = e;
+    return t >= s && t <= s + o && i >= n && i <= n + r;
+}
+
+// ===============================================
+// PHYSICS ENGINE (Class W)
+// ===============================================
+const { randFloat: k, randFloatSpread: E } = MathUtils;
+const F = new Vector3();
+const I = new Vector3();
+const O = new Vector3();
+const V = new Vector3();
+const B = new Vector3();
+const N = new Vector3();
+const _ = new Vector3();
+const j = new Vector3();
+const H = new Vector3();
+const T = new Vector3();
+
 class Physics {
-    constructor(config) {
-        this.config = config;
-        this.positionData = new Float32Array(3 * config.count).fill(0);
-        this.velocityData = new Float32Array(3 * config.count).fill(0);
-        this.sizeData = new Float32Array(config.count).fill(1);
-        this.center = new THREE.Vector3();
-
-        // Temp vectors for calculations
-        this.v1 = new THREE.Vector3();
-        this.v2 = new THREE.Vector3();
-        this.v3 = new THREE.Vector3();
-        this.v4 = new THREE.Vector3();
-        this.v5 = new THREE.Vector3();
-        this.v6 = new THREE.Vector3();
-        this.v7 = new THREE.Vector3();
-        this.v8 = new THREE.Vector3();
-        this.v9 = new THREE.Vector3();
-        this.v10 = new THREE.Vector3();
-
-        this.initPositions();
+    constructor(e) {
+        this.config = e;
+        this.positionData = new Float32Array(3 * e.count).fill(0);
+        this.velocityData = new Float32Array(3 * e.count).fill(0);
+        this.sizeData = new Float32Array(e.count).fill(1);
+        this.center = new Vector3();
+        this.#R();
         this.setSizes();
     }
-
-    initPositions() {
-        const { config, positionData } = this;
-        // Center starts at 0,0,0
-        // Randomize others
-        for (let i = 1; i < config.count; i++) {
+    #R() {
+        const { config: e, positionData: t } = this;
+        this.center.toArray(t, 0);
+        for (let i = 1; i < e.count; i++) {
             const s = 3 * i;
-            positionData[s] = randFloatSpread(2 * config.maxX);
-            positionData[s + 1] = randFloatSpread(2 * config.maxY);
-            positionData[s + 2] = randFloatSpread(2 * config.maxZ);
+            t[s] = E(2 * e.maxX);
+            t[s + 1] = E(2 * e.maxY);
+            t[s + 2] = E(2 * e.maxZ);
         }
     }
-
     setSizes() {
-        const { config, sizeData } = this;
-        sizeData[0] = config.size0;
-        for (let i = 1; i < config.count; i++) {
-            sizeData[i] = randFloat(config.minSize, config.maxSize);
+        const { config: e, sizeData: t } = this;
+        t[0] = e.size0;
+        for (let i = 1; i < e.count; i++) {
+            t[i] = k(e.minSize, e.maxSize);
         }
     }
-
-    update(time) {
-        const { config, center, positionData, sizeData, velocityData } = this;
-        let startIndex = 0;
-
-        // Mouse Drag Control Logic (Sphere 0)
-        if (config.controlSphere0) {
-            startIndex = 1;
-            this.v1.fromArray(positionData, 0);
-            this.v1.lerp(center, 0.1).toArray(positionData, 0);
-            this.v4.set(0, 0, 0).toArray(velocityData, 0);
+    update(e) {
+        const { config: t, center: i, positionData: s, sizeData: n, velocityData: o } = this;
+        let r = 0;
+        if (t.controlSphere0) {
+            r = 1;
+            F.fromArray(s, 0);
+            F.lerp(i, 0.1).toArray(s, 0);
+            V.set(0, 0, 0).toArray(o, 0);
         }
-
-        // Apply Forces (Gravity + Friction)
-        for (let i = startIndex; i < config.count; i++) {
-            const base = 3 * i;
-            this.v2.fromArray(positionData, base);
-            this.v5.fromArray(velocityData, base);
-
-            // Gravity
-            this.v5.y -= time.delta * config.gravity * sizeData[i];
-
-            // Friction
-            this.v5.multiplyScalar(config.friction);
-
-            // Limit Velocity
-            this.v5.clampLength(0, config.maxVelocity);
-
-            // Apply Velocity
-            this.v2.add(this.v5);
-
-            this.v2.toArray(positionData, base);
-            this.v5.toArray(velocityData, base);
+        for (let idx = r; idx < t.count; idx++) {
+            const base = 3 * idx;
+            I.fromArray(s, base);
+            B.fromArray(o, base);
+            B.y -= e.delta * t.gravity * n[idx];
+            B.multiplyScalar(t.friction);
+            B.clampLength(0, t.maxVelocity);
+            I.add(B);
+            I.toArray(s, base);
+            B.toArray(o, base);
         }
-
-        // Collisions
-        for (let i = startIndex; i < config.count; i++) {
-            const base = 3 * i;
-            this.v2.fromArray(positionData, base); // Pos
-            this.v5.fromArray(velocityData, base); // Vel
-            const radius = sizeData[i];
-
-            // Sphere-Sphere Collision
-            for (let j = i + 1; j < config.count; j++) {
-                const otherBase = 3 * j;
-                this.v3.fromArray(positionData, otherBase);
-                this.v6.fromArray(velocityData, otherBase);
-                const otherRadius = sizeData[j];
-
-                this.v7.copy(this.v3).sub(this.v2); // Distance vector
-                const dist = this.v7.length();
+        for (let idx = r; idx < t.count; idx++) {
+            const base = 3 * idx;
+            I.fromArray(s, base);
+            B.fromArray(o, base);
+            const radius = n[idx];
+            for (let jdx = idx + 1; jdx < t.count; jdx++) {
+                const otherBase = 3 * jdx;
+                O.fromArray(s, otherBase);
+                N.fromArray(o, otherBase);
+                const otherRadius = n[jdx];
+                _.copy(O).sub(I);
+                const dist = _.length();
                 const sumRadius = radius + otherRadius;
-
                 if (dist < sumRadius) {
                     const overlap = sumRadius - dist;
-                    this.v8.copy(this.v7).normalize().multiplyScalar(0.5 * overlap);
-
-                    this.v9.copy(this.v8).multiplyScalar(Math.max(this.v5.length(), 1));
-                    this.v10.copy(this.v8).multiplyScalar(Math.max(this.v6.length(), 1));
-
-                    this.v2.sub(this.v8);
-                    this.v5.sub(this.v9);
-
-                    this.v2.toArray(positionData, base);
-                    this.v5.toArray(velocityData, base);
-
-                    this.v3.add(this.v8);
-                    this.v6.add(this.v10);
-
-                    this.v3.toArray(positionData, otherBase);
-                    this.v6.toArray(velocityData, otherBase);
+                    j.copy(_)
+                        .normalize()
+                        .multiplyScalar(0.5 * overlap);
+                    H.copy(j).multiplyScalar(Math.max(B.length(), 1));
+                    T.copy(j).multiplyScalar(Math.max(N.length(), 1));
+                    I.sub(j);
+                    B.sub(H);
+                    I.toArray(s, base);
+                    B.toArray(o, base);
+                    O.add(j);
+                    N.add(T);
+                    O.toArray(s, otherBase);
+                    N.toArray(o, otherBase);
                 }
             }
-
-            // Sphere 0 (Cursor) Collision separate check
-            if (config.controlSphere0) {
-                this.v7.copy(this.v1).sub(this.v2);
-                const dist = this.v7.length();
-                const sumRadius0 = radius + sizeData[0];
+            if (t.controlSphere0) {
+                _.copy(F).sub(I);
+                const dist = _.length();
+                const sumRadius0 = radius + n[0];
                 if (dist < sumRadius0) {
                     const diff = sumRadius0 - dist;
-                    this.v8.copy(this.v7.normalize()).multiplyScalar(diff);
-                    this.v9.copy(this.v8).multiplyScalar(Math.max(this.v5.length(), 2));
-                    this.v2.sub(this.v8);
-                    this.v5.sub(this.v9);
+                    j.copy(_.normalize()).multiplyScalar(diff);
+                    H.copy(j).multiplyScalar(Math.max(B.length(), 2));
+                    I.sub(j);
+                    B.sub(H);
                 }
             }
-
-            // Wall Boundaries
-            // X
-            if (Math.abs(this.v2.x) + radius > config.maxX) {
-                this.v2.x = Math.sign(this.v2.x) * (config.maxX - radius);
-                this.v5.x = -this.v5.x * config.wallBounce;
+            if (Math.abs(I.x) + radius > t.maxX) {
+                I.x = Math.sign(I.x) * (t.maxX - radius);
+                B.x = -B.x * t.wallBounce;
             }
-
-            // Y (Floor/Ceiling)
-            if (config.gravity === 0) {
-                if (Math.abs(this.v2.y) + radius > config.maxY) {
-                    this.v2.y = Math.sign(this.v2.y) * (config.maxY - radius);
-                    this.v5.y = -this.v5.y * config.wallBounce;
+            if (t.gravity === 0) {
+                if (Math.abs(I.y) + radius > t.maxY) {
+                    I.y = Math.sign(I.y) * (t.maxY - radius);
+                    B.y = -B.y * t.wallBounce;
                 }
-            } else if (this.v2.y - radius < -config.maxY) {
-                this.v2.y = -config.maxY + radius;
-                this.v5.y = -this.v5.y * config.wallBounce;
+            } else if (I.y - radius < -t.maxY) {
+                I.y = -t.maxY + radius;
+                B.y = -B.y * t.wallBounce;
             }
-
-            // Z (Depth)
-            const maxBoundary = Math.max(config.maxZ, config.maxSize);
-            if (Math.abs(this.v2.z) + radius > maxBoundary) {
-                this.v2.z = Math.sign(this.v2.z) * (config.maxZ - radius);
-                this.v5.z = -this.v5.z * config.wallBounce;
+            const maxBoundary = Math.max(t.maxZ, t.maxSize);
+            if (Math.abs(I.z) + radius > maxBoundary) {
+                I.z = Math.sign(I.z) * (t.maxZ - radius);
+                B.z = -B.z * t.wallBounce;
             }
-
-            this.v2.toArray(positionData, base);
-            this.v5.toArray(velocityData, base);
+            I.toArray(s, base);
+            B.toArray(o, base);
         }
     }
 }
 
-// ==========================================
-// CUSTOM MATERIAL (Thickness Shader)
-// ==========================================
-class BallpitMaterial extends THREE.MeshPhysicalMaterial {
-    constructor(parameters) {
-        super(parameters);
+// ===============================================
+// CUSTOM SHADER MATERIAL (Class Y)
+// ===============================================
+class BallpitMaterial extends MeshPhysicalMaterial {
+    constructor(e) {
+        super(e);
         this.uniforms = {
             thicknessDistortion: { value: 0.1 },
             thicknessAmbient: { value: 0 },
@@ -185,292 +539,226 @@ class BallpitMaterial extends THREE.MeshPhysicalMaterial {
             thicknessScale: { value: 10 }
         };
         this.defines.USE_UV = '';
-
-        this.onBeforeCompile = shader => {
-            Object.assign(shader.uniforms, this.uniforms);
-
-            const fragmentDeclarations = `
-                uniform float thicknessPower;
-                uniform float thicknessScale;
-                uniform float thicknessDistortion;
-                uniform float thicknessAmbient;
-                uniform float thicknessAttenuation;
-            `;
-
-            shader.fragmentShader = fragmentDeclarations + shader.fragmentShader;
-
-            const scatteringFunc = `
-                void RE_Direct_Scattering(const in IncidentLight directLight, const in vec2 uv, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, inout ReflectedLight reflectedLight) {
-                    vec3 scatteringHalf = normalize(directLight.direction + (geometryNormal * thicknessDistortion));
-                    float scatteringDot = pow(saturate(dot(geometryViewDir, -scatteringHalf)), thicknessPower) * thicknessScale;
-                    #ifdef USE_COLOR
-                        vec3 scatteringIllu = (scatteringDot + thicknessAmbient) * vColor;
-                    #else
-                        vec3 scatteringIllu = (scatteringDot + thicknessAmbient) * diffuse;
-                    #endif
-                    reflectedLight.directDiffuse += scatteringIllu * thicknessAttenuation * directLight.color;
-                }
-                void main() {
-            `;
-
-            shader.fragmentShader = shader.fragmentShader.replace('void main() {', scatteringFunc);
-
-            // Hook into lights fragment
-            const lightsFragment = THREE.ShaderChunk.lights_fragment_begin.replaceAll(
-                'RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );',
-                `
-                RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
-                RE_Direct_Scattering(directLight, vUv, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, reflectedLight);
-                `
+        this.onBeforeCompile = e => {
+            Object.assign(e.uniforms, this.uniforms);
+            e.fragmentShader =
+                '\n        uniform float thicknessPower;\n        uniform float thicknessScale;\n        uniform float thicknessDistortion;\n        uniform float thicknessAmbient;\n        uniform float thicknessAttenuation;\n      ' +
+                e.fragmentShader;
+            e.fragmentShader = e.fragmentShader.replace(
+                'void main() {',
+                '\n        void RE_Direct_Scattering(const in IncidentLight directLight, const in vec2 uv, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, inout ReflectedLight reflectedLight) {\n          vec3 scatteringHalf = normalize(directLight.direction + (geometryNormal * thicknessDistortion));\n          float scatteringDot = pow(saturate(dot(geometryViewDir, -scatteringHalf)), thicknessPower) * thicknessScale;\n          #ifdef USE_COLOR\n            vec3 scatteringIllu = (scatteringDot + thicknessAmbient) * vColor;\n          #else\n            vec3 scatteringIllu = (scatteringDot + thicknessAmbient) * diffuse;\n          #endif\n          reflectedLight.directDiffuse += scatteringIllu * thicknessAttenuation * directLight.color;\n        }\n\n        void main() {\n      '
             );
-
-            shader.fragmentShader = shader.fragmentShader.replace('#include <lights_fragment_begin>', lightsFragment);
+            const t = ShaderChunk.lights_fragment_begin.replaceAll(
+                'RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );',
+                '\n          RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );\n          RE_Direct_Scattering(directLight, vUv, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, reflectedLight);\n        '
+            );
+            e.fragmentShader = e.fragmentShader.replace('#include <lights_fragment_begin>', t);
+            if (this.onBeforeCompile2) this.onBeforeCompile2(e);
         };
     }
 }
 
-// ==========================================
-// INSTANCED MESH WRAPPER
-// ==========================================
-const dummyMatrix = new THREE.Object3D();
-
-const DEFAULTS = {
+// ===============================================
+// CONFIG & INSTANCED MESH
+// ===============================================
+const DefaultConfig = {
     count: 200,
-    colors: [0x000000, 0x111111, 0x222222], // Pure Black theme but shiny
-    ambientColor: 0xffffff,
+    colors: [0, 0, 0],
+    ambientColor: 16777215,
     ambientIntensity: 1,
     lightIntensity: 200,
     materialParams: {
-        metalness: 0.6,
-        roughness: 0.2, // Shinier for black glass look
+        metalness: 0.5,
+        roughness: 0.5,
         clearcoat: 1,
-        clearcoatRoughness: 0.1
+        clearcoatRoughness: 0.15
     },
     minSize: 0.5,
-    maxSize: 1.2,
-    size0: 1.5,
-    gravity: 0.7, // As requested
-    friction: 0.9, // Higher friction = less chaos
-    wallBounce: 0.8,
-    maxVelocity: 0.5,
-    maxX: 12, // Wider for hero
-    maxY: 8,
-    maxZ: 5,
+    maxSize: 1,
+    size0: 1,
+    gravity: 0.5,
+    friction: 0.9975,
+    wallBounce: 0.95,
+    maxVelocity: 0.15,
+    maxX: 5,
+    maxY: 5,
+    maxZ: 2,
     controlSphere0: false,
     followCursor: true
 };
 
-class BallpitMeshes extends THREE.InstancedMesh {
-    constructor(renderer, config = {}) {
-        const settings = { ...DEFAULTS, ...config };
+const U = new Object3D();
 
-        // Environment map
-        const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        pmremGenerator.compileEquirectangularShader();
-        const roomEnvironment = new RoomEnvironment();
-        const envMap = pmremGenerator.fromScene(roomEnvironment).texture;
-        roomEnvironment.dispose();
-
-        const geometry = new THREE.SphereGeometry(1, 32, 32);
-        const material = new BallpitMaterial({ envMap, ...settings.materialParams });
-        // Correct envMap rotation
-        material.envMapRotation.x = -Math.PI / 2;
-
-        super(geometry, material, settings.count);
-
-        this.config = settings;
-        this.physics = new Physics(settings);
-
-        this.initLights();
-        this.setColors(settings.colors);
+class BallpitInstancedMesh extends InstancedMesh {
+    constructor(e, t = {}) {
+        // Override color defaults with Eximia Blue/Black theme
+        const eximiaDefaults = {
+            ...DefaultConfig,
+            // Colors: Brand Blue #2563EB, Cyber #0EA5E9, Deep Black #0A0A0A
+            colors: [0x2563EB, 0x0EA5E9, 0x050505],
+            count: 200
+        };
+        const i = { ...eximiaDefaults, ...t };
+        const s = new RoomEnvironment();
+        const n = new PMREMGenerator(e, 0.04).fromScene(s).texture;
+        const o = new SphereGeometry();
+        const r = new BallpitMaterial({ envMap: n, ...i.materialParams });
+        r.envMapRotation.x = -Math.PI / 2;
+        super(o, r, i.count);
+        this.config = i;
+        this.physics = new Physics(i);
+        this.#S();
+        this.setColors(i.colors);
     }
-
-    initLights() {
-        this.ambientLight = new THREE.AmbientLight(this.config.ambientColor, this.config.ambientIntensity);
+    #S() {
+        this.ambientLight = new AmbientLight(this.config.ambientColor, this.config.ambientIntensity);
         this.add(this.ambientLight);
-
-        // Moving light follows cursor sphere
-        this.light = new THREE.PointLight(this.config.colors[0], this.config.lightIntensity);
+        this.light = new PointLight(this.config.colors[0], this.config.lightIntensity);
         this.add(this.light);
     }
-
-    setColors(colors) {
-        if (!Array.isArray(colors) || colors.length === 0) return;
-
-        const tempColor = new THREE.Color();
-        const hexColors = colors.map(c => new THREE.Color(c));
-
-        const getColorAt = (ratio) => {
-            const scaled = Math.max(0, Math.min(1, ratio)) * (hexColors.length - 1);
-            const idx = Math.floor(scaled);
-
-            if (idx >= hexColors.length - 1) return hexColors[hexColors.length - 1].clone();
-
-            const start = hexColors[idx];
-            const end = hexColors[idx + 1];
-            const alpha = scaled - idx;
-
-            return tempColor.clone().copy(start).lerp(end, alpha);
-        }
-
-        for (let i = 0; i < this.count; i++) {
-            const col = getColorAt(i / this.count);
-            this.setColorAt(i, col);
-
-            if (i === 0) {
-                this.light.color.copy(col);
+    setColors(e) {
+        if (Array.isArray(e) && e.length > 1) {
+            const t = (function (e) {
+                let t, i;
+                function setColors(e) {
+                    t = e;
+                    i = [];
+                    t.forEach(col => {
+                        i.push(new Color(col));
+                    });
+                }
+                setColors(e);
+                return {
+                    setColors,
+                    getColorAt: function (ratio, out = new Color()) {
+                        const scaled = Math.max(0, Math.min(1, ratio)) * (t.length - 1);
+                        const idx = Math.floor(scaled);
+                        const start = i[idx];
+                        if (idx >= t.length - 1) return start.clone();
+                        const alpha = scaled - idx;
+                        const end = i[idx + 1];
+                        out.r = start.r + alpha * (end.r - start.r);
+                        out.g = start.g + alpha * (end.g - start.g);
+                        out.b = start.b + alpha * (end.b - start.b);
+                        return out;
+                    }
+                };
+            })(e);
+            for (let idx = 0; idx < this.count; idx++) {
+                this.setColorAt(idx, t.getColorAt(idx / this.count));
+                if (idx === 0) {
+                    this.light.color.copy(t.getColorAt(idx / this.count));
+                }
             }
+            this.instanceColor.needsUpdate = true;
         }
-        this.instanceColor.needsUpdate = true;
     }
-
-    update(time) {
-        this.physics.update(time);
-
-        for (let i = 0; i < this.count; i++) {
-            dummyMatrix.position.fromArray(this.physics.positionData, 3 * i);
-
-            // Cursor sphere visibility
-            if (i === 0 && !this.config.followCursor) {
-                dummyMatrix.scale.setScalar(0);
+    update(e) {
+        this.physics.update(e);
+        for (let idx = 0; idx < this.count; idx++) {
+            U.position.fromArray(this.physics.positionData, 3 * idx);
+            if (idx === 0 && this.config.followCursor === false) {
+                U.scale.setScalar(0);
             } else {
-                dummyMatrix.scale.setScalar(this.physics.sizeData[i]);
+                U.scale.setScalar(this.physics.sizeData[idx]);
             }
-
-            dummyMatrix.updateMatrix();
-            this.setMatrixAt(i, dummyMatrix.matrix);
-
-            if (i === 0) this.light.position.copy(dummyMatrix.position);
+            U.updateMatrix();
+            this.setMatrixAt(idx, U.matrix);
+            if (idx === 0) this.light.position.copy(U.position);
         }
         this.instanceMatrix.needsUpdate = true;
     }
 }
 
-// ==========================================
-// SCENE SETUP & RENDER LOOP
-// ==========================================
-class BallpitManager {
-    constructor(containerId) {
-        this.container = document.getElementById(containerId);
-        if (!this.container) {
-            console.error('Ballpit container not found');
-            return;
+// ===============================================
+// FACTORY FUNCTION & AUTO-INIT
+// ===============================================
+
+function createBallpit(canvas, t = {}) {
+    const i = new RenderManager({
+        canvas: canvas,
+        size: 'parent',
+        rendererOptions: { antialias: true, alpha: true }
+    });
+    let s;
+    i.renderer.toneMapping = ACESFilmicToneMapping;
+    i.camera.position.set(0, 0, 20);
+    i.camera.lookAt(0, 0, 0);
+    i.cameraMaxAspect = 1.5;
+    i.resize();
+    initialize(t);
+
+    const n = new Raycaster();
+    const o = new Plane(new Vector3(0, 0, 1), 0);
+    const r = new Vector3();
+    let c = false;
+
+    canvas.style.touchAction = 'none';
+    canvas.style.userSelect = 'none';
+    canvas.style.webkitUserSelect = 'none';
+
+    const h = InputHandler({
+        domElement: canvas,
+        onMove() {
+            n.setFromCamera(h.nPosition, i.camera);
+            i.camera.getWorldDirection(o.normal);
+            n.ray.intersectPlane(o, r);
+            s.physics.center.copy(r);
+            s.config.controlSphere0 = true;
+        },
+        onLeave() {
+            s.config.controlSphere0 = false;
         }
-
-        this.width = this.container.offsetWidth;
-        this.height = this.container.offsetHeight;
-
-        this.initThree();
-        this.initInteraction();
-        this.resize();
-        this.animate();
-
-        window.addEventListener('resize', () => this.resize());
+    });
+    function initialize(e) {
+        if (s) {
+            i.clear();
+            i.scene.remove(s);
+        }
+        s = new BallpitInstancedMesh(i.renderer, e);
+        i.scene.add(s);
     }
-
-    initThree() {
-        this.scene = new THREE.Scene();
-
-        this.camera = new THREE.PerspectiveCamera(50, this.width / this.height, 0.1, 100);
-        this.camera.position.set(0, 0, 25);
-
-        this.renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true,
-            powerPreference: 'high-performance'
-        });
-
-        this.renderer.setSize(this.width, this.height);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-
-        this.container.appendChild(this.renderer.domElement);
-        this.renderer.domElement.style.width = '100%';
-        this.renderer.domElement.style.height = '100%';
-
-        // Initialize Ballpit
-        this.ballpit = new BallpitMeshes(this.renderer, {
-            // Config overrides if needed
-            colors: ['#38bdf8', '#818cf8', '#1e293b'], // Brand Gradient Colors
-            count: 150
-        });
-        this.scene.add(this.ballpit);
-    }
-
-    initInteraction() {
-        this.pointer = new THREE.Vector2();
-        this.raycaster = new THREE.Raycaster();
-        this.plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-        this.intersectPoint = new THREE.Vector3();
-
-        const onMove = (clientX, clientY) => {
-            const rect = this.container.getBoundingClientRect();
-            // Normalized Device Coordinates
-            this.pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-            this.pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-
-            this.raycaster.setFromCamera(this.pointer, this.camera);
-            this.raycaster.ray.intersectPlane(this.plane, this.intersectPoint);
-
-            // Update physics center target to mouse pos
-            this.ballpit.physics.center.copy(this.intersectPoint);
-            this.ballpit.config.controlSphere0 = true;
-        };
-
-        this.container.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
-        this.container.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (e.touches.length > 0) onMove(e.touches[0].clientX, e.touches[0].clientY);
-        }, { passive: false });
-
-        this.container.addEventListener('mouseleave', () => {
-            this.ballpit.config.controlSphere0 = false;
-        });
-
-        this.container.addEventListener('touchend', () => {
-            this.ballpit.config.controlSphere0 = false;
-        });
-    }
-
-    resize() {
-        this.width = this.container.offsetWidth;
-        this.height = this.container.offsetHeight;
-
-        this.camera.aspect = this.width / this.height;
-        this.camera.updateProjectionMatrix();
-
-        this.renderer.setSize(this.width, this.height);
-
-        // Update physics boundaries based on view
-        // Approximate view width at z=0 (depth 0)
-        // This keeps balls somewhat within screen (simplified)
-        const dist = this.camera.position.z;
-        const vFov = (this.camera.fov * Math.PI) / 180;
-        const visibleHeight = 2 * Math.tan(vFov / 2) * dist;
-        const visibleWidth = visibleHeight * this.camera.aspect;
-
-        this.ballpit.config.maxX = visibleWidth / 2;
-        this.ballpit.config.maxY = visibleHeight / 2;
-        // console.log("Bounds", visibleWidth, visibleHeight);
-    }
-
-    animate() {
-        requestAnimationFrame(() => this.animate());
-
-        const time = {
-            delta: this.clock ? this.clock.getDelta() : 0.016
-        };
-        if (!this.clock) this.clock = new THREE.Clock(); // Init clock once
-
-        this.ballpit.update(time);
-        this.renderer.render(this.scene, this.camera);
-    }
+    i.onBeforeRender = e => {
+        if (!c) s.update(e);
+    };
+    i.onAfterResize = e => {
+        s.config.maxX = e.wWidth / 2;
+        s.config.maxY = e.wHeight / 2;
+    };
+    return {
+        three: i,
+        get spheres() {
+            return s;
+        },
+        setCount(e) {
+            initialize({ ...s.config, count: e });
+        },
+        togglePause() {
+            c = !c;
+        },
+        dispose() {
+            h.dispose();
+            i.dispose();
+        }
+    };
 }
 
-// Initializer
+// Init when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Only init if the container exists
-    if (document.getElementById('ballpit-container')) {
-        new BallpitManager('ballpit-container');
+    const container = document.getElementById('ballpit-container');
+    if (container) {
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        container.appendChild(canvas);
+
+        // Init
+        createBallpit(canvas, {
+            count: 100,
+            friction: 0.9,
+            gravity: 0.5,
+            colors: ['#2563EB', '#0EA5E9', '#000000'] // Custom colors
+        });
     }
 });
