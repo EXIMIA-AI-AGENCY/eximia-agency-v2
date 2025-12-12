@@ -4099,4 +4099,195 @@ body.no-scroll {
     line-height: 1.6;
     color: var(--text-secondary);
     margin-top: 0.5rem;
+}/* =========================================
+   SERVICES ACCORDION (Dev Page)
+   ========================================= */
+
+.services-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.service-item {
+    background: rgba(10, 10, 15, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.service-item:hover {
+    border-color: rgba(147, 51, 234, 0.3);
+}
+
+.service-item.active {
+    border-color: rgba(147, 51, 234, 0.5);
+    background: rgba(147, 51, 234, 0.05);
+}
+
+.service-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.service-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a855f7;
+    transition: all 0.3s ease;
+}
+
+.service-item:hover .service-icon {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(59, 130, 246, 0.3));
+    transform: scale(1.05);
+}
+
+.service-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+}
+
+.service-title-group {
+    flex: 1;
+}
+
+.service-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.service-tagline {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.service-toggle {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-secondary);
+}
+
+.service-toggle:hover {
+    background: rgba(147, 51, 234, 0.2);
+    border-color: rgba(147, 51, 234, 0.4);
+    color: #a855f7;
+}
+
+.service-toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.service-item.active .service-toggle svg {
+    transform: rotate(180deg);
+}
+
+.service-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 2rem;
+}
+
+.service-item.active .service-content {
+    max-height: 1000px;
+    padding: 0 2rem 2rem 2rem;
+}
+
+.service-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.feature-check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: #4ade80;
+    stroke-width: 2.5;
+    margin-top: 2px;
+}
+
+.service-benefit {
+    background: rgba(147, 51, 234, 0.1);
+    border-left: 3px solid #a855f7;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.service-benefit strong {
+    color: #a855f7;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .service-header {
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+
+    .service-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .service-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .service-title {
+        font-size: 1.1rem;
+    }
+
+    .service-tagline {
+        font-size: 0.85rem;
+    }
+
+    .service-content {
+        padding: 0 1.5rem;
+    }
+
+    .service-item.active .service-content {
+        padding: 0 1.5rem 1.5rem 1.5rem;
+    }
 }
