@@ -4057,8 +4057,8 @@ body.no-scroll {
     background: rgba(255, 255, 255, 0.03);
     padding: 0.5rem 1rem;
     border-radius: 8px;
+    object-fit: contain;
     width: auto;
-    max-width: 180px;
 }
 
 .footer-social {
