@@ -4474,4 +4474,139 @@ body.no-scroll {
         width: 100%;
         text-align: center;
     }
+}/* =========================================
+   DEV PAGE MOBILE OPTIMIZATIONS
+   ========================================= */
+
+/* Hero Section Mobile */
+@media (max-width: 768px) {
+    .dev-hero {
+        min-height: 600px !important;
+        height: 100vh !important;
+        padding: 0 1rem;
+    }
+
+    .dev-hero h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .dev-hero .section-subtitle {
+        font-size: 1rem !important;
+        max-width: 100% !important;
+        padding: 0 1rem;
+    }
+
+    .dev-hero .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Service Sections Mobile Enhancements */
+@media (max-width: 968px) {
+    .service-section {
+        padding: 3rem 0 !important;
+    }
+
+    .service-layout,
+    .service-layout.reverse {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .service-layout.reverse .service-visual,
+    .service-layout.reverse .service-details {
+        order: initial;
+    }
+
+    .service-visual {
+        padding: 2rem 0;
+    }
+
+    .service-icon-large {
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
+    }
+
+    .service-icon-large svg {
+        width: 60px;
+        height: 60px;
+    }
+
+    .service-details {
+        padding: 0;
+    }
+
+    .service-heading {
+        font-size: 1.75rem;
+        line-height: 1.3;
+        margin-bottom: 1rem;
+    }
+
+    .service-intro {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .service-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .service-feature-box {
+        padding: 1.25rem;
+    }
+
+    .service-feature-box h4 {
+        font-size: 1rem;
+    }
+
+    .service-feature-box p {
+        font-size: 0.9rem;
+    }
+
+    .service-cta-row {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .service-cta-row .btn {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+    }
+}
+
+/* Extra Small Mobile (< 480px) */
+@media (max-width: 480px) {
+    .dev-hero h1 {
+        font-size: 2rem !important;
+    }
+
+    .service-heading {
+        font-size: 1.5rem;
+    }
+
+    .service-icon-large {
+        width: 100px;
+        height: 100px;
+    }
+
+    .service-icon-large svg {
+        width: 50px;
+        height: 50px;
+    }
+
+    .service-feature-box {
+        padding: 1rem;
+    }
+}
+
+/* Letter Glitch Mobile Optimization */
+@media (max-width: 768px) {
+    #letter-glitch-root {
+        opacity: 0.4;
+    }
 }
