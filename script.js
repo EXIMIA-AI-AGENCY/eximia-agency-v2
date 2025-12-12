@@ -37,11 +37,7 @@ function initNavigation() {
         navLinks.classList.toggle('active');
 
         // Toggle Body Scroll Lock
-        if (navLinks.classList.contains('active')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
+        document.body.classList.toggle('no-scroll');
     });
 
     // Close menu when clicking on a link
@@ -50,7 +46,7 @@ function initNavigation() {
         link.addEventListener('click', function () {
             hamburger.classList.remove('active');
             navLinks.classList.remove('active');
-            document.body.style.overflow = ''; // Unlock scroll
+            document.body.classList.remove('no-scroll'); // Unlock scroll
         });
     });
 
