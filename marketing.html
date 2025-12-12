@@ -35,6 +35,8 @@
 </head>
 
 <body>
+
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container">
@@ -50,10 +52,7 @@
                     <li><a href="index.html#casos">Casos</a></li>
                     <li><a href="marketing.html" class="active">Marketing</a></li>
                     <li><a href="contacto.html">Contáctanos</a></li>
-
                 </ul>
-
-
 
                 <div class="nav-cta">
                     <a href="https://crm.eximia.agency/" class="btn btn-primary">Sign In</a>
@@ -68,158 +67,142 @@
         </div>
     </nav>
 
-    <!-- Ballpit Hero -->
-    <section class="hero marketing-hero" style="min-height: 600px; padding-top: 8rem; position: relative;">
-        <!-- Canvas Container -->
-        <div id="ballpit-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
-        </div>
+    <div class="page-container">
+        <!-- HERO SECTION WITH BALLPIT -->
+        <section class="marketing-hero"
+            style="position: relative; height: 80vh; min-height: 600px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 80px;">
 
-        <div class="container" style="position: relative; z-index: 2; pointer-events: none;">
-            <div class="hero-content">
-                <span class="badge">EXIMIA MARKETING</span>
-                <h1 class="hero-title">Dominio Digital <span class="gradient-text">Absoluto</span></h1>
-                <p class="hero-subtitle">
-                    Estrategias de adquisición de clientes potenciadas por Inteligencia Artificial y Datos Masivos.
+            <!-- Ballpit Container -->
+            <div id="ballpit-container"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+
+            <!-- Hero Content Overlay -->
+            <div class="container" style="position: relative; z-index: 2; text-align: center; pointer-events: none;">
+                <h1 class="section-title"
+                    style="font-size: 3.5rem; margin-bottom: 1.5rem; text-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+                    Dominio Digital <span class="gradient-text">Total</span>
+                </h1>
+                <p class="section-subtitle"
+                    style="max-width: 700px; margin: 0 auto; margin-bottom: 2.5rem; text-shadow: 0 5px 15px rgba(0,0,0,0.8);">
+                    Estrategias de marketing agresivas impulsadas por Inteligencia Artificial para escalar tu cuota de
+                    mercado.
                 </p>
-                <div class="cta-row" style="pointer-events: auto;">
-                    <a href="#marketing-plans" class="btn btn-primary btn-large">Ver Planes</a>
+                <!-- Pointer events auto to allow clicking button -->
+                <div style="pointer-events: auto;">
+                    <a href="#strategies" class="btn btn-primary">Ver Estrategias</a>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Marketing Content -->
-    <section class="marketing-info section-padding" style="background: var(--bg-secondary);">
-        <div class="container">
-            <div class="section-title">
-                <h2>El Motor de Crecimiento</h2>
-                <p class="section-subtitle">No solo automatizamos, traemos el tráfico.</p>
+            <!-- Gradient Fade at bottom -->
+            <div
+                style="position: absolute; bottom: 0; left: 0; width: 100%; height: 150px; background: linear-gradient(to top, #000 0%, transparent 100%); z-index: 2; pointer-events: none;">
             </div>
+        </section>
 
-            <div class="grid-3 features-grid">
-                <div class="step-card">
-                    <div class="step-number">01</div>
-                    <h3 style="margin-bottom: 1rem; color: white;">Ads con IA</h3>
-                    <p>Optimización de campañas en Meta y Google usando algoritmos predictivos para bajar el CPA.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">02</div>
-                    <h3 style="margin-bottom: 1rem; color: white;">Contenido Viral</h3>
-                    <p>Producción de scripts y creativos basados en tendencias de datos en tiempo real.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">03</div>
-                    <h3 style="margin-bottom: 1rem; color: white;">Retargeting Omnicanal</h3>
-                    <p>Perseguimos a tus leads por SMS, Email y Redes hasta que convierten.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        <!-- SERVICES SECTION -->
+        <section id="strategies" class="marketing-strategies" style="padding: 6rem 0; background: #000;">
+            <div class="container">
+                <h2 class="section-title center">Nuestras <span class="gradient-text">Armas Secretas</span></h2>
+                <div class="plans-grid"
+                    style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top: 4rem;">
 
-    <!-- Marketing Plans -->
-    <section id="marketing-plans" class="section-padding">
-        <div class="container">
-            <div class="section-title">
-                <h2>Planes de Marketing</h2>
-                <p class="section-subtitle">Escala tu operación con nuestros paquetes de crecimiento.</p>
-            </div>
-
-            <div class="plans-grid">
-                <!-- Basic Plan -->
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3>Growth Starter</h3>
-                        <div class="plan-price">$997<span>/mes</span></div>
-                        <p class="plan-desc">Para negocios que inician su escalada digital.</p>
+                    <!-- Strategy 1 -->
+                    <div class="plan-card" style="align-items: flex-start; text-align: left;">
+                        <div class="plan-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="plan-name">Ads de Alto Impacto</h3>
+                        <p class="plan-description">Campañas en Meta y Google optimizadas algorítmicamente para reducir
+                            el CPA y maximizar el ROAS.</p>
                     </div>
-                    <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> Gestión de Ads (Meta/Google)</li>
-                        <li><span class="check-icon">✓</span> 4 Creativos de Alto Impacto</li>
-                        <li><span class="check-icon">✓</span> Reportes Quincenales</li>
-                        <li><span class="check-icon">✓</span> Setup de Pixel & Tracking</li>
-                    </ul>
-                    <a href="#" class="btn btn-outline btn-block">Elegir Plan</a>
-                </div>
 
-                <!-- Pro Plan -->
-                <div class="plan-card popular">
-                    <div class="popular-badge">MÁS ELEGIDO</div>
-                    <div class="plan-header">
-                        <h3>Dominance Scale</h3>
-                        <div class="plan-price">$2,497<span>/mes</span></div>
-                        <p class="plan-desc">Dominación total de tu mercado local.</p>
+                    <!-- Strategy 2 -->
+                    <div class="plan-card" style="align-items: flex-start; text-align: left;">
+                        <div class="plan-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="plan-name">Contenido Viral IA</h3>
+                        <p class="plan-description">Generación masiva de contenido de formato corto diseñado para
+                            retención y viralidad orgánica.</p>
                     </div>
-                    <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> Todo en Starter</li>
-                        <li><span class="check-icon">✓</span> 12 Creativos / Mes</li>
-                        <li><span class="check-icon">✓</span> Landing Page de Alta Conversión</li>
-                        <li><span class="check-icon">✓</span> Automaciones de Email Marketing</li>
-                        <li><span class="check-icon">✓</span> Optimizaciones Diarias</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary btn-block">Empezar Ahora</a>
-                </div>
 
-                <!-- Enterprise -->
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3>Eximia Enterprise</h3>
-                        <div class="plan-price">Cotizar</div>
-                        <p class="plan-desc">Infraestructura completa para marcas nacionales.</p>
+                    <!-- Strategy 3 -->
+                    <div class="plan-card" style="align-items: flex-start; text-align: left;">
+                        <div class="plan-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="plan-name">Funnels de Conversión</h3>
+                        <p class="plan-description">Arquitectura de embudos de venta probados que convierten tráfico
+                            frío en clientes leales.</p>
                     </div>
-                    <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> CMO Fraccional Dedicado</li>
-                        <li><span class="check-icon">✓</span> Producción de Video Profesional</li>
-                        <li><span class="check-icon">✓</span> Estrategia Omnicanal Completa</li>
-                        <li><span class="check-icon">✓</span> Integración CRM Personalizada</li>
-                    </ul>
-                    <a href="#" class="btn btn-outline btn-block">Agendar Llamada</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="brand-col">
-                    <img src="logo.png" alt="EXIMIA" style="height: 30px; opacity: 0.8;">
-                    <p class="footer-tagline">El sistema operativo para el crecimiento empresarial moderno.</p>
-                </div>
-                <div class="footer-column">
-                    <h4>Producto</h4>
-                    <ul>
-                        <li><a href="index.html#solucion">Solución</a></li>
-                        <li><a href="index.html#planes">Planes</a></li>
-                        <li><a href="marketing.html">Marketing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Compañía</h4>
-                    <ul>
-                        <li><a href="#">Nosotros</a></li>
-                        <li><a href="#">Carreras</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#">Privacidad</a></li>
-                        <li><a href="#">Términos</a></li>
-                    </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <div class="copyright">© 2024 EXIMIA AGENCY. Todos los derechos reservados.</div>
-                <div class="footer-note">Diseñado para el futuro.</div>
-            </div>
-        </div>
-    </footer>
+        </section>
 
-    <!-- Scripts -->
-    <script src="script.js"></script>
-    <script type="module" src="marketing-ballpit.js"></script>
+        <!-- CTA SECTION -->
+        <section class="final-cta">
+            <div class="cta-bg-glow"></div>
+            <div class="container center">
+                <div class="cta-content">
+                    <h2>¿Listo para <span class="gradient-text">Dominar?</span></h2>
+                    <p>No dejes que tu competencia te gane el terreno. Actúa ahora.</p>
+                    <a href="agendar.html" class="btn btn-primary btn-xl">Agendar Estrategia</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="brand-col">
+                        <img src="logo.png" alt="EXIMIA" style="height: 30px; opacity: 0.8;">
+                        <p class="footer-tagline">El sistema operativo para el crecimiento empresarial moderno.</p>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Producto</h4>
+                        <ul>
+                            <li><a href="index.html#solucion">Solución</a></li>
+                            <li><a href="index.html#planes">Planes</a></li>
+                            <li><a href="marketing.html">Marketing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Compañía</h4>
+                        <ul>
+                            <li><a href="#">Nosotros</a></li>
+                            <li><a href="#">Carreras</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacidad</a></li>
+                            <li><a href="#">Términos</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="copyright">© 2024 EXIMIA AGENCY. Todos los derechos reservados.</div>
+                    <div class="footer-note">Diseñado para el futuro.</div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scripts -->
+        <script src="script.js"></script>
+        <script type="module" src="marketing-ballpit.js"></script>
 </body>
 
 </html>
