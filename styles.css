@@ -4042,4 +4042,52 @@ body.no-scroll {
         padding: 1.5rem;
         margin-bottom: 2rem;
     }
+}/* =========================================
+   ENHANCED FOOTER STYLES
+   ========================================= */
+
+.footer-logo {
+    height: 35px;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.footer-social a:hover {
+    background: rgba(147, 51, 234, 0.2);
+    color: #a855f7;
+    transform: translateY(-2px);
+}
+
+.footer-social svg {
+    width: 18px;
+    height: 18px;
+}
+
+.brand-col {
+    max-width: 280px;
+}
+
+.footer-tagline {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
 }
