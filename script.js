@@ -216,9 +216,10 @@ function initPlanToggle() {
                 if (!planType) return;
 
                 if (planType === selectedType) {
-                    plan.classList.remove('plan-faded');
+                    plan.style.display = 'block';
+                    // Trigger reflow/animation if needed, but for now simple switch
                 } else {
-                    plan.classList.add('plan-faded');
+                    plan.style.display = 'none';
                 }
             });
         });
