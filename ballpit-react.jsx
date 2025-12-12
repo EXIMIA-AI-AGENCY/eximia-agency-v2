@@ -293,7 +293,7 @@ const Ballpit = ({ className = '', count = 100 }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const instance = createScene(canvas, { count, size0: 1.5, minSize: 0.5, maxSize: 1.0, gravity: 0.5, friction: 0.95, wallBounce: 0.9 });
+        const instance = createScene(canvas, { count, size0: 1.5, minSize: 0.5, maxSize: 1.0, gravity: 0.1, friction: 0.95, wallBounce: 0.9 });
         return () => instance.dispose();
     }, [count]);
 
