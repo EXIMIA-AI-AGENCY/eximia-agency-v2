@@ -354,7 +354,7 @@ p {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 99999;
     padding: 1.5rem 0;
     transition: all var(--transition-base);
     border-bottom: 1px solid transparent;
@@ -595,6 +595,15 @@ p {
     position: relative;
     overflow: hidden;
     padding-top: 4rem;
+}
+
+/* Prevent background elements from blocking clicks */
+#hero-animation-container,
+#hero-animation-container canvas,
+.hero-gradient,
+.hero-gradient-left,
+.hero-gradient-bottom {
+    pointer-events: none !important;
 }
 
 /* Workflow Animation Canvas - Removed
