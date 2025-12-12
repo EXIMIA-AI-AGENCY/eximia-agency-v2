@@ -2,8 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const navbarContainer = document.getElementById("navbar");
 
     if (navbarContainer) {
-        // 1. Inject Navbar HTML
+        // Inject Navbar HTML with checkbox hack for iOS compatibility
         navbarContainer.innerHTML = `
+        <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
         <div class="container">
             <div class="nav-content">
                 <div class="logo">
@@ -22,22 +23,29 @@ document.addEventListener("DOMContentLoaded", function () {
                     <a href="https://crm.eximia.agency/" class="btn btn-primary">Sign In</a>
                 </div>
 
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu" type="button">
+                <label for="menu-toggle" class="hamburger" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </button>
+                </label>
             </div>
         </div>
         `;
 
-        // 2. Set Active Link
+        // Set Active Link
         setActiveLink();
 
-        // 3. Setup mobile menu with TOUCH support for iOS
-        setupMobileMenu();
+        // Close menu when clicking on nav links
+        const navLinksItems = document.querySelectorAll('.nav-links a');
+        const menuToggle = document.getElementById('menu-toggle');
 
-        console.log("Navbar injected successfully");
+        navLinksItems.forEach(link => {
+            link.addEventListener('click', function () {
+                if (menuToggle) menuToggle.checked = false;
+            });
+        });
+
+        console.log("Navbar injected with checkbox hack");
     }
 });
 
@@ -49,65 +57,12 @@ function setActiveLink() {
 
     links.forEach(link => {
         link.classList.remove('active');
-        const href = link.getAttribute('href');
-
-        if ((path === '/' || path.endsWith('index.html')) && href.includes('index.html')) {
-            // Home logic
-        }
-        else if (page === href) {
-            link.classList.add('active');
-        }
     });
 
-    // Explicit highlights
     if (page.includes("marketing")) document.querySelector('a[data-page="marketing"]')?.classList.add("active");
     if (page.includes("dev")) document.querySelector('a[data-page="dev"]')?.classList.add("active");
     if (page.includes("voice-demo")) document.querySelector('a[data-page="demo"]')?.classList.add("active");
     if (page.includes("contacto")) document.querySelector('a[data-page="contact"]')?.classList.add("active");
-}
-
-// Setup mobile menu with proper touch support
-function setupMobileMenu() {
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-
-    if (!hamburger || !navLinks) {
-        console.error("Hamburger or navLinks not found");
-        return;
-    }
-
-    // Toggle function
-    function toggleMenu(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        document.body.classList.toggle('no-scroll');
-
-        console.log("Menu toggled - active:", navLinks.classList.contains('active'));
-    }
-
-    // Close menu function
-    function closeMenu() {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-    }
-
-    // Add both click AND touch events for iOS compatibility
-    hamburger.addEventListener('click', toggleMenu);
-    hamburger.addEventListener('touchend', function (e) {
-        e.preventDefault(); // Prevent ghost click
-        toggleMenu(e);
-    });
-
-    // Close menu when clicking on nav links
-    const navLinksItems = navLinks.querySelectorAll('a');
-    navLinksItems.forEach(link => {
-        link.addEventListener('click', closeMenu);
-        link.addEventListener('touchend', closeMenu);
-    });
 }
 
 // Sticky Navbar Logic

@@ -453,6 +453,34 @@ p {
     transition: all var(--transition-base);
 }
 
+/* =================================
+   CHECKBOX HACK FOR iOS MOBILE MENU
+   ================================= */
+.menu-toggle-checkbox {
+    display: none;
+}
+
+/* When checkbox is checked, show the menu */
+.menu-toggle-checkbox:checked~.container .nav-links {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+}
+
+/* When checkbox is checked, animate hamburger to X */
+.menu-toggle-checkbox:checked~.container .hamburger span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle-checkbox:checked~.container .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle-checkbox:checked~.container .hamburger span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
 @media (max-width: 1024px) {
 
     /* 1. Ensure Logo/Hamburger are clickable above overlay */
