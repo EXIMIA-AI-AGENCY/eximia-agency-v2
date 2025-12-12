@@ -329,11 +329,11 @@ p {
     padding: 1.5rem 0;
     transition: all var(--transition-base);
     border-bottom: 1px solid transparent;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
 }
 
 .navbar.scrolled {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
 }
