@@ -2459,26 +2459,30 @@ p {
 /* ================================
    Final CTA (Hero Level)
    ================================ */
+/* ================================
+   Final CTA (Hero Level)
+   ================================ */
 .final-cta {
-    padding: 10rem 0 8rem;
+    padding: 6rem 0;
     position: relative;
     overflow: hidden;
     text-align: center;
-    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    /* Deep void background */
+    background: #000;
 }
 
+/* Subtle background accent over the void */
 .cta-bg-glow {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(147, 51, 234, 0.12) 0%, rgba(56, 189, 248, 0.05) 40%, transparent 70%);
-    filter: blur(60px);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, rgba(56, 189, 248, 0.05) 50%, transparent 70%);
+    filter: blur(80px);
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
 }
 
 .cta-content {
@@ -2488,10 +2492,20 @@ p {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+
+    /* Glass Card Effect */
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 4rem 2rem;
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(10px);
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
 }
 
 .final-cta h2 {
-    font-size: 3.5rem;
+    font-size: 3rem;
     line-height: 1.1;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -2506,6 +2520,7 @@ p {
 .final-cta .btn-xl {
     padding: 1rem 3rem;
     font-size: 1.1rem;
+    min-width: 200px;
 }
 
 /* ================================
@@ -2583,10 +2598,33 @@ p {
 }
 
 @media (max-width: 768px) {
-    .final-cta h2 {
-        font-size: 2.5rem;
+    .final-cta {
+        padding: 4rem 0.5rem;
+        /* Less vertical padding, small side gap */
     }
 
+    .cta-content {
+        padding: 2.5rem 1.5rem;
+        /* Tighter card padding */
+    }
+
+    .final-cta h2 {
+        font-size: 2rem;
+        /* Much smaller mobile title */
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .final-cta .btn-xl {
+        width: 100%;
+        /* Full width buttons on mobile */
+    }
+
+    /* Footer adjustments */
     .footer-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
