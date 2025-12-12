@@ -507,8 +507,28 @@ p {
     }
 
     /* 6. Hide Desktop CTA */
+    /* 6. Show CTA in Header (Mobile) */
     .nav-cta {
-        display: none;
+        display: flex;
+        margin-left: auto;
+        /* Push to right */
+        margin-right: 15px;
+        /* Space from hamburger */
+        z-index: 3001;
+        /* Ensure visible */
+    }
+
+    .nav-cta .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        height: auto;
+        min-height: 0;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-cta .btn:hover {
+        background: rgba(255, 255, 255, 0.2);
     }
 
     /* 7. Hamburger Animations */
