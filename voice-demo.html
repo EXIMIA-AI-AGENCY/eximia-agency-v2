@@ -132,13 +132,28 @@
                         </div>
                     </div>
                     <div class="widget-compartment"
-                        style="margin-top: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 140px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 2rem;">
+                        style="margin-top: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 200px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 2rem; position: relative; overflow: hidden;">
                         <!-- Premium Voice Widget Script -->
-                        <elevenlabs-convai agent-id="agent_01jxr8njx9fyn8bn0fh921hcfw"></elevenlabs-convai>
+                        <style>
+                            elevenlabs-convai {
+                                position: static !important;
+                                display: flex !important;
+                                justify-content: center !important;
+                                align-items: center !important;
+                                width: 100% !important;
+                                margin: 0 auto !important;
+                                transform: none !important;
+                                bottom: auto !important;
+                                right: auto !important;
+                            }
+                        </style>
+                        <div style="transform: scale(1.5);"> <!-- Escalar un poco el botón si es muy pequeño -->
+                            <elevenlabs-convai agent-id="agent_01jxr8njx9fyn8bn0fh921hcfw"></elevenlabs-convai>
+                        </div>
                         <script src="https://unpkg.com/@elevenlabs/convai-widget-embed@beta" async
                             type="text/javascript"></script>
 
-                        <div style="margin-top: 1rem; text-align: center; opacity: 0.5;">
+                        <div style="margin-top: 2rem; text-align: center; opacity: 0.5;">
                             <p style="font-size: 0.75rem; color: #fff; margin: 0;">Powered by</p>
                             <p style="font-size: 0.85rem; color: #a855f7; margin: 0; font-weight: 500;">ElevenLabs</p>
                         </div>
