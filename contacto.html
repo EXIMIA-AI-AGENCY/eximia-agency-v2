@@ -143,32 +143,8 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <a href="index.html"><img src="logo.png" alt="EXIMIA"></a>
-                </div>
-
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="index.html#planes">Planes</a></li>
-                    <li><a href="marketing.html">Marketing</a></li>
-                    <li><a href="dev.html">Dev</a></li>
-                    <li><a href="contacto.html" class="active">Contáctanos</a></li>
-                </ul>
-
-                <div class="nav-cta">
-                    <a href="https://crm.eximia.agency/" class="btn btn-primary">Sign In</a>
-                </div>
-
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation (Injected by navbar.js) -->
+    <nav class="navbar" id="navbar"></nav>
 
     <div class="contact-page">
         <section class="contact-hero">
@@ -280,6 +256,7 @@
             // Handle iframe resizing messages from GHL if applicable
         });
     </script>
+    <script src="navbar.js"></script>
     <script src="script.js"></script>
     <!-- Chat Widget -->
     <script src="https://widgets.leadconnectorhq.com/loader.js"
