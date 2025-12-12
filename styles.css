@@ -458,7 +458,7 @@ p {
     /* 1. Ensure Logo/Hamburger are clickable above overlay */
     .logo,
     .hamburger {
-        z-index: 3000;
+        z-index: 99999 !important;
         position: relative;
         display: flex;
         /* Make it visible! */
