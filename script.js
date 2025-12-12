@@ -117,36 +117,35 @@ function initAnimatedCounters() {
 // ================================
 
 function initFAQ() {
-    const faqItems = document.querySelectorAll('.faq-item');
-    if (faqItems.length === 0) return;
+    const faqList = document.querySelector('.faq-list');
+    if (!faqList) return;
 
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
+    faqList.addEventListener('click', (e) => {
+        const questionBtn = e.target.closest('.faq-question');
+        if (!questionBtn) return; // Clicked outside a question button
+
+        const item = questionBtn.closest('.faq-item');
         const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('active');
 
-        if (!question || !answer) return;
-
-        question.addEventListener('click', () => {
-            const isOpen = item.classList.contains('active');
-
-            // Accordion: Close all others
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item && otherItem.classList.contains('active')) {
-                    otherItem.classList.remove('active');
-                    const otherAnswer = otherItem.querySelector('.faq-answer');
-                    if (otherAnswer) otherAnswer.style.maxHeight = null;
-                }
-            });
-
-            // Toggle current
-            if (isOpen) {
-                item.classList.remove('active');
-                answer.style.maxHeight = null;
-            } else {
-                item.classList.add('active');
-                answer.style.maxHeight = answer.scrollHeight + "px";
+        // Close all other items
+        const allItems = faqList.querySelectorAll('.faq-item');
+        allItems.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+                otherItem.classList.remove('active');
+                const otherAnswer = otherItem.querySelector('.faq-answer');
+                if (otherAnswer) otherAnswer.style.maxHeight = null;
             }
         });
+
+        // Toggle current item
+        if (isOpen) {
+            item.classList.remove('active');
+            answer.style.maxHeight = null;
+        } else {
+            item.classList.add('active');
+            answer.style.maxHeight = answer.scrollHeight + "px";
+        }
     });
 }
 
