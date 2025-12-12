@@ -406,147 +406,103 @@ p {
 
 @media (max-width: 1024px) {
 
-    /* Logo positioning */
-    .logo {
+    /* 1. Ensure Logo/Hamburger are clickable above overlay */
+    .logo,
+    .hamburger {
+        z-index: 3000;
         position: relative;
-        z-index: 2005;
-        /* Above overlay */
     }
 
-    /* Fullscreen Overlay Container */
+    /* 2. Fullscreen Menu Overlay */
     .nav-links {
-        position: fixed;
-        inset: 0;
-        /* Cover entire viewport */
-        background: #000;
-        /* Solid fallback */
-        background: rgba(8, 8, 8, 0.98);
-        /* Deep dark */
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        padding-top: 80px;
-        /* Space for header */
+        justify-content: flex-start;
+        /* Start from top */
+        padding-top: 120px;
+        /* Safe space for header */
         gap: 2rem;
 
-        /* Hidden state */
+        position: fixed;
+        inset: 0;
+        /* Top, Right, Bottom, Left: 0 */
+        width: 100%;
+        height: 100vh;
+
+        background-color: #000;
+        /* Solid Black */
+        z-index: 2999;
+        /* Just below logo/hamburger */
+
+        /* Hidden State */
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
-        z-index: 1999;
-        /* Below logo/hamburger but above everything else */
+        transform: translateY(-20px);
+        transition: all 0.3s ease-in-out;
     }
 
-    /* Active State */
+    /* 3. Active State */
     .nav-links.active {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-    }
-
-    /* Link Animations */
-    .nav-links li {
-        transform: translateY(20px);
-        opacity: 0;
-        transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-
-    .nav-links.active li {
         transform: translateY(0);
-        opacity: 1;
     }
 
-    /* Staggered Delays */
-    .nav-links.active li:nth-child(1) {
-        transition-delay: 0.1s;
+    /* 4. Menu Items Styling */
+    .nav-links li {
+        width: 100%;
+        text-align: center;
     }
 
-    .nav-links.active li:nth-child(2) {
-        transition-delay: 0.15s;
-    }
-
-    .nav-links.active li:nth-child(3) {
-        transition-delay: 0.2s;
-    }
-
-    .nav-links.active li:nth-child(4) {
-        transition-delay: 0.25s;
-    }
-
-    .nav-links.active li:nth-child(5) {
-        transition-delay: 0.3s;
-    }
-
-    .nav-links.active li:nth-child(6) {
-        transition-delay: 0.35s;
-    }
-
-    .nav-links.active li:nth-child(7) {
-        transition-delay: 0.4s;
-    }
-
-    /* Typography */
     .nav-links a {
-        font-size: 2rem;
-        /* Large and legible */
+        font-size: 1.5rem;
         font-weight: 600;
         color: #fff;
-        text-transform: capitalize;
-        /* Cleaner look */
-        letter-spacing: -0.5px;
         display: block;
-        padding: 0.5rem;
-    }
-
-    /* Hamburger Button */
-    .hamburger {
-        display: flex;
-        position: relative;
-        z-index: 2005;
-        background: transparent;
-        border: none;
         padding: 10px;
-        margin-right: -10px;
-        /* align with container edge */
     }
 
-    .hamburger span {
-        background-color: white;
-    }
-
-    /* Hide desktop CTA */
-    .nav-cta {
-        display: none;
-    }
-
-    /* Mobile CTA Specifics */
+    /* 5. Mobile Button */
     .mobile-cta-item {
         display: block !important;
-        width: 100%;
-        max-width: 280px;
-        margin-top: 1rem;
+        margin-top: 2rem;
+        width: 80%;
     }
 
     .mobile-cta-item .btn {
         width: 100%;
+        display: flex;
         justify-content: center;
-        padding: 1rem;
-        font-size: 1.1rem;
-        background: var(--primary-color);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 6. Hide Desktop CTA */
+    .nav-cta {
+        display: none;
+    }
+
+    /* 7. Hamburger Animations */
+    .hamburger {
+        display: flex;
+        border: none;
+        background: transparent;
+        cursor: pointer;
     }
 }
 
+/* Hamburger Active State (Global or Scoped) */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
 
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
 
-/* Base style for mobile button container (hidden on desktop) */
-.mobile-cta-item {
-    display: none;
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
 }
 
 .hero {

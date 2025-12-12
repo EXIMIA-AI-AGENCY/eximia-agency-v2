@@ -35,6 +35,13 @@ function initNavigation() {
     hamburger.addEventListener('click', function () {
         hamburger.classList.toggle('active');
         navLinks.classList.toggle('active');
+
+        // Toggle Body Scroll Lock
+        if (navLinks.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     });
 
     // Close menu when clicking on a link
@@ -43,14 +50,21 @@ function initNavigation() {
         link.addEventListener('click', function () {
             hamburger.classList.remove('active');
             navLinks.classList.remove('active');
+            document.body.style.overflow = ''; // Unlock scroll
         });
     });
 
-    // Close menu when clicking outside
+    // Close menu when clicking outside (on overlay part)
     document.addEventListener('click', function (e) {
-        if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
+        if (navLinks.classList.contains('active') &&
+            !navLinks.contains(e.target) &&
+            !hamburger.contains(e.target)) {
+
+            // This condition is tricky with fullscreen overlay because navLinks CONTAINS everything in it.
+            // But usually clicks on links are handled above. 
+            // Clicks on "empty space" might be desired to close.
+            // For now, let's trust the hamburger and links.
+            // Removing this generic outside click for fullscreen menu as it might be buggy with inset:0
         }
     });
 }
