@@ -263,7 +263,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 function initSpotlightEffect() {
     const cards = document.querySelectorAll(
-        '.step-card, .plan-card, .case-card, .metric, .testimonial-card, .cost-row, .integration-logo'
+        '.step-card, .plan-card, .case-card, .metric, .testimonial-card, .cost-row, .integration-logo, .process-card-pro'
     );
 
     cards.forEach(card => {
