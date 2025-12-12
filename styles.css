@@ -3998,4 +3998,48 @@ body.no-scroll {
 .btn-plan-primary:hover {
     box-shadow: 0 6px 25px rgba(79, 70, 229, 0.6);
     transform: translateY(-2px);
+}@media (max-width: 768px) {
+    .plans-grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 1.5rem;
+        padding-bottom: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        margin-right: -1rem;
+        /* Adjust for padding on right */
+        margin-left: -1rem;
+        /* Adjust for padding on left */
+    }
+
+    /* Hide scrollbar */
+    .plans-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .plans-grid {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .plan-card-premium {
+        flex: 0 0 85%;
+        max-width: 85%;
+        scroll-snap-align: center;
+        background: rgba(10, 10, 15, 0.95);
+        /* Slightly less transp heavily for better read */
+    }
+
+    .plan-card-premium.popular {
+        transform: scale(1);
+    }
+
+    .plans-global-include {
+        width: 90%;
+        flex-direction: column;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
 }
