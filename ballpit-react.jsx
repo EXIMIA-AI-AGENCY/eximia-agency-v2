@@ -293,7 +293,7 @@ const Ballpit = ({ className = '', count = 100 }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const instance = createScene(canvas, { count, size0: 1.5, minSize: 0.5, maxSize: 1.0, gravity: 0.1, friction: 0.95, wallBounce: 0.9 });
+        const instance = createScene(canvas, { count, size0: 1.5, minSize: 0.5, maxSize: 1.0, gravity: 0.7, friction: 0.8, wallBounce: 0.95 });
         return () => instance.dispose();
     }, [count]);
 
@@ -304,5 +304,5 @@ const Ballpit = ({ className = '', count = 100 }) => {
 const rootEl = document.getElementById('ballpit-react-root');
 if (rootEl) {
     const root = createRoot(rootEl);
-    root.render(<Ballpit count={150} />);
+    root.render(<Ballpit count={200} followCursor={true} />);
 }
