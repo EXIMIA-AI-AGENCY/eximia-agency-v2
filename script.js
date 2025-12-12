@@ -4,7 +4,7 @@
 
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function () {
-    initNavigation();
+    // initNavigation(); // Handled by navbar.js
     initHeroDemo();
     initAnimatedCounters();
     initFAQ();
@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
 // ================================
 
 function initNavigation() {
+    // Navigation logic is now handled centralized in navbar.js
+    /*
     const navbar = document.getElementById('navbar');
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
@@ -63,6 +65,7 @@ function initNavigation() {
             // Removing this generic outside click for fullscreen menu as it might be buggy with inset:0
         }
     });
+    */
 }
 
 // ================================
