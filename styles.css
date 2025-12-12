@@ -375,13 +375,29 @@ p {
     color: #ffffff;
     transition: all var(--transition-fast);
     opacity: 1;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent-blue);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px var(--accent-blue);
 }
 
 .nav-links a:hover {
     color: white;
-    opacity: 1;
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-    /* Purple glow */
+    text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .nav-cta {
