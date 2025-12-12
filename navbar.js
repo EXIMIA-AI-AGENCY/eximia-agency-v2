@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const navbarContainer = document.getElementById("navbar");
 
     if (navbarContainer) {
-        // 1. Inyectar el HTML del menú maestro
+        // 1. Inject Navbar HTML
         navbarContainer.innerHTML = `
         <div class="container">
             <div class="nav-content">
@@ -31,75 +31,76 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         `;
 
-        // 2. Marcar la opción activa basada en la URL actual
+        // 2. Set Active Link
         setActiveLink();
 
-        // 3. Inicializar la lógica del menú (móvil, scroll, etc.)
-        initDynamicNavigation();
+        console.log("Navbar injected successfully");
     }
 });
 
+// Helper: Set Active Link
 function setActiveLink() {
     const path = window.location.pathname;
-    const page = path.split("/").pop(); // Obtiene el nombre del archivo (ej. marketing.html)
-
+    const page = path.split("/").pop();
     const links = document.querySelectorAll('.nav-links a');
 
     links.forEach(link => {
-        // Eliminar active de todos primero
         link.classList.remove('active');
-
-        // Lógica simple de coincidencia
         const href = link.getAttribute('href');
 
-        // Caso especial para home/root
+        // Simple logic for active state
         if ((path === '/' || path.endsWith('index.html')) && href.includes('index.html')) {
-            // No marcamos 'Planes' como activo globalmente a menos que estemos en la sección, 
-            // pero por defecto en home no marcamos nada o marcamos el primero.
-            // Dejaremos esto simple por ahora.
+            // Home logic (optional)
         }
         else if (page === href) {
             link.classList.add('active');
         }
     });
 
-    // Manejo específico para highlight visual si se desea
+    // Explicit highlights
     if (page.includes("marketing")) document.querySelector('a[data-page="marketing"]')?.classList.add("active");
     if (page.includes("dev")) document.querySelector('a[data-page="dev"]')?.classList.add("active");
     if (page.includes("voice-demo")) document.querySelector('a[data-page="demo"]')?.classList.add("active");
     if (page.includes("contacto")) document.querySelector('a[data-page="contact"]')?.classList.add("active");
 }
 
-function initDynamicNavigation() {
-    const navbar = document.getElementById('navbar');
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
+// 3. Event Delegation for Robust Interaction
+document.addEventListener('click', function (e) {
+    // Mobile Menu Toggle
+    const hamburgerRef = e.target.closest('#hamburger');
+    if (hamburgerRef) {
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
 
-    // Sticky navbar with blur on scroll
-    window.addEventListener('scroll', function () {
+        if (hamburger && navLinks) {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.classList.toggle('no-scroll');
+            console.log("Hamburger toggled via delegation");
+        }
+    }
+
+    // Close Menu on Link Click
+    if (e.target.closest('.nav-links a')) {
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        if (hamburger && navLinks && navLinks.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        }
+    }
+});
+
+// Sticky Navbar Logic
+window.addEventListener('scroll', function () {
+    const navbar = document.getElementById('navbar');
+    if (navbar) {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
-    });
-
-    // Mobile menu toggle
-    if (hamburger && navLinks) {
-        hamburger.addEventListener('click', function () {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            document.body.classList.toggle('no-scroll');
-        });
-
-        // Close menu when clicking on a link
-        const navLinksItems = navLinks.querySelectorAll('a');
-        navLinksItems.forEach(link => {
-            link.addEventListener('click', function () {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-            });
-        });
     }
-}
+});
