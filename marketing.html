@@ -42,33 +42,8 @@
 
 
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <a href="index.html"><img src="logo.png" alt="EXIMIA"></a>
-                </div>
-
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="index.html#planes">Planes</a></li>
-                    <li><a href="marketing.html" class="active">Marketing</a></li>
-                    <li><a href="dev.html">Dev</a></li>
-                    <li><a href="voice-demo.html">Demo</a></li>
-                    <li><a href="contacto.html">Contáctanos</a></li>
-                </ul>
-
-                <div class="nav-cta">
-                    <a href="https://crm.eximia.agency/" class="btn btn-primary">Sign In</a>
-                </div>
-
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation (Injected by navbar.js) -->
+    <nav class="navbar" id="navbar"></nav>
 
     <div class="page-container">
         <!-- HERO SECTION WITH BALLPIT -->
@@ -384,6 +359,7 @@
         </footer>
 
         <!-- Scripts -->
+        <script src="navbar.js"></script>
         <script src="script.js"></script>
         <script type="text/babel" data-type="module" src="ballpit-react.jsx"></script>
         <!-- Chat Widget -->

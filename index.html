@@ -28,35 +28,8 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <img src="logo.png" alt="EXIMIA">
-                </div>
-
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="index.html#planes">Planes</a></li>
-                    <li><a href="marketing.html">Marketing</a></li>
-                    <li><a href="dev.html">Dev</a></li>
-                    <li><a href="voice-demo.html">Demo</a></li>
-                    <li><a href="contacto.html">Contáctanos</a></li>
-                </ul>
-
-
-
-                <div class="nav-cta">
-                    <a href="https://crm.eximia.agency/" class="btn btn-primary">Sign In</a>
-                </div>
-
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation (Injected by navbar.js) -->
+    <nav class="navbar" id="navbar"></nav>
 
     <!-- Hero Section -->
     <section class="hero" id="inicio">
@@ -1196,6 +1169,8 @@
             <!-- Scripts -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
             <script src="particles.js?v=4"></script>
+            <script src="navbar.js"></script>
+            <script src="dropdown.js"></script>
             <script src="script.js"></script>
             <script src="liquid-button.js"></script>
             <script src="scroll-expansion.js"></script>
