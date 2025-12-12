@@ -3998,7 +3998,9 @@ body.no-scroll {
 .btn-plan-primary:hover {
     box-shadow: 0 6px 25px rgba(79, 70, 229, 0.6);
     transform: translateY(-2px);
-}@media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .plans-grid {
         display: flex;
         overflow-x: auto;
@@ -4042,14 +4044,21 @@ body.no-scroll {
         padding: 1.5rem;
         margin-bottom: 2rem;
     }
-}/* =========================================
+}
+
+/* =========================================
    ENHANCED FOOTER STYLES
    ========================================= */
 
 .footer-logo {
-    height: 35px;
-    margin-bottom: 1rem;
-    opacity: 0.9;
+    height: 40px;
+    margin-bottom: 1.5rem;
+    filter: brightness(1.2) contrast(1.1);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    width: auto;
+    max-width: 180px;
 }
 
 .footer-social {
