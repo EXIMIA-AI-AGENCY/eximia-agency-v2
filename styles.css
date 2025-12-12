@@ -4646,7 +4646,7 @@ body.no-scroll {
 }
 
 .payment-badge {
-    height: 24px;
+    height: 32px;
     opacity: 0.85;
     transition: all 0.3s ease;
 }
@@ -4662,7 +4662,7 @@ body.no-scroll {
     }
 
     .payment-badge {
-        height: 20px;
+        height: 28px;
     }
 
     .payment-label {
@@ -4745,7 +4745,7 @@ body.no-scroll {
     }
 
     .payment-badge {
-        height: 24px !important;
+        height: 28px !important;
         max-width: 100% !important;
         display: inline-block !important;
     }
@@ -4762,4 +4762,6 @@ body.no-scroll {
         width: 100% !important;
         text-align: center !important;
     }
-}/* Updated: Fri Dec 12 01:01:09 AST 2025 */
+}
+
+/* Updated: Fri Dec 12 01:01:09 AST 2025 */
