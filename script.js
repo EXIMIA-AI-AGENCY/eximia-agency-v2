@@ -216,8 +216,7 @@ function initPlanToggle() {
                 if (!planType) return;
 
                 if (planType === selectedType) {
-                    plan.style.display = 'block';
-                    // Trigger reflow/animation if needed, but for now simple switch
+                    plan.style.display = 'flex'; // Use flex to maintain card layout
                 } else {
                     plan.style.display = 'none';
                 }
