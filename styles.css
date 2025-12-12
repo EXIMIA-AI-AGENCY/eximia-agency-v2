@@ -492,10 +492,13 @@ p {
         width: 100%;
         display: flex;
         justify-content: center;
+        align-items: center;
+        text-align: center;
         background: #ffffff !important;
         color: #000000 !important;
         font-weight: 700;
         font-size: 1.1rem;
+        padding: 1rem;
         box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
     }
 
