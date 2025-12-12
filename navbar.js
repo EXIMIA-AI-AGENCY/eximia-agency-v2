@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <a href="https://crm.eximia.agency/" class="btn btn-primary">Sign In</a>
                 </div>
 
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" type="button">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -33,6 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 2. Set Active Link
         setActiveLink();
+
+        // 3. Setup mobile menu with TOUCH support for iOS
+        setupMobileMenu();
 
         console.log("Navbar injected successfully");
     }
@@ -48,9 +51,8 @@ function setActiveLink() {
         link.classList.remove('active');
         const href = link.getAttribute('href');
 
-        // Simple logic for active state
         if ((path === '/' || path.endsWith('index.html')) && href.includes('index.html')) {
-            // Home logic (optional)
+            // Home logic
         }
         else if (page === href) {
             link.classList.add('active');
@@ -64,34 +66,49 @@ function setActiveLink() {
     if (page.includes("contacto")) document.querySelector('a[data-page="contact"]')?.classList.add("active");
 }
 
-// 3. Event Delegation for Robust Interaction
-document.addEventListener('click', function (e) {
-    // Mobile Menu Toggle
-    const hamburgerRef = e.target.closest('#hamburger');
-    if (hamburgerRef) {
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
+// Setup mobile menu with proper touch support
+function setupMobileMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
 
-        if (hamburger && navLinks) {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            document.body.classList.toggle('no-scroll');
-            console.log("Hamburger toggled via delegation");
-        }
+    if (!hamburger || !navLinks) {
+        console.error("Hamburger or navLinks not found");
+        return;
     }
 
-    // Close Menu on Link Click
-    if (e.target.closest('.nav-links a')) {
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
+    // Toggle function
+    function toggleMenu(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-        if (hamburger && navLinks && navLinks.classList.contains('active')) {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-            document.body.classList.remove('no-scroll');
-        }
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.classList.toggle('no-scroll');
+
+        console.log("Menu toggled - active:", navLinks.classList.contains('active'));
     }
-});
+
+    // Close menu function
+    function closeMenu() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    }
+
+    // Add both click AND touch events for iOS compatibility
+    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('touchend', function (e) {
+        e.preventDefault(); // Prevent ghost click
+        toggleMenu(e);
+    });
+
+    // Close menu when clicking on nav links
+    const navLinksItems = navLinks.querySelectorAll('a');
+    navLinksItems.forEach(link => {
+        link.addEventListener('click', closeMenu);
+        link.addEventListener('touchend', closeMenu);
+    });
+}
 
 // Sticky Navbar Logic
 window.addEventListener('scroll', function () {
