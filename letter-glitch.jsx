@@ -204,8 +204,7 @@ const LetterGlitch = ({
         width: '100%',
         height: '100%',
         backgroundColor: '#000000',
-        overflow: 'hidden',
-        opacity: 0.6
+        overflow: 'hidden'
     };
 
     const canvasStyle = {
