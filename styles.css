@@ -460,6 +460,11 @@ p {
     .hamburger {
         z-index: 3000;
         position: relative;
+        display: flex;
+        /* Make it visible! */
+        background: transparent;
+        border: none;
+        cursor: pointer;
     }
 
     /* 2. Fullscreen Menu Overlay */
