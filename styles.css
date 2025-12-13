@@ -4161,19 +4161,20 @@ body.no-scroll {
 
 .popular-badge {
     position: absolute;
-    top: -1px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 1.25rem;
+    right: 1.25rem;
+    left: auto;
+    transform: none;
     background: linear-gradient(90deg, #7c3aed, #a855f7, #7c3aed);
     background-size: 200% 100%;
     animation: shimmer 2s infinite linear;
     color: #fff;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 800;
-    padding: 0.4rem 1.25rem;
-    border-radius: 0 0 12px 12px;
+    padding: 0.35rem 0.85rem;
+    border-radius: 99px;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     box-shadow: 0 5px 20px rgba(124, 58, 237, 0.5);
 }
 
