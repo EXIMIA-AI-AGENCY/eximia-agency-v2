@@ -311,9 +311,9 @@
         try {
             const module = await import('https://cdn.jsdelivr.net/npm/@11labs/client/+esm');
             ElevenLabsConversation = module.Conversation;
-            console.log('✅ ElevenLabs Voice Widget SDK loaded');
+            console.log('✅ EXIMIA Voice SDK loaded');
         } catch (error) {
-            console.error('Failed to load ElevenLabs SDK:', error);
+            console.error('Failed to load EXIMIA Voice SDK:', error);
         }
     }
 
@@ -454,6 +454,6 @@
         }
     });
 
-    console.log('🎙️ EXIMIA Voice Widget initialized');
+    console.log('🎙️ EXIMIA AI Voice Widget ready');
 
 })();
