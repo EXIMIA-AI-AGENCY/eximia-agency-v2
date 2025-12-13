@@ -1,0 +1,9 @@
+# EXIMIA - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://eximia.agency/sitemap.xml
+
+# Disallow admin or private areas (none currently)
+# Disallow: /admin/
