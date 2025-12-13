@@ -230,7 +230,7 @@
         // ========================================
         // CONFIGURACIÓN - REEMPLAZA CON TU AGENT ID
         // ========================================
-        const AGENT_ID = 'TU_ID_DE_AGENTE_AQUI';
+        const AGENT_ID = 'agent_01jxr8njx9fyn8bn0fh921hcfw';
 
         // Elementos del DOM
         const startBtn = document.getElementById('startBtn');
@@ -258,6 +258,7 @@
 
                 conversation = await ElevenLabs.Conversation.startSession({
                     agentId: AGENT_ID,
+                    connectionType: 'webrtc', // or 'websocket'
 
                     // Callback cuando se conecta
                     onConnect: () => {
