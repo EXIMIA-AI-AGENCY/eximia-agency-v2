@@ -16,396 +16,7 @@
     <link rel="stylesheet" href="styles.css?v=ios4">
 
     <style>
-        /* ================================
-           PREMIUM AI VOICE WIDGET
-           ================================ */
-
-        :root {
-            --widget-primary: #a855f7;
-            --widget-secondary: #ec4899;
-            --widget-glow: rgba(168, 85, 247, 0.5);
-            --widget-bg: rgba(0, 0, 0, 0.85);
-            --widget-glass: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Widget Container - Fixed Position */
-        .voice-widget {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 99999;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Main Trigger Button - The Orb */
-        .widget-trigger {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            background: linear-gradient(135deg, var(--widget-primary) 0%, var(--widget-secondary) 100%);
-            box-shadow:
-                0 8px 32px var(--widget-glow),
-                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .widget-trigger:hover {
-            transform: scale(1.08);
-            box-shadow:
-                0 12px 40px var(--widget-glow),
-                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-        }
-
-        .widget-trigger:active {
-            transform: scale(0.95);
-        }
-
-        /* Breathing Animation */
-        .widget-trigger::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--widget-primary) 0%, var(--widget-secondary) 100%);
-            opacity: 0.4;
-            animation: breathe 3s ease-in-out infinite;
-            z-index: -1;
-        }
-
-        @keyframes breathe {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 0.4;
-            }
-
-            50% {
-                transform: scale(1.15);
-                opacity: 0.2;
-            }
-        }
-
-        /* Microphone Icon */
-        .mic-icon {
-            width: 28px;
-            height: 28px;
-            fill: white;
-            transition: all 0.3s ease;
-        }
-
-        /* Expanded Widget Panel */
-        .widget-panel {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 320px;
-            max-width: calc(100vw - 48px);
-            background: var(--widget-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow:
-                0 24px 80px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-
-        .widget-panel.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-
-        /* Panel Header */
-        .panel-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            position: relative;
-        }
-
-        .panel-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #fff;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .ai-badge {
-            background: linear-gradient(135deg, var(--widget-primary) 0%, var(--widget-secondary) 100%);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            font-size: 18px;
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        /* Audio Visualizer */
-        .visualizer-container {
-            padding: 32px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .ai-orb {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--widget-primary) 0%, var(--widget-secondary) 100%);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 60px var(--widget-glow);
-        }
-
-        .ai-orb::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            background: linear-gradient(135deg, var(--widget-primary), var(--widget-secondary)) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            -webkit-mask-composite: destination-out;
-            opacity: 0.5;
-            animation: rotate 8s linear infinite;
-        }
-
-        @keyframes rotate {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Audio Bars */
-        .audio-bars {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            height: 40px;
-        }
-
-        .audio-bar {
-            width: 4px;
-            height: 8px;
-            background: linear-gradient(to top, var(--widget-primary), var(--widget-secondary));
-            border-radius: 4px;
-            transition: height 0.1s ease;
-        }
-
-        .audio-bars.active .audio-bar {
-            animation: audioWave 0.5s ease-in-out infinite;
-        }
-
-        .audio-bars.active .audio-bar:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .audio-bars.active .audio-bar:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .audio-bars.active .audio-bar:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .audio-bars.active .audio-bar:nth-child(4) {
-            animation-delay: 0.3s;
-        }
-
-        .audio-bars.active .audio-bar:nth-child(5) {
-            animation-delay: 0.4s;
-        }
-
-        .audio-bars.active .audio-bar:nth-child(6) {
-            animation-delay: 0.3s;
-        }
-
-        .audio-bars.active .audio-bar:nth-child(7) {
-            animation-delay: 0.2s;
-        }
-
-        @keyframes audioWave {
-
-            0%,
-            100% {
-                height: 8px;
-            }
-
-            50% {
-                height: 32px;
-            }
-        }
-
-        /* Speaking Animation */
-        .audio-bars.speaking .audio-bar {
-            animation: audioWaveSpeaking 0.4s ease-in-out infinite;
-            background: linear-gradient(to top, #22c55e, #4ade80);
-        }
-
-        @keyframes audioWaveSpeaking {
-
-            0%,
-            100% {
-                height: 12px;
-            }
-
-            50% {
-                height: 40px;
-            }
-        }
-
-        /* Status Text */
-        .status-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            text-align: center;
-        }
-
-        .status-text.connected {
-            color: #22c55e;
-        }
-
-        .status-text.speaking {
-            color: #4ade80;
-        }
-
-        /* Panel Footer - Controls */
-        .panel-footer {
-            padding: 16px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            gap: 12px;
-        }
-
-        .control-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 14px;
-            border: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-start {
-            background: linear-gradient(135deg, var(--widget-primary) 0%, var(--widget-secondary) 100%);
-            color: white;
-        }
-
-        .btn-start:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px var(--widget-glow);
-        }
-
-        .btn-end {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-end:hover {
-            background: rgba(239, 68, 68, 0.25);
-        }
-
-        .btn-mute {
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.8);
-            width: 48px;
-            flex: none;
-        }
-
-        .btn-mute:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-mute.muted {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-        }
-
-        /* Hidden state */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 480px) {
-            .voice-widget {
-                bottom: 16px;
-                right: 16px;
-            }
-
-            .widget-trigger {
-                width: 56px;
-                height: 56px;
-            }
-
-            .widget-panel {
-                width: calc(100vw - 32px);
-                right: -8px;
-                bottom: 72px;
-            }
-
-            .mic-icon {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        /* Demo Page Content */
+        /* Demo Page Styles */
         .demo-hero {
             min-height: 100vh;
             display: flex;
@@ -414,14 +25,23 @@
             justify-content: center;
             padding: 120px 20px 60px;
             text-align: center;
-            background: radial-gradient(ellipse at center top, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            background: radial-gradient(ellipse at center top, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
         }
 
         .demo-hero h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 800;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .demo-hero h1 span {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -430,24 +50,76 @@
         .demo-hero p {
             font-size: 1.25rem;
             color: rgba(255, 255, 255, 0.6);
-            max-width: 500px;
-            line-height: 1.6;
-            margin-bottom: 2rem;
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 3rem;
         }
 
-        .demo-arrow {
-            position: fixed;
-            bottom: 100px;
-            right: 100px;
-            color: rgba(255, 255, 255, 0.4);
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-title {
             font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                padding: 0 20px;
+            }
+
+            .demo-hero p {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+        }
+
+        /* Bottom arrow hint */
+        .demo-hint {
+            position: fixed;
+            bottom: 90px;
+            right: 180px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            animation: bounce 2s ease-in-out infinite;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            font-weight: 500;
+            animation: float 3s ease-in-out infinite;
         }
 
-        @keyframes bounce {
+        .demo-hint svg {
+            animation: bounce-arrow 1s ease-in-out infinite;
+        }
+
+        @keyframes float {
 
             0%,
             100% {
@@ -459,8 +131,20 @@
             }
         }
 
+        @keyframes bounce-arrow {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(8px);
+            }
+        }
+
         @media (max-width: 768px) {
-            .demo-arrow {
+            .demo-hint {
                 display: none;
             }
         }
@@ -473,250 +157,44 @@
 
     <!-- Demo Content -->
     <div class="demo-hero">
-        <h1>Habla con nuestra IA</h1>
-        <p>Experimenta el futuro de la atención al cliente. Nuestro agente AI está disponible 24/7 para responder tus
-            preguntas.</p>
-    </div>
+        <h1>Habla con nuestra <span>IA</span></h1>
+        <p>Experimenta el futuro de la atención al cliente. Nuestro agente de inteligencia artificial está disponible
+            las 24 horas para responder tus preguntas.</p>
 
-    <div class="demo-arrow">
-        Haz clic aquí →
-    </div>
-
-    <!-- ========================================
-         PREMIUM VOICE WIDGET
-         ======================================== -->
-    <div class="voice-widget" id="voiceWidget">
-
-        <!-- Trigger Button (The Orb) -->
-        <button class="widget-trigger" id="widgetTrigger" aria-label="Open AI Voice Assistant">
-            <svg class="mic-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M12 1C10.34 1 9 2.34 9 4V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V4C15 2.34 13.66 1 12 1Z"
-                    fill="currentColor" />
-                <path
-                    d="M17 12C17 14.76 14.76 17 12 17C9.24 17 7 14.76 7 12H5C5 15.53 7.61 18.43 11 18.92V22H13V18.92C16.39 18.43 19 15.53 19 12H17Z"
-                    fill="currentColor" />
-            </svg>
-        </button>
-
-        <!-- Expanded Panel -->
-        <div class="widget-panel" id="widgetPanel">
-            <!-- Header -->
-            <div class="panel-header">
-                <h3 class="panel-title">
-                    Agente AI <span class="ai-badge">En Vivo</span>
-                </h3>
-                <button class="close-btn" id="closePanel">×</button>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <div class="feature-icon">🎙️</div>
+                <div class="feature-title">Voz Natural</div>
+                <div class="feature-desc">Conversación fluida y humana</div>
             </div>
-
-            <!-- Visualizer -->
-            <div class="visualizer-container">
-                <div class="ai-orb">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M12 1C10.34 1 9 2.34 9 4V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V4C15 2.34 13.66 1 12 1Z"
-                            fill="white" />
-                        <path
-                            d="M17 12C17 14.76 14.76 17 12 17C9.24 17 7 14.76 7 12H5C5 15.53 7.61 18.43 11 18.92V22H13V18.92C16.39 18.43 19 15.53 19 12H17Z"
-                            fill="white" />
-                    </svg>
-                </div>
-
-                <div class="audio-bars" id="audioBars">
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                </div>
-
-                <p class="status-text" id="statusText">Toca para hablar</p>
+            <div class="feature-item">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Respuesta Instantánea</div>
+                <div class="feature-desc">Sin tiempos de espera</div>
             </div>
-
-            <!-- Controls -->
-            <div class="panel-footer">
-                <button class="control-btn btn-start" id="startBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M12 1C10.34 1 9 2.34 9 4V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V4C15 2.34 13.66 1 12 1Z" />
-                        <path
-                            d="M17 12C17 14.76 14.76 17 12 17C9.24 17 7 14.76 7 12H5C5 15.53 7.61 18.43 11 18.92V22H13V18.92C16.39 18.43 19 15.53 19 12H17Z" />
-                    </svg>
-                    Iniciar
-                </button>
-                <button class="control-btn btn-end hidden" id="endBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <rect x="6" y="6" width="12" height="12" rx="2" />
-                    </svg>
-                    Terminar
-                </button>
-                <button class="control-btn btn-mute hidden" id="muteBtn" aria-label="Mute">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M16.5 12C16.5 10.23 15.48 8.71 14 7.97V10.18L16.45 12.63C16.48 12.43 16.5 12.22 16.5 12ZM19 12C19 12.94 18.8 13.82 18.46 14.64L19.97 16.15C20.63 14.91 21 13.5 21 12C21 7.72 18.01 4.14 14 3.23V5.29C16.89 6.15 19 8.83 19 12ZM4.27 3L3 4.27L7.73 9H3V15H7L12 20V13.27L16.25 17.52C15.58 18.04 14.83 18.45 14 18.7V20.77C15.38 20.45 16.63 19.81 17.69 18.95L19.73 21L21 19.73L12 10.73L4.27 3ZM12 4L9.91 6.09L12 8.18V4Z" />
-                    </svg>
-                </button>
+            <div class="feature-item">
+                <div class="feature-icon">🌐</div>
+                <div class="feature-title">24/7 Disponible</div>
+                <div class="feature-desc">Siempre listo para ayudar</div>
             </div>
         </div>
     </div>
 
-    <!-- ElevenLabs SDK -->
-    <script type="module">
-        import { Conversation } from 'https://cdn.jsdelivr.net/npm/@11labs/client/+esm';
-        window.ElevenLabsConversation = Conversation;
-        console.log('✅ ElevenLabs SDK loaded');
-    </script>
-
-    <script>
-        // ========================================
-        // CONFIGURATION
-        // ========================================
-        const AGENT_ID = 'agent_01jxr8njx9fyn8bn0fh921hcfw';
-
-        // ========================================
-        // DOM ELEMENTS
-        // ========================================
-        const widgetTrigger = document.getElementById('widgetTrigger');
-        const widgetPanel = document.getElementById('widgetPanel');
-        const closePanel = document.getElementById('closePanel');
-        const startBtn = document.getElementById('startBtn');
-        const endBtn = document.getElementById('endBtn');
-        const muteBtn = document.getElementById('muteBtn');
-        const statusText = document.getElementById('statusText');
-        const audioBars = document.getElementById('audioBars');
-
-        let conversation = null;
-        let isMuted = false;
-
-        // ========================================
-        // PANEL TOGGLE
-        // ========================================
-        widgetTrigger.addEventListener('click', () => {
-            widgetPanel.classList.toggle('active');
-        });
-
-        closePanel.addEventListener('click', () => {
-            widgetPanel.classList.remove('active');
-        });
-
-        // Close on outside click
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.voice-widget')) {
-                widgetPanel.classList.remove('active');
-            }
-        });
-
-        // ========================================
-        // CONVERSATION FUNCTIONS
-        // ========================================
-        async function startConversation() {
-            if (!window.ElevenLabsConversation) {
-                statusText.innerText = 'Cargando SDK...';
-                setTimeout(startConversation, 500);
-                return;
-            }
-
-            try {
-                statusText.innerText = 'Solicitando micrófono...';
-                await navigator.mediaDevices.getUserMedia({ audio: true });
-
-                statusText.innerText = 'Conectando...';
-
-                conversation = await window.ElevenLabsConversation.startSession({
-                    agentId: AGENT_ID,
-                    connectionType: 'webrtc',
-
-                    onConnect: () => {
-                        console.log('✅ Connected');
-                        statusText.innerText = 'Conectado - Te escucho...';
-                        statusText.className = 'status-text connected';
-                        audioBars.classList.add('active');
-
-                        startBtn.classList.add('hidden');
-                        endBtn.classList.remove('hidden');
-                        muteBtn.classList.remove('hidden');
-                    },
-
-                    onDisconnect: () => {
-                        console.log('❌ Disconnected');
-                        resetUI();
-                    },
-
-                    onError: (error) => {
-                        console.error('Error:', error);
-                        statusText.innerText = 'Error de conexión';
-                        resetUI();
-                    },
-
-                    onModeChange: (mode) => {
-                        console.log('Mode:', mode.mode);
-                        if (mode.mode === 'speaking') {
-                            statusText.innerText = 'IA Hablando...';
-                            statusText.className = 'status-text speaking';
-                            audioBars.classList.remove('active');
-                            audioBars.classList.add('speaking');
-                        } else {
-                            statusText.innerText = 'Te escucho...';
-                            statusText.className = 'status-text connected';
-                            audioBars.classList.remove('speaking');
-                            audioBars.classList.add('active');
-                        }
-                    }
-                });
-
-            } catch (error) {
-                console.error('Start error:', error);
-                if (error.name === 'NotAllowedError') {
-                    statusText.innerText = 'Micrófono denegado';
-                } else {
-                    statusText.innerText = 'Error al conectar';
-                }
-            }
-        }
-
-        async function endConversation() {
-            if (conversation) {
-                try {
-                    await conversation.endSession();
-                } catch (e) {
-                    console.error('End error:', e);
-                }
-            }
-            resetUI();
-        }
-
-        function resetUI() {
-            statusText.innerText = 'Toca para hablar';
-            statusText.className = 'status-text';
-            audioBars.classList.remove('active', 'speaking');
-            startBtn.classList.remove('hidden');
-            endBtn.classList.add('hidden');
-            muteBtn.classList.add('hidden');
-            isMuted = false;
-            muteBtn.classList.remove('muted');
-        }
-
-        function toggleMute() {
-            isMuted = !isMuted;
-            muteBtn.classList.toggle('muted', isMuted);
-            // Note: Actual mute implementation depends on ElevenLabs SDK support
-        }
-
-        // ========================================
-        // EVENT LISTENERS
-        // ========================================
-        startBtn.addEventListener('click', startConversation);
-        endBtn.addEventListener('click', endConversation);
-        muteBtn.addEventListener('click', toggleMute);
-
-        console.log('🎙️ Premium Voice Widget initialized');
-    </script>
+    <!-- Arrow hint -->
+    <div class="demo-hint">
+        Haz clic para hablar
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
+        </svg>
+    </div>
 
     <!-- Site Scripts -->
     <script src="navbar.js?v=aidemo5"></script>
-    <script src="chat-widget.js?v=mobilefix"></script>
+
+    <!-- Voice Widget - Just add this script to any page! -->
+    <script src="voice-widget.js" data-agent-id="agent_01jxr8njx9fyn8bn0fh921hcfw" data-avatar="ai-avatar.png"
+        data-greeting="Habla con IA" data-position="bottom-right">
+        </script>
 </body>
 
 </html>
