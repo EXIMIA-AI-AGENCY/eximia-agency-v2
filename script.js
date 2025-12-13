@@ -131,7 +131,7 @@ function initAnimatedCounters() {
 
 function initFAQ() {
     const questions = document.querySelectorAll('.faq-question');
-    console.log(`Init FAQ: Found ${questions.length} questions`);
+    // FAQ initialized
 
     questions.forEach(question => {
         // Clone to remove existing listeners (nuclear option to ensure clean slate)
@@ -139,7 +139,6 @@ function initFAQ() {
         question.parentNode.replaceChild(newQuestion, question);
 
         newQuestion.addEventListener('click', () => {
-            console.log('FAQ clicked');
             const item = newQuestion.closest('.faq-item');
             const answer = item.querySelector('.faq-answer');
             const isActive = item.classList.contains('active');

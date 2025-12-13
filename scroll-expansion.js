@@ -111,7 +111,7 @@ class ScrollExpandMedia {
             this.keepVideoPlaying();
         }, 500);
 
-        console.log('ScrollExpandMedia initialized - Mobile:', this.isMobile);
+        // ScrollExpandMedia initialized
     }
 
     // MOBILE: Calculate progress from native scroll position
@@ -277,9 +277,9 @@ class ScrollExpandMedia {
 
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('Video playback started successfully');
+                // Video playback started
             }).catch(error => {
-                console.log('Autoplay prevented, will retry...', error);
+                // Autoplay prevented, will retry
             });
         }
     }
@@ -338,7 +338,7 @@ class ScrollExpandMedia {
             }
         }
 
-        console.log('Sound toggled:', this.isMuted ? 'muted' : 'unmuted');
+        // Sound toggled state updated
     }
 
     updateSoundState() {
@@ -362,7 +362,7 @@ class ScrollExpandMedia {
             if (this.soundToggleBtn) {
                 this.soundToggleBtn.classList.add('unmuted');
             }
-            console.log('Sound auto-enabled on scroll');
+            // Sound auto-enabled on scroll
         }
 
         // Re-mute and reset when scrolling back to start
@@ -623,7 +623,7 @@ function initScrollExpand() {
     }
 
     scrollExpandInstance = new ScrollExpandMedia('#scroll-expand-section');
-    console.log('ScrollExpandMedia initialized successfully');
+    // Initialized successfully
 }
 
 // Method 1: DOMContentLoaded (standard)

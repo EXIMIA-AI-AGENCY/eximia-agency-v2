@@ -15,8 +15,9 @@
     const scriptTag = document.currentScript;
     const AGENT_ID = scriptTag?.getAttribute('data-agent-id') || 'agent_01jxr8njx9fyn8bn0fh921hcfw';
     const AVATAR_URL = scriptTag?.getAttribute('data-avatar') || 'ai-avatar.png';
-    const POSITION = scriptTag?.getAttribute('data-position') || 'bottom-right'; // bottom-right, bottom-left
+    const POSITION = scriptTag?.getAttribute('data-position') || 'bottom-right';
     const GREETING = scriptTag?.getAttribute('data-greeting') || 'Talk to AI';
+    const DEBUG = scriptTag?.getAttribute('data-debug') === 'true'; // Production: set to false by default
 
     // ========================================
     // INJECT STYLES
@@ -358,7 +359,7 @@
         try {
             const module = await import('https://cdn.jsdelivr.net/npm/@11labs/client/+esm');
             ElevenLabsConversation = module.Conversation;
-            console.log('✅ EXIMIA Voice SDK loaded');
+            if (DEBUG) console.log('✅ EXIMIA Voice SDK loaded');
         } catch (error) {
             console.error('Failed to load EXIMIA Voice SDK:', error);
         }
@@ -402,11 +403,11 @@
                     pill.classList.add('active', 'listening');
                     statusText.textContent = 'Te escucho...';
                     statusSub.innerHTML = '<span class="exi-live-dot"></span> En vivo';
-                    console.log('🎙️ Connected - Ready to listen');
+                    if (DEBUG) console.log('🎙️ Connected');
                 },
 
                 onDisconnect: () => {
-                    console.log('❌ Disconnected');
+                    if (DEBUG) console.log('❌ Disconnected');
                     resetWidget();
                 },
 
@@ -417,7 +418,7 @@
                 },
 
                 onModeChange: (mode) => {
-                    console.log('🔄 Mode changed:', mode.mode);
+                    if (DEBUG) console.log('🔄 Mode:', mode.mode);
                     pill.classList.remove('listening', 'speaking');
                     if (mode.mode === 'speaking') {
                         pill.classList.add('speaking');
@@ -482,7 +483,7 @@
     endBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('🛑 End button clicked');
+        if (DEBUG) console.log('🛑 End button clicked');
         endConversation(e);
     });
 
@@ -490,7 +491,7 @@
     endBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('🛑 End button touched');
+        if (DEBUG) console.log('🛑 End button touched');
         endConversation(e);
     });
 
@@ -515,6 +516,7 @@
         }, 600);
     });
 
-    console.log('🎙️ EXIMIA AI Voice Widget ready');
+    // Production: Debug logs removed
+    // console.log('🎙️ EXIMIA AI Voice Widget ready');
 
 })();

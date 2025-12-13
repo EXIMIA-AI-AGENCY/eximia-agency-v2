@@ -12,5 +12,5 @@
     script.setAttribute('data-widget-id', "69028b7e66091b91d9592a2c");
     document.body.appendChild(script);
 
-    console.log('EXIMIA Chat Widget Loaded');
+    // Chat widget initialized
 })();

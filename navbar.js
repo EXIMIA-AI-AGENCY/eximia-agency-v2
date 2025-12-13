@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        console.log("Navbar injected with checkbox hack");
+        // Navbar initialized
     }
 });
 
