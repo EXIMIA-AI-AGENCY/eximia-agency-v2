@@ -225,16 +225,20 @@ p {
 .section-title {
     text-align: center;
     margin-bottom: var(--spacing-md);
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .section-subtitle {
     text-align: center;
     font-size: 1.25rem;
-    color: var(--text-secondary);
+    color: #ffffff;
+    opacity: 0.9;
     margin-bottom: var(--spacing-3xl);
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* ================================
@@ -814,7 +818,11 @@ p {
 
 .hero-title {
     margin-bottom: var(--spacing-lg);
-    text-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 50px rgba(255, 255, 255, 0.1);
 }
 
 .hero-subtitle {
@@ -823,7 +831,9 @@ p {
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    color: var(--text-secondary);
+    color: #ffffff !important;
+    opacity: 0.95;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .trust-row {
