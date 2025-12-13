@@ -178,6 +178,25 @@
                 <div class="feature-desc">Siempre listo para ayudar</div>
             </div>
         </div>
+
+        <!-- Basic Voice Widget Section -->
+        <div style="margin-top: 3rem; max-width: 400px;">
+            <h3 style="font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 1rem; text-align: center;">
+                Voz Básica
+            </h3>
+            <div id="basicVoiceDemo" style="
+                min-height: 120px;
+                background: rgba(255,255,255,0.03);
+                border: 1px solid rgba(255,255,255,0.08);
+                border-radius: 16px;
+                padding: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+                <!-- Basic Voice Widget loads here -->
+            </div>
+        </div>
     </div>
 
     <!-- Arrow hint -->
@@ -191,10 +210,22 @@
     <!-- Site Scripts -->
     <script src="navbar.js?v=aidemo5"></script>
 
-    <!-- Voice Widget - Just add this script to any page! -->
+    <!-- Voice Widget - Premium (Floating Pill) -->
     <script src="voice-widget.js" data-agent-id="agent_01jxr8njx9fyn8bn0fh921hcfw" data-avatar="ai-avatar.png"
         data-greeting="Habla con IA" data-position="bottom-right">
         </script>
+
+    <!-- Basic Voice Widget (LeadConnector) -->
+    <script>
+        (function () {
+            var script = document.createElement('script');
+            script.src = 'https://widgets.leadconnectorhq.com/loader.js';
+            script.setAttribute('data-resources-url', 'https://widgets.leadconnectorhq.com/chat-widget/loader.js');
+            script.setAttribute('data-widget-id', '690d3d45a66310b35ca95aca');
+            document.body.appendChild(script);
+            console.log('EXIMIA Basic Voice Widget loaded');
+        })();
+    </script>
 </body>
 
 </html>
