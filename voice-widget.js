@@ -198,11 +198,11 @@
         /* End Button */
         .exi-end-btn {
             display: none;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: none;
-            background: rgba(239, 68, 68, 0.15);
+            background: rgba(239, 68, 68, 0.2);
             color: #f87171;
             cursor: pointer;
             align-items: center;
@@ -210,6 +210,9 @@
             margin-left: 8px;
             transition: all 0.2s ease;
             flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .exi-pill.active .exi-end-btn {
@@ -217,8 +220,13 @@
         }
 
         .exi-end-btn:hover {
-            background: rgba(239, 68, 68, 0.25);
+            background: rgba(239, 68, 68, 0.35);
             transform: scale(1.1);
+        }
+        
+        .exi-end-btn:active {
+            transform: scale(0.95);
+            background: rgba(239, 68, 68, 0.5);
         }
 
         /* Mobile Responsive */
@@ -406,12 +414,35 @@
 
     // Event listeners
     pill.addEventListener('click', (e) => {
+        // Don't start if clicking the end button
+        if (e.target.closest('.exi-end-btn')) {
+            return;
+        }
         if (!isActive) {
             startConversation();
         }
     });
 
-    endBtn.addEventListener('click', endConversation);
+    // End button - use mousedown for faster response and prevent propagation
+    endBtn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    endBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('🛑 End button clicked');
+        endConversation(e);
+    });
+
+    // Touch support for mobile
+    endBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('🛑 End button touched');
+        endConversation(e);
+    });
 
     // Keyboard accessibility
     pill.addEventListener('keydown', (e) => {
