@@ -14,10 +14,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 <ul class="nav-links" id="navLinks">
                     <li><a href="index.html" data-page="home">Inicio</a></li>
                     <li><a href="index.html#planes" data-page="planes">Planes</a></li>
-                    <li><a href="crm.html" data-page="crm">CRM</a></li>
-                    <li><a href="marketing.html" data-page="marketing">Marketing</a></li>
-                    <li><a href="dev.html" data-page="dev">Dev</a></li>
-                    <li><a href="voice-demo.html" data-page="demo">AI Demo</a></li>
+                    <li class="nav-dropdown">
+                        <a href="#" class="dropdown-toggle" data-page="productos">
+                            Productos
+                            <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="voice-demo.html" data-page="ai">🤖 AI Demo</a></li>
+                            <li><a href="crm.html" data-page="crm">📊 CRM + AI</a></li>
+                            <li><a href="marketing.html" data-page="marketing">📈 Marketing</a></li>
+                            <li><a href="dev.html" data-page="dev">💻 Dev</a></li>
+                        </ul>
+                    </li>
                     <li><a href="contacto.html" data-page="contact">Contáctanos</a></li>
                 </ul>
 
@@ -44,6 +54,19 @@ document.addEventListener("DOMContentLoaded", function () {
         navLinksItems.forEach(link => {
             link.addEventListener('click', function () {
                 if (menuToggle) menuToggle.checked = false;
+            });
+        });
+
+        // Dropdown toggle for mobile
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function (e) {
+                // Only prevent default on mobile
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    const parent = this.closest('.nav-dropdown');
+                    parent.classList.toggle('active');
+                }
             });
         });
 

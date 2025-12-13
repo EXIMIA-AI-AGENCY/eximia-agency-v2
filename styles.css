@@ -468,6 +468,88 @@ p {
     width: 100%;
 }
 
+/* Dropdown Menu Styles */
+.nav-dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.nav-dropdown:hover .dropdown-arrow,
+.nav-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    min-width: 200px;
+    background: rgba(15, 15, 20, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 12px;
+    padding: 0.75rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(147, 51, 234, 0.15);
+    z-index: 1000;
+    list-style: none;
+}
+
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-bottom-color: rgba(168, 85, 247, 0.3);
+}
+
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown.active .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-menu li {
+    padding: 0;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(168, 85, 247, 0.15);
+    color: #fff;
+    padding-left: 1.5rem;
+}
+
+.dropdown-menu a::after {
+    display: none;
+}
+
 .nav-cta {
     display: flex;
     gap: var(--spacing-sm);
@@ -604,6 +686,51 @@ p {
         color: #fff;
         display: block;
         padding: 10px;
+    }
+
+    /* Mobile Dropdown */
+    .nav-dropdown {
+        width: 100%;
+    }
+
+    .dropdown-toggle {
+        justify-content: center;
+    }
+
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+        padding: 0.5rem 0;
+        opacity: 1;
+        visibility: visible;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        box-shadow: none;
+    }
+
+    .dropdown-menu::before {
+        display: none;
+    }
+
+    .nav-dropdown.active .dropdown-menu {
+        max-height: 300px;
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-menu a {
+        font-size: 1.1rem;
+        padding: 0.75rem 1rem;
+        justify-content: center;
+    }
+
+    .dropdown-menu a:hover {
+        padding-left: 1rem;
     }
 
     /* 5. Mobile Button */
