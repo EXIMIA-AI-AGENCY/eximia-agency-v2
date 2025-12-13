@@ -229,30 +229,77 @@
             background: rgba(239, 68, 68, 0.5);
         }
 
-        /* Mobile Responsive */
+        /* Mobile Responsive - Enhanced */
         @media (max-width: 480px) {
             .exi-voice-widget {
-                ${POSITION === 'bottom-left' ? 'left: 16px;' : 'right: 16px;'}
-                bottom: 16px;
+                ${POSITION === 'bottom-left' ? 'left: 12px;' : 'right: 12px;'}
+                bottom: 12px;
             }
 
             .exi-pill {
-                padding: 6px 16px 6px 6px;
-                gap: 10px;
+                padding: 10px 18px 10px 10px;
+                gap: 12px;
+                border-radius: 60px;
+                transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            /* Fun bounce on touch */
+            .exi-pill:active {
+                transform: scale(0.92);
+                box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
             }
 
             .exi-avatar {
-                width: 38px;
-                height: 38px;
+                width: 46px;
+                height: 46px;
+            }
+
+            .exi-avatar img {
+                border: 2px solid rgba(0,0,0,0.3);
+            }
+
+            .exi-status {
+                min-width: 90px;
             }
 
             .exi-status-text {
-                font-size: 13px;
+                font-size: 14px;
+                font-weight: 700;
             }
 
             .exi-status-sub {
-                font-size: 10px;
+                font-size: 11px;
+                font-weight: 500;
             }
+
+            .exi-mini-bars {
+                gap: 3px;
+            }
+
+            .exi-mini-bar {
+                width: 4px;
+                border-radius: 3px;
+            }
+
+            .exi-end-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .exi-end-btn:active {
+                transform: scale(0.85);
+            }
+        }
+
+        /* Touch feedback animation */
+        @keyframes touch-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(168, 85, 247, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+        }
+
+        .exi-pill.touched {
+            animation: touch-pulse 0.6s ease-out;
         }
 
         /* Hide when chat widget visible (optional) */
@@ -452,6 +499,17 @@
                 startConversation();
             }
         }
+    });
+
+    // Touch feedback for mobile
+    pill.addEventListener('touchstart', () => {
+        pill.classList.add('touched');
+    });
+
+    pill.addEventListener('touchend', () => {
+        setTimeout(() => {
+            pill.classList.remove('touched');
+        }, 600);
     });
 
     console.log('🎙️ EXIMIA AI Voice Widget ready');
