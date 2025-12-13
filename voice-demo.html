@@ -79,21 +79,15 @@
                     </div>
                     <div class="widget-compartment" id="basicVoiceContainer"
                         style="margin-top: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 180px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 2rem; position: relative; overflow: visible;">
-                        <!-- Basic Voice Widget will load here -->
-                        <div id="basicVoiceWidget" style="width: 100%; min-height: 100px;"></div>
+                        <!-- Basic Voice Widget -->
+                        <script src="https://widgets.leadconnectorhq.com/loader.js"
+                            data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+                            data-widget-id="690d3d45a66310b35ca95aca">
+                            </script>
+                        <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-top: 1rem;">
+                            Busca el widget flotante en la esquina
+                        </p>
                     </div>
-                    <script>
-                        // Load LeadConnector Basic Voice Widget
-                        (function () {
-                            var container = document.getElementById('basicVoiceWidget');
-                            var script = document.createElement('script');
-                            script.src = 'https://widgets.leadconnectorhq.com/loader.js';
-                            script.setAttribute('data-resources-url', 'https://widgets.leadconnectorhq.com/chat-widget/loader.js');
-                            script.setAttribute('data-widget-id', '690d3d45a66310b35ca95aca');
-                            document.body.appendChild(script);
-                            console.log('EXIMIA Basic Voice Widget Loading...');
-                        })();
-                    </script>
                 </div>
 
                 <!-- Premium Voice Demo -->
