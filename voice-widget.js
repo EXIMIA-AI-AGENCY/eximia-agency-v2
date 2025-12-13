@@ -395,26 +395,29 @@
 
             conversation = await ElevenLabsConversation.startSession({
                 agentId: AGENT_ID,
-                connectionType: 'webrtc',
+                connectionType: 'webrtc', // Try 'websocket' if webrtc doesn't work
 
                 onConnect: () => {
                     isActive = true;
                     pill.classList.add('active', 'listening');
                     statusText.textContent = 'Te escucho...';
                     statusSub.innerHTML = '<span class="exi-live-dot"></span> En vivo';
+                    console.log('🎙️ Connected - Ready to listen');
                 },
 
                 onDisconnect: () => {
+                    console.log('❌ Disconnected');
                     resetWidget();
                 },
 
                 onError: (error) => {
-                    console.error('Voice error:', error);
+                    console.error('❌ Voice error:', error);
                     statusText.textContent = 'Error';
                     setTimeout(resetWidget, 2000);
                 },
 
                 onModeChange: (mode) => {
+                    console.log('🔄 Mode changed:', mode.mode);
                     pill.classList.remove('listening', 'speaking');
                     if (mode.mode === 'speaking') {
                         pill.classList.add('speaking');
