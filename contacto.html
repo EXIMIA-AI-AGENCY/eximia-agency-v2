@@ -267,12 +267,84 @@
         </footer>
     </div>
 
-    <!-- Script to adjust iframe height automatically if possible -->
+    <!-- Form Webhook Submission -->
     <script>
-        window.addEventListener('message', function (e) {
-            // Handle iframe resizing messages from GHL if applicable
+        const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/L3bLLVwvhdJ7A9WqkPxM/webhook-trigger/754a84ab-dfc4-4f1f-9ea4-5bd77b371906';
+
+        document.querySelector('.native-contact-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+
+            // Get form data
+            const formData = {
+                first_name: form.querySelector('#first_name').value.trim(),
+                email: form.querySelector('#email').value.trim(),
+                phone: form.querySelector('#phone').value.trim() || '',
+                message: form.querySelector('#message').value.trim() || '',
+                consent: form.querySelector('#consent').checked,
+                source: 'EXIMIA Website - Contact Form',
+                submitted_at: new Date().toISOString()
+            };
+
+            // Validate
+            if (!formData.first_name || !formData.email) {
+                alert('Por favor completa los campos requeridos.');
+                return;
+            }
+
+            if (!formData.consent) {
+                alert('Por favor acepta los términos para continuar.');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            submitBtn.style.opacity = '0.7';
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                    mode: 'no-cors' // Webhook may not support CORS
+                });
+
+                // Success (no-cors doesn't give us response status, so assume success)
+                submitBtn.textContent = '✓ Enviado!';
+                submitBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+
+                // Reset form
+                form.reset();
+
+                // Show success message
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.style.opacity = '';
+                    submitBtn.disabled = false;
+                }, 3000);
+
+            } catch (error) {
+                console.error('Webhook error:', error);
+                submitBtn.textContent = 'Error - Intenta de nuevo';
+                submitBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.style.opacity = '';
+                    submitBtn.disabled = false;
+                }, 3000);
+            }
         });
     </script>
+
     <script src="navbar.js?v=aidemo5"></script>
     <script src="script.js?v=mobilefix"></script>
     <!-- Chat Widget -->
