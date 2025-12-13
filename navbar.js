@@ -22,12 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             </svg>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="voice-demo.html" data-page="ai">🤖 AI Demo</a></li>
                             <li><a href="crm.html" data-page="crm">📊 CRM + AI</a></li>
                             <li><a href="marketing.html" data-page="marketing">📈 Marketing</a></li>
                             <li><a href="dev.html" data-page="dev">💻 Dev</a></li>
                         </ul>
                     </li>
+                    <li><a href="voice-demo.html" data-page="demo">AI Demo</a></li>
                     <li><a href="contacto.html" data-page="contact">Contáctanos</a></li>
                 </ul>
 
