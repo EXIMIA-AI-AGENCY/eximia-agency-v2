@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <li><a href="index.html#planes" data-page="home">Planes</a></li>
                     <li><a href="marketing.html" data-page="marketing">Marketing</a></li>
                     <li><a href="dev.html" data-page="dev">Dev</a></li>
-                    <li><a href="voice-demo.html" data-page="demo">Demo</a></li>
+                    <li><a href="voice-demo.html" data-page="demo">AI Demo</a></li>
                     <li><a href="contacto.html" data-page="contact">Contáctanos</a></li>
                 </ul>
 
