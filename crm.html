@@ -830,6 +830,140 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        /* Comparison Table Section */
+        .comparison-section {
+            padding: 6rem 2rem;
+            background: #050505;
+        }
+
+        .comparison-header {
+            text-align: right;
+            max-width: 1000px;
+            margin: 0 auto 1rem;
+        }
+
+        .comparison-badge {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: rgba(147, 51, 234, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .comparison-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, rgba(15, 15, 20, 0.9), rgba(10, 10, 15, 0.95));
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(90deg, rgba(20, 20, 25, 0.95), rgba(25, 25, 35, 0.95));
+            border-bottom: 1px solid rgba(147, 51, 234, 0.3);
+        }
+
+        .comparison-table th {
+            padding: 1.5rem 1.25rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        .comparison-table th.th-cost,
+        .comparison-table th.th-eximia {
+            text-align: center;
+        }
+
+        .table-logo {
+            height: 28px;
+            opacity: 0.9;
+        }
+
+        .comparison-table tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(147, 51, 234, 0.05);
+        }
+
+        .comparison-table td {
+            padding: 1.1rem 1.25rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .comparison-table .cost-cell {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .comparison-table .check-cell {
+            text-align: center;
+        }
+
+        .comparison-table .check {
+            color: #22c55e;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        /* Total Row */
+        .comparison-table .total-row {
+            background: linear-gradient(90deg, rgba(20, 20, 25, 0.98), rgba(25, 25, 35, 0.98));
+            border-top: 2px solid rgba(147, 51, 234, 0.4);
+        }
+
+        .comparison-table .total-row td {
+            padding: 1.5rem 1.25rem;
+            font-size: 1rem;
+        }
+
+        .comparison-table .strikethrough {
+            text-decoration: line-through;
+            color: rgba(239, 68, 68, 0.7);
+            font-size: 1rem;
+        }
+
+        .comparison-table .price-highlight {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #22c55e, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Mobile responsiveness for table */
+        @media (max-width: 700px) {
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .comparison-table .price-highlight {
+                font-size: 1.25rem;
+            }
+
+            .table-logo {
+                height: 20px;
+            }
+        }
+
         /* Final CTA */
         .final-cta-section {
             padding: 8rem 2rem;
@@ -1104,6 +1238,106 @@
                 <img src="crm-analytics.png" alt="EXIMIA CRM Analytics"
                     style="width: 100%; border-radius: 12px; display: block;">
             </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table Section -->
+    <section class="comparison-section">
+        <div class="comparison-header">
+            <span class="comparison-badge">SYSTEM COMPARISON // AUTH_REQ</span>
+        </div>
+
+        <div class="comparison-container">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th class="th-feature">HERRAMIENTA / SERVICIO</th>
+                        <th class="th-cost">COSTO INDIVIDUAL</th>
+                        <th class="th-eximia">
+                            <img src="logo.png" alt="EXIMIA" class="table-logo">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CRM & Pipeline</td>
+                        <td class="cost-cell">$99/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sales Funnels Ilimitados</td>
+                        <td class="cost-cell">$297/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Website Builder</td>
+                        <td class="cost-cell">$29/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Encuestas & Formularios</td>
+                        <td class="cost-cell">$49/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Email Marketing</td>
+                        <td class="cost-cell">$99/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>SMS Marketing (2-way)</td>
+                        <td class="cost-cell">$99/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Agendamiento & Citas</td>
+                        <td class="cost-cell">$29/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Automatización de Workflows</td>
+                        <td class="cost-cell">$169/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Cursos & Productos</td>
+                        <td class="cost-cell">$99/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Call Tracking</td>
+                        <td class="cost-cell">$49/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Reputation Management</td>
+                        <td class="cost-cell">$159/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Tracking & Analytics</td>
+                        <td class="cost-cell">$299/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Comunidades</td>
+                        <td class="cost-cell">$89/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Firmas de Documentos</td>
+                        <td class="cost-cell">$47/mes</td>
+                        <td class="check-cell"><span class="check">✓</span></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td><strong>COSTO MENSUAL TOTAL</strong></td>
+                        <td class="cost-cell strikethrough">$1,612 / mes</td>
+                        <td class="check-cell price-highlight">$197 / mes</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </section>
 
