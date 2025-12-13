@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXIMIA CRM - El Sistema Operativo para Escalar Empresas</title>
+    <meta name="description"
+        content="Reemplaza tu caos de herramientas. Captura leads, automatiza seguimientos y cierra ventas con un solo centro de comando impulsado por IA.">
+    <meta name="keywords"
+        content="CRM, automatización empresarial, sistema operativo empresarial, ventas, marketing automation, EXIMIA">
+    <meta name="author" content="EXIMIA">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://eximia.agency/crm.html">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="EXIMIA CRM - El Sistema Operativo para Escalar Empresas">
+    <meta property="og:description"
+        content="Reemplaza tu caos de herramientas. Un solo centro de comando impulsado por IA.">
+    <meta property="og:image" content="https://eximia.agency/ai-avatar.png">
+    <meta property="og:url" content="https://eximia.agency/crm.html">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="ai-avatar.png">
+    <link rel="apple-touch-icon" href="ai-avatar.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css?v=signin2">
+
+    <style>
+        /* CRM Page Specific Styles */
+
+        /* Hero Section */
+        .crm-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 0%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                #050505;
+        }
+
+        .crm-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .crm-hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(147, 51, 234, 0.15);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: #a855f7;
+            margin-bottom: 2rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(147, 51, 234, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(147, 51, 234, 0.4);
+            }
+        }
+
+        .crm-headline {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .crm-subheadline {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #9333ea, #7c3aed, #6d28d9);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(147, 51, 234, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 50px rgba(147, 51, 234, 0.6),
+                0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 3D Dashboard Visual */
+        .dashboard-preview {
+            margin-top: 4rem;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .dashboard-mockup {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            transform: rotateX(10deg) rotateY(-5deg);
+            transition: transform 0.5s ease;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(147, 51, 234, 0.2);
+        }
+
+        .dashboard-mockup:hover {
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+
+        .dashboard-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background: #ef4444;
+        }
+
+        .dot-yellow {
+            background: #f59e0b;
+        }
+
+        .dot-green {
+            background: #22c55e;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1rem;
+            min-height: 300px;
+        }
+
+        .dashboard-sidebar {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .sidebar-item {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background: rgba(147, 51, 234, 0.1);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(59, 130, 246, 0.3));
+            color: #fff;
+            border: 1px solid rgba(147, 51, 234, 0.5);
+        }
+
+        .dashboard-main {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #a855f7;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.25rem;
+        }
+
+        .chart-placeholder {
+            height: 150px;
+            background: linear-gradient(90deg,
+                    rgba(147, 51, 234, 0.1) 0%,
+                    rgba(147, 51, 234, 0.3) 50%,
+                    rgba(59, 130, 246, 0.2) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 8px;
+            padding: 1rem;
+        }
+
+        .chart-bar {
+            width: 30px;
+            background: linear-gradient(180deg, #a855f7, #6d28d9);
+            border-radius: 4px 4px 0 0;
+            animation: growBar 2s ease-out forwards;
+        }
+
+        @keyframes growBar {
+            from {
+                height: 0;
+            }
+
+            to {
+                height: var(--height);
+            }
+        }
+
+        /* Problem Section */
+        .problem-section {
+            padding: 6rem 2rem;
+            background: #050505;
+            position: relative;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .problem-visual {
+            position: relative;
+        }
+
+        .tool-chaos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            opacity: 0.3;
+            filter: grayscale(1);
+        }
+
+        .chaos-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .problem-strike {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ef4444, transparent);
+            animation: strikeThrough 1s ease-out forwards;
+        }
+
+        @keyframes strikeThrough {
+            from {
+                transform: translate(-50%, -50%) scaleX(0);
+            }
+
+            to {
+                transform: translate(-50%, -50%) scaleX(1);
+            }
+        }
+
+        .problem-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .problem-content p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .savings-callout {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .savings-icon {
+            font-size: 2.5rem;
+        }
+
+        .savings-text h4 {
+            color: #22c55e;
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .savings-text p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Unified Ecosystem Section */
+        .ecosystem-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, #050505, #0a0a0a);
+        }
+
+        .ecosystem-section .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .ecosystem-section .section-subtitle {
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .eco-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eco-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #a855f7, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .eco-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(147, 51, 234, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .eco-card:hover::before {
+            opacity: 1;
+        }
+
+        .eco-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .eco-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #fff;
+        }
+
+        .eco-card p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* Feature Deep Dives */
+        .features-section {
+            padding: 6rem 2rem;
+            background: #050505;
+        }
+
+        .feature-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto 6rem;
+            align-items: center;
+        }
+
+        .feature-block:nth-child(even) {
+            direction: rtl;
+        }
+
+        .feature-block:nth-child(even)>* {
+            direction: ltr;
+        }
+
+        .feature-content h3 {
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-content p {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .feature-visual {
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+        }
+
+        /* Chat Interface Mockup */
+        .chat-mockup {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #6d28d9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 80%;
+        }
+
+        .chat-bubble.ai {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+
+        /* Kanban Board Mockup */
+        .kanban-mockup {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .kanban-column {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+
+        .kanban-header {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .kanban-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            border-left: 3px solid;
+        }
+
+        .kanban-card.new {
+            border-color: #3b82f6;
+        }
+
+        .kanban-card.contact {
+            border-color: #f59e0b;
+        }
+
+        .kanban-card.qualify {
+            border-color: #a855f7;
+        }
+
+        .kanban-card.won {
+            border-color: #22c55e;
+        }
+
+        /* Social Proof */
+        .social-proof-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, #0a0a0a, #050505);
+        }
+
+        .logo-strip {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+            opacity: 0.5;
+        }
+
+        .partner-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .testimonial-content {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #6d28d9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Final CTA */
+        .final-cta-section {
+            padding: 8rem 2rem;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 100%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                #050505;
+        }
+
+        .final-cta-section h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .final-cta-section p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+
+            .problem-grid,
+            .feature-block {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .feature-block:nth-child(even) {
+                direction: ltr;
+            }
+
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-mockup {
+                transform: none;
+            }
+
+            .kanban-mockup {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-chaos {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .kanban-mockup {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-strip {
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar"></nav>
+
+    <!-- Hero Section -->
+    <section class="crm-hero">
+        <div class="crm-hero-content">
+            <div class="hero-badge">
+                <span>⚡</span>
+                <span>El futuro de la automatización empresarial</span>
+            </div>
+
+            <h1 class="crm-headline">El Sistema Operativo para Escalar Empresas</h1>
+
+            <p class="crm-subheadline">
+                Reemplaza tu caos de herramientas. Captura leads, automatiza seguimientos y cierra ventas
+                usando un solo centro de comando impulsado por IA.
+            </p>
+
+            <a href="agendar.html" class="cta-primary">
+                <span>Comienza tu Dominación</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+
+            <!-- Dashboard Preview -->
+            <div class="dashboard-preview">
+                <div class="dashboard-mockup">
+                    <div class="dashboard-header">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <div class="dashboard-content">
+                        <div class="dashboard-sidebar">
+                            <div class="sidebar-item active">📊 Dashboard</div>
+                            <div class="sidebar-item">👥 Contactos</div>
+                            <div class="sidebar-item">📈 Pipeline</div>
+                            <div class="sidebar-item">📧 Campañas</div>
+                            <div class="sidebar-item">⚙️ Automatizaciones</div>
+                        </div>
+                        <div class="dashboard-main">
+                            <div class="stats-row">
+                                <div class="stat-card">
+                                    <div class="stat-value">2,847</div>
+                                    <div class="stat-label">Leads Activos</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">$127K</div>
+                                    <div class="stat-label">Pipeline</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">89%</div>
+                                    <div class="stat-label">Tasa de Respuesta</div>
+                                </div>
+                            </div>
+                            <div class="chart-placeholder">
+                                <div class="chart-bar" style="--height: 60px;"></div>
+                                <div class="chart-bar" style="--height: 90px;"></div>
+                                <div class="chart-bar" style="--height: 75px;"></div>
+                                <div class="chart-bar" style="--height: 110px;"></div>
+                                <div class="chart-bar" style="--height: 95px;"></div>
+                                <div class="chart-bar" style="--height: 130px;"></div>
+                                <div class="chart-bar" style="--height: 100px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section">
+        <div class="problem-grid">
+            <div class="problem-visual">
+                <div class="tool-chaos">
+                    <div class="chaos-item">📧</div>
+                    <div class="chaos-item">📅</div>
+                    <div class="chaos-item">💬</div>
+                    <div class="chaos-item">📊</div>
+                    <div class="chaos-item">🔔</div>
+                    <div class="chaos-item">📱</div>
+                </div>
+                <div class="problem-strike"></div>
+            </div>
+            <div class="problem-content">
+                <h2>Deja de Pagar por 10 Suscripciones Diferentes</h2>
+                <p>
+                    Mailchimp... HubSpot... Calendly... Typeform... Zapier...
+                    ¿Cuántas herramientas más necesitas para hacer funcionar tu negocio?
+                    Cada una con su propia curva de aprendizaje, su propia factura mensual,
+                    y ninguna conectada con las demás.
+                </p>
+                <div class="savings-callout">
+                    <div class="savings-icon">💰</div>
+                    <div class="savings-text">
+                        <h4>Ahorra hasta $500+/mes</h4>
+                        <p>Un solo sistema. Una sola factura. Todo conectado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unified Ecosystem Section -->
+    <section class="ecosystem-section">
+        <div class="container center">
+            <h2 class="section-title">El <span class="gradient-text">Ecosistema Unificado</span></h2>
+            <p class="section-subtitle">Todo lo que necesitas para capturar, nutrir y convertir clientes en una sola
+                plataforma.</p>
+        </div>
+
+        <div class="ecosystem-grid">
+            <div class="eco-card">
+                <div class="eco-icon">📧</div>
+                <h3>Email & SMS Marketing</h3>
+                <p>Comunicación bidireccional con tus clientes. Campañas automatizadas que responden y convierten.</p>
+            </div>
+
+            <div class="eco-card">
+                <div class="eco-icon">📅</div>
+                <h3>Calendario & Reservas</h3>
+                <p>Sistema de booking integrado. Tus clientes agendan y tu equipo recibe notificaciones automáticas.</p>
+            </div>
+
+            <div class="eco-card">
+                <div class="eco-icon">🎯</div>
+                <h3>Funnels & Landing Pages</h3>
+                <p>Constructor visual de embudos. Crea páginas de alta conversión sin tocar código.</p>
+            </div>
+
+            <div class="eco-card">
+                <div class="eco-icon">⚡</div>
+                <h3>Automatizaciones</h3>
+                <p>Workflows y triggers que trabajan 24/7. Si pasa X, automáticamente ocurre Y.</p>
+            </div>
+
+            <div class="eco-card">
+                <div class="eco-icon">⭐</div>
+                <h3>Gestión de Reputación</h3>
+                <p>Solicita y gestiona reseñas automáticamente. Construye tu autoridad online.</p>
+            </div>
+
+            <div class="eco-card">
+                <div class="eco-icon">🤖</div>
+                <h3>Agentes de IA</h3>
+                <p>Conversaciones automatizadas que capturan, califican y agendan citas mientras duermes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Deep Dives -->
+    <section class="features-section">
+        <div class="container center">
+            <h2 class="section-title">La <span class="gradient-text">Salsa Secreta</span></h2>
+            <p class="section-subtitle">Tecnología de punta que te da una ventaja injusta sobre tu competencia.</p>
+        </div>
+
+        <!-- Feature 1: AI Chat -->
+        <div class="feature-block">
+            <div class="feature-content">
+                <h3>Motor de IA Conversacional</h3>
+                <p>
+                    Tu agente de IA responde consultas, califica leads y agenda citas automáticamente.
+                    Disponible 24/7, nunca se cansa, nunca olvida hacer seguimiento.
+                </p>
+                <ul class="feature-list">
+                    <li>Respuestas instantáneas a cualquier hora</li>
+                    <li>Calificación inteligente de leads</li>
+                    <li>Booking automático en tu calendario</li>
+                    <li>Handoff suave a tu equipo humano</li>
+                </ul>
+            </div>
+            <div class="feature-visual">
+                <div class="chat-mockup">
+                    <div class="chat-message">
+                        <div class="chat-avatar">👤</div>
+                        <div class="chat-bubble">Hola, me interesa saber más sobre sus servicios de marketing digital
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-avatar">🤖</div>
+                        <div class="chat-bubble ai">¡Hola! Claro, con gusto te ayudo. ¿Qué tipo de negocio tienes y cuál
+                            es tu objetivo principal con el marketing digital?</div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-avatar">👤</div>
+                        <div class="chat-bubble">Tengo una clínica dental y quiero más pacientes nuevos</div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-avatar">🤖</div>
+                        <div class="chat-bubble ai">Excelente, trabajamos con varias clínicas dentales. ¿Te gustaría
+                            agendar una llamada de 15 min para mostrarte casos de éxito similares? Tengo disponibilidad
+                            mañana a las 10am o 3pm.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 2: Pipeline -->
+        <div class="feature-block">
+            <div class="feature-content">
+                <h3>Pipeline Visual Inteligente</h3>
+                <p>
+                    Visualiza tu proceso de ventas como un tablero Kanban.
+                    Los leads se mueven automáticamente de etapa en etapa basado en sus acciones.
+                </p>
+                <ul class="feature-list">
+                    <li>Vista de arrastrar y soltar</li>
+                    <li>Movimiento automático por triggers</li>
+                    <li>Alertas cuando leads se estancan</li>
+                    <li>Pronóstico de ingresos en tiempo real</li>
+                </ul>
+            </div>
+            <div class="feature-visual">
+                <div class="kanban-mockup">
+                    <div class="kanban-column">
+                        <div class="kanban-header">🆕 Nuevo</div>
+                        <div class="kanban-card new">María López - Consulta web</div>
+                        <div class="kanban-card new">Carlos Ruiz - Facebook Ad</div>
+                    </div>
+                    <div class="kanban-column">
+                        <div class="kanban-header">📞 Contactado</div>
+                        <div class="kanban-card contact">Ana García - Interesada</div>
+                    </div>
+                    <div class="kanban-column">
+                        <div class="kanban-header">🎯 Calificado</div>
+                        <div class="kanban-card qualify">Pedro Martín - Demo agendado</div>
+                        <div class="kanban-card qualify">Laura Sánchez - Propuesta enviada</div>
+                    </div>
+                    <div class="kanban-column">
+                        <div class="kanban-header">✅ Ganado</div>
+                        <div class="kanban-card won">Juan Pérez - $2,500</div>
+                        <div class="kanban-card won">Sofia Díaz - $4,200</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 3: Analytics -->
+        <div class="feature-block">
+            <div class="feature-content">
+                <h3>Analytics en Tiempo Real</h3>
+                <p>
+                    Métricas que importan, no vanidad. Ve exactamente qué campañas,
+                    canales y embudos te están generando dinero real.
+                </p>
+                <ul class="feature-list">
+                    <li>ROI por campaña y canal</li>
+                    <li>Costo por lead y conversión</li>
+                    <li>Tiempo promedio de cierre</li>
+                    <li>Reportes automáticos semanales</li>
+                </ul>
+            </div>
+            <div class="feature-visual">
+                <div class="dashboard-main"
+                    style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px;">
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: #22c55e;">↑ 34%</div>
+                            <div class="stat-label">Conversión</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">$23</div>
+                            <div class="stat-label">Costo/Lead</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">3.2x</div>
+                            <div class="stat-label">ROI</div>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder" style="height: 120px;">
+                        <div class="chart-bar" style="--height: 40px;"></div>
+                        <div class="chart-bar" style="--height: 60px;"></div>
+                        <div class="chart-bar" style="--height: 55px;"></div>
+                        <div class="chart-bar" style="--height: 80px;"></div>
+                        <div class="chart-bar" style="--height: 70px;"></div>
+                        <div class="chart-bar" style="--height: 100px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof-section">
+        <div class="container center">
+            <h2 class="section-title">Empresas que <span class="gradient-text">Dominan</span> con Nosotros</h2>
+        </div>
+
+        <!-- Logo Strip -->
+        <div class="logo-strip">
+            <div class="partner-logo">DENTIX</div>
+            <div class="partner-logo">PROPIEDAD360</div>
+            <div class="partner-logo">FITPRO</div>
+            <div class="partner-logo">LEGALMX</div>
+            <div class="partner-logo">AUTOHAUS</div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "Antes usábamos 7 herramientas diferentes. Ahora todo está en un solo lugar y mis costos bajaron
+                    $400/mes. El ROI fue inmediato."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">DV</div>
+                    <div class="author-info">
+                        <h4>Dr. Daniel Vega</h4>
+                        <p>Director, Clínica Dental Premium</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "El agente de IA responde leads a las 2am mientras yo duermo. Ya no pierdo prospectos por no
+                    contestar a tiempo. Game changer."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MC</div>
+                    <div class="author-info">
+                        <h4>Mariana Castro</h4>
+                        <p>CEO, Real Estate Elite</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "El pipeline visual me permite ver exactamente dónde está cada deal. Mis vendedores duplicaron su
+                    productividad en 2 meses."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RS</div>
+                    <div class="author-info">
+                        <h4>Roberto Silva</h4>
+                        <p>Gerente de Ventas, TechSolutions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta-section">
+        <h2>¿Listo para Dominar tu Mercado?</h2>
+        <p>Únete a las empresas que ya están automatizando su crecimiento con el sistema operativo empresarial más
+            potente del mercado.</p>
+        <a href="agendar.html" class="cta-primary">
+            <span>Agenda tu Demo Gratis</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="site-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="footer.js?v=1"></script>
+    <script src="navbar.js?v=inicio1"></script>
+    <script src="script.js?v=mobilefix"></script>
+    <script src="chat-widget.js?v=mobilefix"></script>
+</body>
+
+</html>
