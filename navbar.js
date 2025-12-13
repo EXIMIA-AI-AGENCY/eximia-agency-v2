@@ -57,17 +57,46 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Dropdown toggle for mobile
+        // Dropdown toggle for mobile - more robust implementation
         const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
         dropdownToggles.forEach(toggle => {
+            // Handle both click and touch events
             toggle.addEventListener('click', function (e) {
-                // Only prevent default on mobile
-                if (window.innerWidth <= 900) {
-                    e.preventDefault();
-                    const parent = this.closest('.nav-dropdown');
-                    parent.classList.toggle('active');
-                }
+                e.preventDefault();
+                e.stopPropagation();
+                const parent = this.closest('.nav-dropdown');
+
+                // Close other dropdowns first
+                document.querySelectorAll('.nav-dropdown.active').forEach(dropdown => {
+                    if (dropdown !== parent) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+
+                // Toggle current dropdown
+                parent.classList.toggle('active');
             });
+        });
+
+        // Close dropdown when clicking on dropdown links (for mobile)
+        const dropdownLinks = document.querySelectorAll('.dropdown-menu a');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                // Close the menu
+                if (menuToggle) menuToggle.checked = false;
+                // Close dropdown
+                const dropdown = this.closest('.nav-dropdown');
+                if (dropdown) dropdown.classList.remove('active');
+            });
+        });
+
+        // Close dropdown when clicking outside (for desktop)
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown.active').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
         });
 
         // Navbar initialized
