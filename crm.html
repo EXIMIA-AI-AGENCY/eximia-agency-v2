@@ -947,20 +947,96 @@
         }
 
         /* Mobile responsiveness for table */
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
+            .comparison-section {
+                padding: 4rem 1rem;
+            }
+
+            .comparison-container {
+                border-radius: 12px;
+            }
 
             .comparison-table th,
             .comparison-table td {
                 padding: 0.75rem 0.5rem;
-                font-size: 0.8rem;
+            }
+
+            .comparison-table th.th-feature,
+            .comparison-table td:first-child {
+                font-size: 0.75rem;
+                width: 45%;
+            }
+
+            .comparison-table th.th-cost,
+            .comparison-table .cost-cell {
+                font-size: 0.7rem;
+                width: 30%;
+            }
+
+            .comparison-table th.th-eximia,
+            .comparison-table .check-cell {
+                width: 25%;
+            }
+
+            .comparison-table .check {
+                font-size: 1rem;
             }
 
             .comparison-table .price-highlight {
-                font-size: 1.25rem;
+                font-size: 1.1rem;
+            }
+
+            .comparison-table .strikethrough {
+                font-size: 0.75rem;
+            }
+
+            .comparison-table .total-row td:first-child {
+                font-size: 0.7rem;
             }
 
             .table-logo {
-                height: 20px;
+                height: 18px;
+            }
+
+            .comparison-badge {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.6rem 0.35rem;
+            }
+
+            .comparison-table th.th-feature,
+            .comparison-table td:first-child {
+                font-size: 0.65rem;
+                width: 50%;
+            }
+
+            .comparison-table th.th-cost,
+            .comparison-table .cost-cell {
+                font-size: 0.6rem;
+                width: 25%;
+            }
+
+            .comparison-table th.th-eximia,
+            .comparison-table .check-cell {
+                width: 25%;
+            }
+
+            .comparison-table .check {
+                font-size: 0.9rem;
+            }
+
+            .comparison-table .price-highlight {
+                font-size: 0.95rem;
+            }
+
+            .table-logo {
+                height: 14px;
             }
         }
 
