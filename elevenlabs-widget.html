@@ -224,7 +224,14 @@
     </div>
 
     <!-- ElevenLabs SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@11labs/client@latest/dist/index.global.js"></script>
+    <script type="module">
+        // Import ElevenLabs SDK
+        import { Conversation } from 'https://cdn.jsdelivr.net/npm/@11labs/client/+esm';
+
+        // Make it globally available
+        window.ElevenLabsConversation = Conversation;
+        console.log('✅ ElevenLabs SDK loaded');
+    </script>
 
     <script>
         // ========================================
@@ -253,10 +260,13 @@
                 statusDiv.innerText = "Solicitando permisos...";
                 await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                // Iniciar sesión con ElevenLabs
-                statusDiv.innerText = "Conectando...";
+                // Wait for SDK to load
+                if (!window.ElevenLabsConversation) {
+                    alert('⚠️ SDK de ElevenLabs aún no está cargado. Espera un momento y vuelve a intentar.');
+                    return;
+                }
 
-                conversation = await ElevenLabs.Conversation.startSession({
+                conversation = await window.ElevenLabsConversation.startSession({
                     agentId: AGENT_ID,
                     connectionType: 'webrtc', // or 'websocket'
 
