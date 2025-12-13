@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=ios4">
 
     <style>
         /* Custom styles for this page */
@@ -55,32 +55,8 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <a href="index.html"><img src="logo.png" alt="EXIMIA"></a>
-                </div>
-
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="index.html#planes">Planes</a></li>
-                    <li><a href="marketing.html">Marketing</a></li>
-                    <li><a href="dev.html">Dev</a></li>
-                    <li><a href="contacto.html">Contáctanos</a></li>
-                </ul>
-
-                <div class="nav-cta">
-                    <a href="https://crm.eximia.agency/" class="btn btn-primary">Sign In</a>
-                </div>
-
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation (Injected by navbar.js) -->
+    <nav class="navbar" id="navbar"></nav>
 
     <div class="page-container">
         <section class="booking-section">
@@ -109,12 +85,10 @@
             </div>
         </footer>
     </div>
+    <script src="navbar.js?v=ios4"></script>
     <script src="script.js"></script>
     <!-- Chat Widget -->
-    <script src="https://widgets.leadconnectorhq.com/loader.js"
-        data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
-        data-widget-id="69028b7e66091b91d9592a2c">
-        </script>
+    <script src="chat-widget.js?v=mobilefix"></script>
 </body>
 
 </html>
