@@ -132,16 +132,91 @@
                         </div>
                     </div>
                     <div class="demo-action" style="margin-top: 2rem;">
-                        <div
-                            style="padding: 2rem; background: rgba(147, 51, 234, 0.15); border: 2px solid rgba(147, 51, 234, 0.4); border-radius: 12px; text-align: center;">
-                            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#a855f7"
-                                stroke-width="2" style="margin: 0 auto 1.5rem; display: block;">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                            <h4 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.2rem;">Próximamente</h4>
-                            <p style="color: var(--text-secondary); margin: 0; font-size: 0.95rem;">El widget de voz
-                                premium estará disponible pronto</p>
+                        <!-- Premium Voice Widget Container -->
+                        <div id="premium-voice-container" style="
+                            padding: 2rem; 
+                            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); 
+                            border: 1px solid rgba(147, 51, 234, 0.3); 
+                            border-radius: 16px; 
+                            text-align: center;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 1.5rem;
+                        ">
+                            <!-- Inline Pill Widget -->
+                            <div class="inline-voice-pill" id="inlineVoicePill" role="button" tabindex="0" style="
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                                padding: 10px 24px 10px 10px;
+                                background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 50px;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+                            ">
+                                <div style="
+                                    width: 48px;
+                                    height: 48px;
+                                    border-radius: 50%;
+                                    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+                                    padding: 2px;
+                                    flex-shrink: 0;
+                                    position: relative;
+                                ">
+                                    <img src="ai-avatar.png" alt="AI"
+                                        style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 2px; text-align: left;">
+                                    <span id="inlineStatusText"
+                                        style="font-size: 15px; font-weight: 600; color: #fff;">Habla con IA</span>
+                                    <span id="inlineStatusSub"
+                                        style="font-size: 11px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px;">
+                                        <span
+                                            style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: blink 1.5s ease-in-out infinite;"></span>
+                                        En vivo
+                                    </span>
+                                </div>
+                                <!-- Audio Bars -->
+                                <div id="inlineAudioBars"
+                                    style="display: none; align-items: center; gap: 2px; height: 16px; margin-left: 8px;">
+                                    <div class="inline-bar"
+                                        style="width: 3px; height: 4px; background: linear-gradient(to top, #a855f7, #ec4899); border-radius: 2px;">
+                                    </div>
+                                    <div class="inline-bar"
+                                        style="width: 3px; height: 4px; background: linear-gradient(to top, #a855f7, #ec4899); border-radius: 2px;">
+                                    </div>
+                                    <div class="inline-bar"
+                                        style="width: 3px; height: 4px; background: linear-gradient(to top, #a855f7, #ec4899); border-radius: 2px;">
+                                    </div>
+                                    <div class="inline-bar"
+                                        style="width: 3px; height: 4px; background: linear-gradient(to top, #a855f7, #ec4899); border-radius: 2px;">
+                                    </div>
+                                </div>
+                                <!-- End Button -->
+                                <button id="inlineEndBtn" style="
+                                    display: none;
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 50%;
+                                    border: none;
+                                    background: rgba(239, 68, 68, 0.2);
+                                    color: #f87171;
+                                    cursor: pointer;
+                                    align-items: center;
+                                    justify-content: center;
+                                    margin-left: 8px;
+                                ">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                        <rect x="6" y="6" width="12" height="12" rx="2" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
+                                Toca el botón para iniciar una conversación
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -254,6 +329,165 @@
     <script src="navbar.js?v=aidemo5"></script>
     <script src="script.js?v=mobilefix"></script>
     <script src="chat-widget.js?v=mobilefix"></script>
+
+    <!-- ElevenLabs SDK -->
+    <script type="module">
+        import { Conversation } from 'https://cdn.jsdelivr.net/npm/@11labs/client/+esm';
+        window.ElevenLabsConversation = Conversation;
+        console.log('✅ ElevenLabs SDK loaded');
+    </script>
+
+    <!-- Inline Voice Widget Logic -->
+    <script>
+        const AGENT_ID = 'agent_01jxr8njx9fyn8bn0fh921hcfw';
+
+        const inlinePill = document.getElementById('inlineVoicePill');
+        const inlineStatusText = document.getElementById('inlineStatusText');
+        const inlineStatusSub = document.getElementById('inlineStatusSub');
+        const inlineAudioBars = document.getElementById('inlineAudioBars');
+        const inlineEndBtn = document.getElementById('inlineEndBtn');
+
+        let inlineConversation = null;
+        let inlineIsActive = false;
+
+        // CSS for animations
+        const inlineStyles = document.createElement('style');
+        inlineStyles.textContent = `
+            @keyframes blink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+            @keyframes inline-wave {
+                0%, 100% { height: 4px; }
+                50% { height: 14px; }
+            }
+            .inline-bar.animating {
+                animation: inline-wave 0.5s ease-in-out infinite;
+            }
+            .inline-bar.speaking {
+                animation: inline-wave 0.3s ease-in-out infinite;
+                background: linear-gradient(to top, #22c55e, #4ade80) !important;
+            }
+            .inline-bar:nth-child(1) { animation-delay: 0s; }
+            .inline-bar:nth-child(2) { animation-delay: 0.1s; }
+            .inline-bar:nth-child(3) { animation-delay: 0.2s; }
+            .inline-bar:nth-child(4) { animation-delay: 0.15s; }
+            #inlineVoicePill:hover {
+                transform: translateY(-2px);
+                border-color: rgba(168, 85, 247, 0.3);
+                box-shadow: 0 12px 40px rgba(168, 85, 247, 0.2);
+            }
+            #inlineEndBtn:hover {
+                background: rgba(239, 68, 68, 0.35);
+                transform: scale(1.1);
+            }
+        `;
+        document.head.appendChild(inlineStyles);
+
+        async function startInlineConversation() {
+            if (inlineIsActive || !window.ElevenLabsConversation) {
+                if (!window.ElevenLabsConversation) {
+                    inlineStatusText.textContent = 'Cargando...';
+                    setTimeout(startInlineConversation, 500);
+                }
+                return;
+            }
+
+            try {
+                inlineStatusText.textContent = 'Conectando...';
+                inlineStatusSub.innerHTML = '<span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:blink 1.5s ease-in-out infinite;"></span> Solicitando permisos...';
+
+                await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                inlineConversation = await window.ElevenLabsConversation.startSession({
+                    agentId: AGENT_ID,
+                    connectionType: 'webrtc',
+
+                    onConnect: () => {
+                        inlineIsActive = true;
+                        inlineStatusText.textContent = 'Te escucho...';
+                        inlineStatusSub.innerHTML = '<span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:blink 1.5s ease-in-out infinite;"></span> En vivo';
+                        inlineAudioBars.style.display = 'flex';
+                        inlineEndBtn.style.display = 'flex';
+                        document.querySelectorAll('.inline-bar').forEach(bar => bar.classList.add('animating'));
+                    },
+
+                    onDisconnect: () => {
+                        resetInlineWidget();
+                    },
+
+                    onError: (error) => {
+                        console.error('Voice error:', error);
+                        inlineStatusText.textContent = 'Error';
+                        setTimeout(resetInlineWidget, 2000);
+                    },
+
+                    onModeChange: (mode) => {
+                        if (mode.mode === 'speaking') {
+                            inlineStatusText.textContent = 'Hablando...';
+                            document.querySelectorAll('.inline-bar').forEach(bar => {
+                                bar.classList.remove('animating');
+                                bar.classList.add('speaking');
+                            });
+                        } else {
+                            inlineStatusText.textContent = 'Te escucho...';
+                            document.querySelectorAll('.inline-bar').forEach(bar => {
+                                bar.classList.remove('speaking');
+                                bar.classList.add('animating');
+                            });
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Start error:', error);
+                if (error.name === 'NotAllowedError') {
+                    inlineStatusText.textContent = 'Micrófono denegado';
+                } else {
+                    inlineStatusText.textContent = 'Error';
+                }
+                setTimeout(resetInlineWidget, 2000);
+            }
+        }
+
+        async function endInlineConversation(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (inlineConversation) {
+                try {
+                    await inlineConversation.endSession();
+                } catch (err) {
+                    console.error('End error:', err);
+                }
+            }
+            resetInlineWidget();
+        }
+
+        function resetInlineWidget() {
+            inlineIsActive = false;
+            inlineConversation = null;
+            inlineStatusText.textContent = 'Habla con IA';
+            inlineStatusSub.innerHTML = '<span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:blink 1.5s ease-in-out infinite;"></span> En vivo';
+            inlineAudioBars.style.display = 'none';
+            inlineEndBtn.style.display = 'none';
+            document.querySelectorAll('.inline-bar').forEach(bar => {
+                bar.classList.remove('animating', 'speaking');
+            });
+        }
+
+        // Event Listeners
+        inlinePill.addEventListener('click', (e) => {
+            if (e.target.closest('#inlineEndBtn')) return;
+            if (!inlineIsActive) {
+                startInlineConversation();
+            }
+        });
+
+        inlineEndBtn.addEventListener('click', endInlineConversation);
+        inlineEndBtn.addEventListener('touchend', endInlineConversation);
+
+        console.log('🎙️ Inline Voice Widget initialized');
+    </script>
 </body>
 
 </html>
