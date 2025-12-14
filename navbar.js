@@ -97,11 +97,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 // Toggle current dropdown
-                if (isActive) {
-                    parent.classList.remove('active');
-                } else {
-                    parent.classList.add('active');
-                }
+                parent.classList.toggle('active');
+
+                // Reset touch tracking
+                touchMoved = false;
             });
         });
 
