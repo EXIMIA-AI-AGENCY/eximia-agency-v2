@@ -35,44 +35,75 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 
-    /* LIQUID CHROME METAL - Purple Tech */
+    /* LIQUID CHROME METAL - Ultra Cool Purple */
     background:
-        /* Top highlight - chrome reflection */
+        /* Top highlight - sharp chrome shine */
         linear-gradient(180deg,
-            rgba(255, 255, 255, 0.85) 0%,
-            rgba(200, 180, 255, 0.7) 8%,
-            rgba(130, 100, 200, 0.5) 20%,
-            transparent 35%),
+            rgba(255, 255, 255, 0.95) 0%,
+            rgba(220, 200, 255, 0.8) 5%,
+            rgba(160, 120, 240, 0.6) 15%,
+            transparent 30%),
         /* Bottom reflection */
         linear-gradient(0deg,
-            rgba(180, 160, 240, 0.6) 0%,
-            rgba(100, 70, 180, 0.4) 15%,
-            transparent 30%),
+            rgba(200, 160, 255, 0.7) 0%,
+            rgba(120, 80, 200, 0.5) 12%,
+            transparent 25%),
+        /* Electric glow center */
+        radial-gradient(ellipse 100% 60% at 50% 50%, rgba(180, 100, 255, 0.4) 0%, transparent 60%),
         /* Chrome curve highlights */
-        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(200, 180, 255, 0.5) 0%, transparent 50%),
-        /* Base gradient - vibrant purple tech */
-        linear-gradient(145deg, #5a3d8c, #3d2770, #4a3080, #6b4aa0);
-    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 300% 300%;
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.9) 0%, transparent 45%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(220, 180, 255, 0.6) 0%, transparent 45%),
+        /* Base gradient - electric purple */
+        linear-gradient(145deg, #7c4dff, #5e35b1, #673ab7, #9c4dcc);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 300% 300%;
 
     box-shadow:
-        /* Outer glow - purple tech */
-        0 20px 40px rgba(50, 30, 100, 0.7),
-        0 10px 20px rgba(100, 70, 180, 0.4),
+        /* Electric outer glow */
+        0 0 60px rgba(124, 77, 255, 0.5),
+        0 20px 40px rgba(94, 53, 177, 0.6),
+        0 10px 20px rgba(156, 77, 204, 0.4),
         /* Chrome rim highlight */
-        0 0 0 1px rgba(255, 255, 255, 0.35),
-        0 -1px 0 1px rgba(255, 255, 255, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.4),
+        0 -1px 0 1px rgba(255, 255, 255, 0.8),
         /* Inner chrome effect */
-        inset 0 2px 4px rgba(255, 255, 255, 0.8),
-        inset 0 -4px 8px rgba(50, 30, 100, 0.6),
-        inset 0 0 20px rgba(140, 100, 220, 0.25);
+        inset 0 2px 4px rgba(255, 255, 255, 0.9),
+        inset 0 -4px 8px rgba(60, 30, 120, 0.7),
+        inset 0 0 25px rgba(180, 120, 255, 0.3);
 
-    animation: liquid-chrome 8s ease-in-out infinite;
+    animation: liquid-chrome 6s ease-in-out infinite, pulse-glow 3s ease-in-out infinite;
 
     transition:
-        transform 0.22s ease,
-        box-shadow 0.22s ease,
-        filter 0.22s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 60px rgba(124, 77, 255, 0.5),
+            0 20px 40px rgba(94, 53, 177, 0.6),
+            0 10px 20px rgba(156, 77, 204, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.4),
+            0 -1px 0 1px rgba(255, 255, 255, 0.8),
+            inset 0 2px 4px rgba(255, 255, 255, 0.9),
+            inset 0 -4px 8px rgba(60, 30, 120, 0.7),
+            inset 0 0 25px rgba(180, 120, 255, 0.3);
+    }
+
+    50% {
+        box-shadow:
+            0 0 80px rgba(124, 77, 255, 0.7),
+            0 25px 50px rgba(94, 53, 177, 0.7),
+            0 12px 25px rgba(156, 77, 204, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.5),
+            0 -1px 0 1px rgba(255, 255, 255, 0.9),
+            inset 0 2px 4px rgba(255, 255, 255, 0.95),
+            inset 0 -4px 8px rgba(60, 30, 120, 0.6),
+            inset 0 0 30px rgba(180, 120, 255, 0.4);
+    }
 }
 
 /* TEXTO MÁS VISIBLE / CONTRASTE */
