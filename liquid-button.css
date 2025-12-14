@@ -35,37 +35,37 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 
-    /* LIQUID CHROME METAL - Very light violet */
+    /* LIQUID CHROME METAL - Masculine refined dark */
     background:
-        /* Top highlight - sharp chrome reflection */
+        /* Top highlight - subtle chrome reflection */
         linear-gradient(180deg,
-            rgba(255, 255, 255, 0.98) 0%,
-            rgba(235, 220, 255, 0.9) 8%,
-            rgba(180, 150, 230, 0.6) 20%,
+            rgba(255, 255, 255, 0.7) 0%,
+            rgba(180, 175, 200, 0.5) 8%,
+            rgba(90, 85, 120, 0.4) 20%,
             transparent 35%),
         /* Bottom reflection */
         linear-gradient(0deg,
-            rgba(220, 200, 255, 0.7) 0%,
-            rgba(160, 120, 220, 0.5) 15%,
+            rgba(140, 130, 170, 0.5) 0%,
+            rgba(70, 60, 100, 0.4) 15%,
             transparent 30%),
         /* Chrome curve highlights */
-        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.95) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(240, 230, 255, 0.6) 0%, transparent 50%),
-        /* Base gradient - very light purple chrome */
-        linear-gradient(145deg, #8b5fc0, #6940a0, #7a50b5, #9b6dd0);
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(160, 150, 190, 0.4) 0%, transparent 50%),
+        /* Base gradient - dark refined with violet accent */
+        linear-gradient(145deg, #3d3550, #2a2440, #352f4a, #453d5a);
     background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 300% 300%;
 
     box-shadow:
-        /* Outer glow */
-        0 20px 40px rgba(100, 60, 160, 0.5),
-        0 10px 20px rgba(150, 100, 200, 0.3),
+        /* Outer glow - subtle */
+        0 20px 40px rgba(30, 25, 50, 0.8),
+        0 10px 20px rgba(60, 50, 90, 0.5),
         /* Chrome rim highlight */
-        0 0 0 1px rgba(255, 255, 255, 0.5),
-        0 -1px 0 1px rgba(255, 255, 255, 0.9),
+        0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 -1px 0 1px rgba(255, 255, 255, 0.5),
         /* Inner chrome effect */
-        inset 0 2px 4px rgba(255, 255, 255, 0.95),
-        inset 0 -4px 8px rgba(120, 80, 180, 0.5),
-        inset 0 0 20px rgba(180, 140, 240, 0.3);
+        inset 0 2px 4px rgba(255, 255, 255, 0.6),
+        inset 0 -4px 8px rgba(20, 15, 40, 0.7),
+        inset 0 0 20px rgba(100, 90, 140, 0.2);
 
     animation: liquid-chrome 8s ease-in-out infinite;
 
