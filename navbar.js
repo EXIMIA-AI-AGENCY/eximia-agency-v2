@@ -47,24 +47,47 @@ document.addEventListener("DOMContentLoaded", function () {
         // Set Active Link
         setActiveLink();
 
-        // Close menu when clicking on nav links
+        // Close menu when clicking on nav links (but NOT the dropdown toggle)
         const navLinksItems = document.querySelectorAll('.nav-links a');
         const menuToggle = document.getElementById('menu-toggle');
 
         navLinksItems.forEach(link => {
-            link.addEventListener('click', function () {
+            link.addEventListener('click', function (e) {
+                // Don't close menu if clicking on dropdown toggle
+                if (this.classList.contains('dropdown-toggle')) {
+                    return; // Let the dropdown handler deal with this
+                }
                 if (menuToggle) menuToggle.checked = false;
             });
         });
 
-        // Dropdown toggle for mobile - more robust implementation
+        // Dropdown toggle for mobile - iOS Safari compatible
         const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        let touchMoved = false;
+
         dropdownToggles.forEach(toggle => {
-            // Handle both click and touch events
+            // Track if touch moved (to distinguish tap from scroll)
+            toggle.addEventListener('touchstart', function () {
+                touchMoved = false;
+            }, { passive: true });
+
+            toggle.addEventListener('touchmove', function () {
+                touchMoved = true;
+            }, { passive: true });
+
+            // Handle tap/click
             toggle.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
+
+                // If user was scrolling, don't toggle
+                if (touchMoved) {
+                    touchMoved = false;
+                    return;
+                }
+
                 const parent = this.closest('.nav-dropdown');
+                const isActive = parent.classList.contains('active');
 
                 // Close other dropdowns first
                 document.querySelectorAll('.nav-dropdown.active').forEach(dropdown => {
@@ -74,7 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 // Toggle current dropdown
-                parent.classList.toggle('active');
+                if (isActive) {
+                    parent.classList.remove('active');
+                } else {
+                    parent.classList.add('active');
+                }
             });
         });
 
@@ -90,8 +117,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Close dropdown when clicking outside (for desktop)
+        // Close dropdown when clicking outside (for desktop only)
         document.addEventListener('click', function (e) {
+            // Don't close if clicking on dropdown toggle or inside dropdown
+            if (e.target.closest('.dropdown-toggle') || e.target.closest('.dropdown-menu')) {
+                return;
+            }
             if (!e.target.closest('.nav-dropdown')) {
                 document.querySelectorAll('.nav-dropdown.active').forEach(dropdown => {
                     dropdown.classList.remove('active');
