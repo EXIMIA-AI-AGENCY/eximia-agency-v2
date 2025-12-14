@@ -808,7 +808,7 @@ p {
 }
 
 .hero {
-    min-height: 85vh;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -959,14 +959,14 @@ p {
     font-weight: 600;
     letter-spacing: 0.05em;
     color: var(--accent-blue);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
     backdrop-filter: blur(10px);
     text-transform: uppercase;
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 .hero-title {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
     color: #ffffff !important;
     text-shadow:
         0 2px 4px rgba(0, 0, 0, 0.5),
@@ -976,7 +976,7 @@ p {
 
 .hero-subtitle {
     font-size: 1.25rem;
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
