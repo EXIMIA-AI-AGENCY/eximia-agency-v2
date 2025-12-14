@@ -35,37 +35,37 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 
-    /* LIQUID CHROME METAL - Sharp reflections */
+    /* LIQUID CHROME METAL - Lighter violet */
     background:
         /* Top highlight - sharp chrome reflection */
         linear-gradient(180deg,
             rgba(255, 255, 255, 0.95) 0%,
-            rgba(200, 180, 240, 0.8) 8%,
-            rgba(100, 60, 160, 0.6) 20%,
+            rgba(220, 200, 255, 0.85) 8%,
+            rgba(140, 100, 200, 0.6) 20%,
             transparent 35%),
         /* Bottom reflection */
         linear-gradient(0deg,
-            rgba(180, 160, 220, 0.7) 0%,
-            rgba(80, 40, 120, 0.5) 15%,
+            rgba(200, 180, 240, 0.7) 0%,
+            rgba(120, 80, 180, 0.5) 15%,
             transparent 30%),
         /* Chrome curve highlights */
         radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(200, 180, 255, 0.6) 0%, transparent 50%),
-        /* Base gradient - deep purple chrome */
-        linear-gradient(145deg, #3b1578, #1e0a4a, #2d1560, #4a2080);
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(220, 200, 255, 0.6) 0%, transparent 50%),
+        /* Base gradient - lighter purple chrome */
+        linear-gradient(145deg, #6b3fa0, #4c2080, #5a2d8a, #7c4db0);
     background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 300% 300%;
 
     box-shadow:
         /* Outer glow */
-        0 20px 40px rgba(20, 10, 60, 0.9),
-        0 10px 20px rgba(80, 40, 140, 0.5),
+        0 20px 40px rgba(60, 30, 100, 0.7),
+        0 10px 20px rgba(120, 70, 180, 0.4),
         /* Chrome rim highlight */
         0 0 0 1px rgba(255, 255, 255, 0.4),
         0 -1px 0 1px rgba(255, 255, 255, 0.8),
         /* Inner chrome effect */
         inset 0 2px 4px rgba(255, 255, 255, 0.9),
-        inset 0 -4px 8px rgba(40, 20, 80, 0.8),
-        inset 0 0 20px rgba(100, 60, 180, 0.3);
+        inset 0 -4px 8px rgba(80, 50, 140, 0.6),
+        inset 0 0 20px rgba(150, 100, 220, 0.3);
 
     animation: liquid-chrome 8s ease-in-out infinite;
 
