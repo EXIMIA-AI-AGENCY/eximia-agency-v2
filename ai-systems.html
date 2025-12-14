@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 
     <!-- Primary SEO Meta Tags -->
-    <title>Sistemas de IA Empresariales | Ontología & Foundry - EXIMIA</title>
+    <title>Sistemas de IA Empresariales | Plataformas Inteligentes - EXIMIA</title>
     <meta name="description"
-        content="Desarrollamos sistemas de IA empresariales personalizados. Ontología de datos estilo Foundry, herramientas administrativas con IA, y soluciones escalables.">
+        content="Desarrollamos sistemas de IA empresariales personalizados. Plataformas de datos inteligentes, herramientas administrativas con IA, y soluciones escalables para tu negocio.">
     <meta name="keywords"
-        content="sistemas IA, ontología datos, foundry, Palantir, herramientas administrativas IA, automatización empresarial, EXIMIA">
+        content="sistemas IA, plataformas IA empresariales, herramientas administrativas IA, automatización empresarial, inteligencia artificial empresas, EXIMIA">
     <meta name="author" content="EXIMIA LLC">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://eximia.agency/ai-systems.html">
@@ -24,7 +24,7 @@
     <meta property="og:url" content="https://eximia.agency/ai-systems.html">
     <meta property="og:title" content="Sistemas de IA Empresariales | EXIMIA">
     <meta property="og:description"
-        content="Sistemas de IA personalizados con ontología de datos y herramientas administrativas inteligentes.">
+        content="Sistemas de IA personalizados, plataformas de datos inteligentes y herramientas administrativas para empresas.">
     <meta property="og:image" content="https://eximia.agency/ai-avatar.png">
 
     <!-- Twitter Card -->
@@ -370,51 +370,112 @@
             transform: translateY(-2px);
         }
 
-        /* Process Section */
+        /* Process Section - Modern Cards Design */
         .process-section {
             padding: 6rem 0;
             background: linear-gradient(180deg, #000 0%, #0d0025 100%);
         }
 
-        .process-timeline {
-            display: flex;
-            flex-direction: column;
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            max-width: 800px;
-            margin: 3rem auto;
+            margin-top: 3rem;
         }
 
-        .process-step {
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
+        .process-card {
+            position: relative;
+            background: linear-gradient(145deg, rgba(30, 15, 60, 0.9), rgba(15, 8, 35, 0.95));
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            overflow: hidden;
         }
 
-        .step-number {
-            width: 60px;
-            height: 60px;
-            min-width: 60px;
-            background: linear-gradient(135deg, #7c3aed, #4c1d95);
-            border-radius: 50%;
-            display: flex;
+        .process-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+        }
+
+        .process-card::after {
+            content: '';
+            position: absolute;
+            top: 2.5rem;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.5), transparent);
+            transition: right 0.4s ease;
+        }
+
+        .process-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow:
+                0 25px 50px rgba(124, 58, 237, 0.3),
+                0 0 100px rgba(147, 51, 234, 0.1);
+        }
+
+        .process-card:hover::after {
+            right: 100%;
+        }
+
+        .process-number {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #7c3aed, #9333ea);
+            border-radius: 14px;
+            font-size: 1.4rem;
             font-weight: 800;
             color: white;
-            box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
         }
 
-        .step-content h4 {
+        .process-card h4 {
             color: white;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
-        .step-content p {
+        .process-card p {
             color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .process-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .process-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(147, 51, 234, 0.25);
+            border-radius: 999px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            color: #c4b5fd;
+        }
+
+        .process-tag svg {
+            width: 14px;
+            height: 14px;
+            stroke: #a855f7;
         }
 
         /* Mobile Styles */
@@ -442,10 +503,16 @@
                 height: 20px;
             }
 
-            .process-step {
-                flex-direction: column;
-                text-align: center;
-                align-items: center;
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-card {
+                padding: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -463,12 +530,13 @@
         </div>
 
         <div class="ai-hero-content">
-            <div class="badge">Enterprise AI Solutions</div>
+            <div class="badge">Soluciones IA para Empresas</div>
             <h1>Sistemas de IA Empresariales</h1>
             <p class="subtitle">
-                Desarrollamos plataformas de inteligencia artificial a la medida.
-                Desde ontología de datos estilo Foundry hasta herramientas administrativas
-                inteligentes que transforman tu operación.
+                Creamos plataformas de inteligencia artificial diseñadas específicamente para tu empresa.
+                Conectamos todos tus datos, automatizamos procesos complejos y te damos herramientas
+                inteligentes que transforman cómo operas y tomas decisiones. Todo construido a la medida
+                de tus necesidades, con tecnología de vanguardia.
             </p>
             <a href="#ontology" class="btn btn-primary">Explorar Soluciones</a>
         </div>
@@ -479,13 +547,14 @@
         </div>
     </section>
 
-    <!-- Ontology/Foundry Section -->
+    <!-- Data Platform Section -->
     <section class="ontology-section" id="ontology">
         <div class="container">
-            <h2 class="section-title center">Ontología de Datos <span class="gradient-text">Estilo Foundry</span></h2>
+            <h2 class="section-title center">Plataformas de Datos <span class="gradient-text">Inteligentes</span></h2>
             <p class="section-subtitle center">
-                Construimos modelos de datos interconectados que unifican toda tu información empresarial
-                en un sistema coherente y accesible.
+                Imagina tener toda la información de tu empresa en un solo lugar, conectada y lista para usarse.
+                Construimos plataformas que unifican tus bases de datos, sistemas legacy, APIs y fuentes externas
+                en un modelo coherente donde cada dato tiene contexto y significado.
             </p>
 
             <!-- Animated Ontology Visualization -->
@@ -718,41 +787,130 @@
     <!-- Process Section -->
     <section class="process-section">
         <div class="container">
-            <h2 class="section-title center">Nuestro <span class="gradient-text">Proceso</span></h2>
+            <h2 class="section-title center">Cómo <span class="gradient-text">Trabajamos</span></h2>
             <p class="section-subtitle center">
-                Desde la conceptualización hasta el despliegue, te acompañamos en cada paso.
+                Un proceso estructurado que garantiza resultados. Desde la primera reunión hasta el lanzamiento,
+                trabajamos codo a codo contigo para entender tu negocio y construir exactamente lo que necesitas.
             </p>
 
-            <div class="process-timeline">
-                <div class="process-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Descubrimiento</h4>
-                        <p>Analizamos tu operación, identificamos oportunidades de automatización y definimos el alcance
-                            del proyecto.</p>
+            <div class="process-grid">
+                <div class="process-card">
+                    <div class="process-number">1</div>
+                    <h4>Descubrimiento & Estrategia</h4>
+                    <p>
+                        Nos sumergimos en tu operación para entender a fondo cómo funciona tu empresa.
+                        Identificamos los procesos que más se beneficiarían de la automatización con IA,
+                        analizamos tus fuentes de datos y definimos objetivos claros y medibles.
+                    </p>
+                    <div class="process-features">
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Análisis operacional
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Mapeo de datos
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Roadmap de IA
+                        </span>
                     </div>
                 </div>
-                <div class="process-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Diseño de Arquitectura</h4>
-                        <p>Creamos el modelo de datos y la ontología que conectará todos tus sistemas en una plataforma
-                            unificada.</p>
+
+                <div class="process-card">
+                    <div class="process-number">2</div>
+                    <h4>Diseño de Arquitectura</h4>
+                    <p>
+                        Diseñamos la arquitectura técnica de tu plataforma. Definimos cómo se conectarán
+                        tus sistemas, qué modelos de IA usaremos, y cómo se estructurarán los datos
+                        para máxima eficiencia y escalabilidad.
+                    </p>
+                    <div class="process-features">
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Modelo de datos
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Integraciones
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Prototipos
+                        </span>
                     </div>
                 </div>
-                <div class="process-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Desarrollo & Entrenamiento</h4>
-                        <p>Construimos la plataforma y entrenamos los modelos de IA con tus datos reales.</p>
+
+                <div class="process-card">
+                    <div class="process-number">3</div>
+                    <h4>Desarrollo & Entrenamiento</h4>
+                    <p>
+                        Construimos tu plataforma usando tecnología de punta. Entrenamos los modelos de IA
+                        con tus datos reales, configuramos las automatizaciones y desarrollamos las interfaces
+                        que tu equipo usará día a día.
+                    </p>
+                    <div class="process-features">
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            IA personalizada
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Testing riguroso
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Optimización
+                        </span>
                     </div>
                 </div>
-                <div class="process-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h4>Despliegue & Soporte</h4>
-                        <p>Implementamos el sistema en tu infraestructura con capacitación completa y soporte continuo.
-                        </p>
+
+                <div class="process-card">
+                    <div class="process-number">4</div>
+                    <h4>Lanzamiento & Evolución</h4>
+                    <p>
+                        Desplegamos el sistema en tu infraestructura con migración de datos segura.
+                        Capacitamos a tu equipo, monitoreamos el rendimiento y seguimos mejorando
+                        el sistema basado en feedback real y nuevas necesidades.
+                    </p>
+                    <div class="process-features">
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Capacitación
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Soporte 24/7
+                        </span>
+                        <span class="process-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            Mejora continua
+                        </span>
                     </div>
                 </div>
             </div>
