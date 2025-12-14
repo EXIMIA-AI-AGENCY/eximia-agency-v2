@@ -14,7 +14,16 @@ class ScrollExpandMedia {
         this.showContent = false;
         this.mediaFullyExpanded = false;
         this.touchStartY = 0;
+
+        // Check if is mobile OR touch device (includes iPad)
+        this.isTouchDevice = ('ontouchstart' in window) ||
+            (navigator.maxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0);
         this.isMobile = window.innerWidth < 768;
+        this.isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024 && this.isTouchDevice;
+        // Use mobile scroll behavior for both mobile phones AND tablets (iPad)
+        this.useMobileScroll = this.isMobile || this.isTablet || this.isTouchDevice;
+
         this.isActive = false;
         this.animationFrame = null;
         this.lastFrameTime = 0;
@@ -70,14 +79,14 @@ class ScrollExpandMedia {
         // Initialize video playback
         this.initVideoPlayback();
 
-        // DESKTOP: Use wheel event to intercept scroll
-        if (!this.isMobile) {
+        // DESKTOP: Use wheel event to intercept scroll (only if NOT touch device)
+        if (!this.useMobileScroll) {
             window.addEventListener('wheel', this.handleWheel, { passive: false });
         }
 
-        // MOBILE: Use native scroll and calculate progress from scroll position
-        // This is much more reliable on Safari iOS
-        if (this.isMobile) {
+        // MOBILE/TABLET: Use native scroll and calculate progress from scroll position
+        // This works better on Safari iOS and iPadOS
+        if (this.useMobileScroll) {
             window.addEventListener('scroll', this.handleMobileScroll.bind(this), { passive: true });
         }
 
@@ -104,9 +113,11 @@ class ScrollExpandMedia {
         // Start animation loop
         requestAnimationFrame(this.animate);
 
-        // Keep checking view state
+        // Keep checking view state and update device detection
         setInterval(() => {
             this.isMobile = window.innerWidth < 768;
+            this.isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024 && this.isTouchDevice;
+            this.useMobileScroll = this.isMobile || this.isTablet || this.isTouchDevice;
             this.checkIfInView();
             this.keepVideoPlaying();
         }, 500);
@@ -380,9 +391,9 @@ class ScrollExpandMedia {
         const rect = this.container.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
-        // AGGRESSIVE activation for mobile - almost always active when visible
-        if (this.isMobile) {
-            // Mobile: Active when ANY part of section is in upper 70% of screen
+        // AGGRESSIVE activation for mobile/tablet - almost always active when visible
+        if (this.useMobileScroll) {
+            // Mobile/Tablet: Active when ANY part of section is in upper 70% of screen
             this.isActive = rect.top < windowHeight * 0.7 && rect.bottom > windowHeight * 0.1;
         } else {
             // Desktop: Original behavior - top near viewport top
@@ -435,9 +446,12 @@ class ScrollExpandMedia {
         // Register user interaction for audio enable
         this.userHasInteracted = true;
         this.isMobile = window.innerWidth < 768;
+        this.isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024 && this.isTouchDevice;
+        this.useMobileScroll = this.isMobile || this.isTablet || this.isTouchDevice;
 
-        // Only capture touch data for desktop (where we intercept)
-        if (!this.isMobile) {
+        // On touch devices with mobile scroll, we don't need to track touch for expansion
+        // The native scroll handles it via handleMobileScroll
+        if (!this.useMobileScroll) {
             this.touchStartY = e.touches[0].clientY;
             this.lastTouchY = this.touchStartY;
             this.touchVelocity = 0;
@@ -534,6 +548,8 @@ class ScrollExpandMedia {
 
     handleResize() {
         this.isMobile = window.innerWidth < 768;
+        this.isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024 && this.isTouchDevice;
+        this.useMobileScroll = this.isMobile || this.isTablet || this.isTouchDevice;
         this.updateUI();
     }
 

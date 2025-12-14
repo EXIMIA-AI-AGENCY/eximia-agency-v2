@@ -882,11 +882,39 @@
         .comparison-table th.th-cost,
         .comparison-table th.th-eximia {
             text-align: center;
+            vertical-align: middle;
+        }
+
+        .comparison-table th.th-eximia {
+            display: table-cell;
+        }
+
+        .comparison-table th.th-eximia img {
+            display: block;
+            margin: 0 auto;
         }
 
         .table-logo {
             height: 28px;
             opacity: 0.9;
+        }
+
+        .comparison-table .check-cell {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .comparison-table .check {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: rgba(34, 197, 94, 0.15);
+            border-radius: 50%;
+            color: #22c55e;
+            font-size: 1rem;
+            font-weight: bold;
         }
 
         .comparison-table tbody tr {
@@ -908,16 +936,6 @@
             text-align: center;
             color: rgba(255, 255, 255, 0.5);
             font-size: 0.9rem;
-        }
-
-        .comparison-table .check-cell {
-            text-align: center;
-        }
-
-        .comparison-table .check {
-            color: #22c55e;
-            font-size: 1.25rem;
-            font-weight: bold;
         }
 
         /* Total Row */
