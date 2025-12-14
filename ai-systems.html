@@ -111,16 +111,12 @@
             overflow: hidden;
         }
 
+        /* Floating Nodes Visual - No container */
         .ontology-visual {
             position: relative;
             width: 100%;
-            max-width: 900px;
-            margin: 3rem auto;
-            aspect-ratio: 16/9;
-            background: rgba(20, 10, 50, 0.5);
-            border-radius: 20px;
-            border: 1px solid rgba(147, 51, 234, 0.3);
-            overflow: hidden;
+            height: 200px;
+            margin: 3rem 0;
         }
 
         /* Animated Nodes */
@@ -150,8 +146,8 @@
         }
 
         .data-node:nth-child(1) {
-            top: 20%;
-            left: 15%;
+            top: 30%;
+            left: 5%;
             animation-delay: 0s;
         }
 
@@ -163,20 +159,20 @@
         }
 
         .data-node:nth-child(3) {
-            top: 20%;
-            right: 15%;
+            top: 30%;
+            right: 5%;
             animation-delay: 1s;
         }
 
         .data-node:nth-child(4) {
             top: 70%;
-            left: 25%;
+            left: 20%;
             animation-delay: 1.5s;
         }
 
         .data-node:nth-child(5) {
             top: 70%;
-            right: 25%;
+            right: 20%;
             animation-delay: 2s;
         }
 
@@ -554,6 +550,60 @@
                 Construimos plataformas que unifican tus bases de datos, sistemas legacy, APIs y fuentes externas
                 en un modelo coherente donde cada dato tiene contexto y significado.
             </p>
+
+            <!-- Floating Animated Nodes -->
+            <div class="ontology-visual">
+                <!-- SVG Connections -->
+                <svg class="connections-svg" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.2" />
+                            <stop offset="50%" stop-color="#a855f7" stop-opacity="0.6" />
+                            <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.2" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Connection lines -->
+                    <line class="connection-line" x1="80" y1="70" x2="600" y2="100" />
+                    <line class="connection-line" x1="1120" y1="70" x2="600" y2="100" />
+                    <line class="connection-line" x1="280" y1="160" x2="600" y2="100" />
+                    <line class="connection-line" x1="920" y1="160" x2="600" y2="100" />
+                </svg>
+
+                <!-- Data Nodes -->
+                <div class="node-container">
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
 
             <div class="features-grid">
                 <div class="feature-card">
