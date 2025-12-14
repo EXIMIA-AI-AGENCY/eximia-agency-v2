@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+    <!-- Primary SEO Meta Tags -->
+    <title>Sistemas de IA Empresariales | Ontología & Foundry - EXIMIA</title>
+    <meta name="description"
+        content="Desarrollamos sistemas de IA empresariales personalizados. Ontología de datos estilo Foundry, herramientas administrativas con IA, y soluciones escalables.">
+    <meta name="keywords"
+        content="sistemas IA, ontología datos, foundry, Palantir, herramientas administrativas IA, automatización empresarial, EXIMIA">
+    <meta name="author" content="EXIMIA LLC">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://eximia.agency/ai-systems.html">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="ai-avatar.png">
+    <link rel="apple-touch-icon" href="ai-avatar.png">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eximia.agency/ai-systems.html">
+    <meta property="og:title" content="Sistemas de IA Empresariales | EXIMIA">
+    <meta property="og:description"
+        content="Sistemas de IA personalizados con ontología de datos y herramientas administrativas inteligentes.">
+    <meta property="og:image" content="https://eximia.agency/ai-avatar.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sistemas de IA Empresariales | EXIMIA">
+    <meta name="twitter:description" content="Desarrollamos sistemas de IA empresariales personalizados.">
+    <meta name="twitter:image" content="https://eximia.agency/ai-avatar.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css?v=aisystems1">
+
+    <!-- Force scroll to top -->
+    <script>
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
+
+    <style>
+        /* AI SYSTEMS PAGE SPECIFIC STYLES */
+
+        /* Hero with Neural Animation */
+        .ai-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(180deg, #000 0%, #0a0020 50%, #000 100%);
+        }
+
+        .ai-hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .ai-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-hero .subtitle {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        /* Neural Network Animation Background */
+        .neural-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .neural-bg canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ontology Section */
+        .ontology-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, #000 0%, #0d0025 50%, #000 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ontology-visual {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 3rem auto;
+            aspect-ratio: 16/9;
+            background: rgba(20, 10, 50, 0.5);
+            border-radius: 20px;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            overflow: hidden;
+        }
+
+        /* Animated Nodes */
+        .node-container {
+            position: absolute;
+            inset: 0;
+        }
+
+        .data-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #7c3aed, #4c1d95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+            animation: nodePulse 3s ease-in-out infinite;
+        }
+
+        .data-node svg {
+            width: 28px;
+            height: 28px;
+            stroke: white;
+            fill: none;
+        }
+
+        .data-node:nth-child(1) {
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .data-node:nth-child(2) {
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 0.5s;
+        }
+
+        .data-node:nth-child(3) {
+            top: 20%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .data-node:nth-child(4) {
+            top: 70%;
+            left: 25%;
+            animation-delay: 1.5s;
+        }
+
+        .data-node:nth-child(5) {
+            top: 70%;
+            right: 25%;
+            animation-delay: 2s;
+        }
+
+        @keyframes nodePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+            }
+
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 50px rgba(124, 58, 237, 0.8);
+            }
+        }
+
+        /* Connection Lines (SVG) */
+        .connections-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .connection-line {
+            stroke: url(#lineGradient);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 10, 5;
+            animation: dashMove 2s linear infinite;
+        }
+
+        @keyframes dashMove {
+            to {
+                stroke-dashoffset: -30;
+            }
+        }
+
+        /* Features Grid */
+        .ai-features {
+            padding: 6rem 0;
+            background: #000;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, rgba(20, 10, 50, 0.8), rgba(10, 5, 30, 0.9));
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7, #7c3aed);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(147, 51, 234, 0.5);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(168, 85, 247, 0.2));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon svg {
+            width: 36px;
+            height: 36px;
+            stroke: #a855f7;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        /* Use Cases Section */
+        .use-cases-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, #000 0%, #0a0020 100%);
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .use-case-card {
+            background: rgba(20, 10, 50, 0.5);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .use-case-card:hover {
+            background: rgba(30, 15, 70, 0.6);
+            border-color: rgba(147, 51, 234, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .use-case-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-card h4 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+        }
+
+        /* Tech Stack */
+        .tech-section {
+            padding: 6rem 0;
+            background: #000;
+        }
+
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .tech-pill {
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 999px;
+            padding: 0.75rem 1.5rem;
+            color: #a855f7;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tech-pill:hover {
+            background: rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Process Section */
+        .process-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, #000 0%, #0d0025 100%);
+        }
+
+        .process-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 3rem auto;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            background: linear-gradient(135deg, #7c3aed, #4c1d95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .step-content h4 {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .ai-hero {
+                min-height: 80vh;
+                padding: 4rem 1rem;
+            }
+
+            .ai-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .ontology-visual {
+                aspect-ratio: 1/1;
+            }
+
+            .data-node {
+                width: 45px;
+                height: 45px;
+            }
+
+            .data-node svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .process-step {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar"></nav>
+
+    <!-- Hero Section -->
+    <section class="ai-hero">
+        <!-- Neural Network Background -->
+        <div class="neural-bg">
+            <canvas id="neural-canvas"></canvas>
+        </div>
+
+        <div class="ai-hero-content">
+            <div class="badge">Enterprise AI Solutions</div>
+            <h1>Sistemas de IA Empresariales</h1>
+            <p class="subtitle">
+                Desarrollamos plataformas de inteligencia artificial a la medida.
+                Desde ontología de datos estilo Foundry hasta herramientas administrativas
+                inteligentes que transforman tu operación.
+            </p>
+            <a href="#ontology" class="btn btn-primary">Explorar Soluciones</a>
+        </div>
+
+        <!-- Gradient fade -->
+        <div
+            style="position: absolute; bottom: 0; left: 0; width: 100%; height: 150px; background: linear-gradient(to top, #000 0%, transparent 100%); z-index: 5;">
+        </div>
+    </section>
+
+    <!-- Ontology/Foundry Section -->
+    <section class="ontology-section" id="ontology">
+        <div class="container">
+            <h2 class="section-title center">Ontología de Datos <span class="gradient-text">Estilo Foundry</span></h2>
+            <p class="section-subtitle center">
+                Construimos modelos de datos interconectados que unifican toda tu información empresarial
+                en un sistema coherente y accesible.
+            </p>
+
+            <!-- Animated Ontology Visualization -->
+            <div class="ontology-visual">
+                <!-- SVG Connections -->
+                <svg class="connections-svg" viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.2" />
+                            <stop offset="50%" stop-color="#a855f7" stop-opacity="0.8" />
+                            <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.2" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Connection lines -->
+                    <line class="connection-line" x1="170" y1="130" x2="450" y2="270" />
+                    <line class="connection-line" x1="730" y1="130" x2="450" y2="270" />
+                    <line class="connection-line" x1="270" y1="380" x2="450" y2="270" />
+                    <line class="connection-line" x1="630" y1="380" x2="450" y2="270" />
+                    <line class="connection-line" x1="170" y1="130" x2="270" y2="380" />
+                    <line class="connection-line" x1="730" y1="130" x2="630" y2="380" />
+                </svg>
+
+                <!-- Data Nodes -->
+                <div class="node-container">
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <div class="data-node">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 6v6l4 2"></path>
+                        </svg>
+                    </div>
+                    <h3>Datos en Tiempo Real</h3>
+                    <p>Conecta todas tus fuentes de datos en un modelo unificado con actualizaciones instantáneas y
+                        consistencia garantizada.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <h3>Modelo Semántico</h3>
+                    <p>Definimos relaciones entre entidades para que tus datos cuenten una historia coherente y
+                        accionable.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3>Seguridad Enterprise</h3>
+                    <p>Control de acceso granular, auditoría completa y cumplimiento con estándares internacionales de
+                        seguridad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Administrative AI Tools Section -->
+    <section class="ai-features" id="tools">
+        <div class="container">
+            <h2 class="section-title center">Herramientas Administrativas <span class="gradient-text">con IA</span></h2>
+            <p class="section-subtitle center">
+                Automatiza y optimiza tus procesos empresariales con herramientas
+                inteligentes diseñadas para tu operación específica.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </div>
+                    <h3>Dashboards Inteligentes</h3>
+                    <p>Visualización de datos en tiempo real con insights generados por IA. Métricas clave, alertas
+                        automáticas y reportes personalizados.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Automatización de Procesos</h3>
+                    <p>Workflows inteligentes que aprenden de tus operaciones y optimizan flujos de trabajo
+                        automáticamente.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3>Asistentes IA Internos</h3>
+                    <p>Chatbots y asistentes virtuales para tu equipo que responden preguntas, ejecutan tareas y
+                        facilitan decisiones.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                    </div>
+                    <h3>Generación de Documentos</h3>
+                    <p>Crea contratos, reportes, propuestas y documentación automáticamente con plantillas inteligentes.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <h3>Predicción & Analytics</h3>
+                    <p>Modelos predictivos personalizados que anticipan tendencias, demanda y riesgos para tu negocio.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Gestión de Equipos</h3>
+                    <p>Herramientas para asignación inteligente de tareas, seguimiento de productividad y colaboración
+                        optimizada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases-section" id="cases">
+        <div class="container">
+            <h2 class="section-title center">Industrias que <span class="gradient-text">Transformamos</span></h2>
+            <p class="section-subtitle center">
+                Nuestros sistemas de IA se adaptan a las necesidades específicas de cada sector.
+            </p>
+
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <div class="use-case-icon">🏭</div>
+                    <h4>Manufactura</h4>
+                    <p>Optimización de producción, mantenimiento predictivo, control de calidad.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🏥</div>
+                    <h4>Salud</h4>
+                    <p>Gestión de pacientes, diagnóstico asistido, optimización de recursos.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">💰</div>
+                    <h4>Finanzas</h4>
+                    <p>Detección de fraude, análisis de riesgo, automatización de compliance.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🚚</div>
+                    <h4>Logística</h4>
+                    <p>Optimización de rutas, gestión de inventario, predicción de demanda.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🏛️</div>
+                    <h4>Gobierno</h4>
+                    <p>Gestión de servicios ciudadanos, análisis de datos públicos, eficiencia operativa.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🛒</div>
+                    <h4>Retail</h4>
+                    <p>Personalización, gestión de inventario, análisis de comportamiento del cliente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="container">
+            <h2 class="section-title center">Nuestro <span class="gradient-text">Proceso</span></h2>
+            <p class="section-subtitle center">
+                Desde la conceptualización hasta el despliegue, te acompañamos en cada paso.
+            </p>
+
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Descubrimiento</h4>
+                        <p>Analizamos tu operación, identificamos oportunidades de automatización y definimos el alcance
+                            del proyecto.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Diseño de Arquitectura</h4>
+                        <p>Creamos el modelo de datos y la ontología que conectará todos tus sistemas en una plataforma
+                            unificada.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Desarrollo & Entrenamiento</h4>
+                        <p>Construimos la plataforma y entrenamos los modelos de IA con tus datos reales.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Despliegue & Soporte</h4>
+                        <p>Implementamos el sistema en tu infraestructura con capacitación completa y soporte continuo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-section">
+        <div class="container">
+            <h2 class="section-title center">Stack <span class="gradient-text">Tecnológico</span></h2>
+            <p class="section-subtitle center">
+                Utilizamos las tecnologías más avanzadas para construir soluciones robustas y escalables.
+            </p>
+
+            <div class="tech-grid">
+                <div class="tech-pill">Python</div>
+                <div class="tech-pill">TensorFlow</div>
+                <div class="tech-pill">PyTorch</div>
+                <div class="tech-pill">LangChain</div>
+                <div class="tech-pill">OpenAI GPT</div>
+                <div class="tech-pill">Claude AI</div>
+                <div class="tech-pill">PostgreSQL</div>
+                <div class="tech-pill">MongoDB</div>
+                <div class="tech-pill">Neo4j</div>
+                <div class="tech-pill">Kubernetes</div>
+                <div class="tech-pill">Docker</div>
+                <div class="tech-pill">AWS</div>
+                <div class="tech-pill">GCP</div>
+                <div class="tech-pill">Azure</div>
+                <div class="tech-pill">FastAPI</div>
+                <div class="tech-pill">GraphQL</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="final-cta">
+        <div class="cta-bg-glow"></div>
+        <div class="container center">
+            <div class="cta-content">
+                <h2>¿Listo para <span class="gradient-text">Transformar</span> tu Empresa?</h2>
+                <p>Hablemos sobre cómo podemos construir un sistema de IA personalizado para tu negocio.</p>
+                <div class="cta-buttons">
+                    <a href="agendar.html" class="btn btn-primary btn-xl">Agendar Consultoría</a>
+                    <a href="contacto.html" class="btn btn-outline btn-xl">Contáctanos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="site-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="footer.js?v=1"></script>
+    <script src="navbar.js?v=aisystems1"></script>
+    <script src="script.js?v=aisystems1"></script>
+
+    <!-- Neural Network Animation -->
+    <script>
+        // Neural Network Background Animation
+        (function () {
+            const canvas = document.getElementById('neural-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const particleCount = 80;
+            let animationFrame;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            function createParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        radius: Math.random() * 2 + 1
+                    });
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw connections
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(124, 58, 237, ${0.3 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // Draw particles
+                for (let p of particles) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(168, 85, 247, 0.8)';
+                    ctx.fill();
+
+                    // Move
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // Bounce
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                }
+
+                animationFrame = requestAnimationFrame(draw);
+            }
+
+            resize();
+            createParticles();
+            draw();
+
+            window.addEventListener('resize', () => {
+                resize();
+                createParticles();
+            });
+        })();
+    </script>
+
+    <!-- Chat Widget -->
+    <script src="chat-widget.js?v=1"></script>
+</body>
+
+</html>

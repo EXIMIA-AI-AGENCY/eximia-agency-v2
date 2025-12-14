@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <li><a href="crm.html" data-page="crm">📊 CRM + AI</a></li>
                             <li><a href="marketing.html" data-page="marketing">📈 Marketing</a></li>
                             <li><a href="dev.html" data-page="dev">💻 Dev</a></li>
+                            <li><a href="ai-systems.html" data-page="ai-systems">🧠 Sistemas de IA</a></li>
                         </ul>
                     </li>
                     <li><a href="voice-demo.html" data-page="demo">AI Demo</a></li>
