@@ -474,9 +474,10 @@ p {
 }
 
 .dropdown-toggle {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+    vertical-align: middle;
 }
 
 .dropdown-arrow {
