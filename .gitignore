@@ -6,6 +6,10 @@
 *.avi
 *.mkv
 
+# But allow compressed versions for production
+!eximia-desktop.mp4
+!eximia-mobile.mp4
+
 # macOS system files
 .DS_Store
 ._*
