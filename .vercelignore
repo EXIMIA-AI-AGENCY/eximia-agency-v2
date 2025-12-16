@@ -1,0 +1,7 @@
+# Ignore original large video files
+eximia version 3.MP4
+Eximia vertical v1.mp4
+
+# Keep only the compressed versions:
+# eximia-desktop.mp4
+# eximia-mobile.mp4
